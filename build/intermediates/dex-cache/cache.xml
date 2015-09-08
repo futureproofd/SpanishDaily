@@ -9,18 +9,18 @@
         <dex dex="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\pre-dexed\debug\classes-731dea116408dc98eb39e123edb1a272ddcaa1d3.jar" />
     </item>
     <item
+        jar="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\exploded-aar\io.reactivex\rxandroid\1.0.1\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="aa81bfe8c5cc88c2472ca936ae71f0c3dd1766df">
+        <dex dex="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\pre-dexed\debug\classes-b323ca6a360587aecb69a2153053cded0d4e50b4.jar" />
+    </item>
+    <item
         jar="C:\Users\mplienegger.ACDDOM\.gradle\caches\modules-2\files-2.1\javax.inject\javax.inject\1\6975da39a7040257bd51d21a231b76c915872d38\javax.inject-1.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="6975da39a7040257bd51d21a231b76c915872d38">
         <dex dex="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\pre-dexed\debug\javax.inject-1-2763103ffc6b792d7cd4ac765d5e5fe7e7ca51c4.jar" />
-    </item>
-    <item
-        jar="C:\Users\mplienegger.ACDDOM\.gradle\caches\modules-2\files-2.1\io.reactivex\rxjava\1.0.10\c28ade6b57e4d4338b5fe0c9ac0e57805f1724f3\rxjava-1.0.10.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="c28ade6b57e4d4338b5fe0c9ac0e57805f1724f3">
-        <dex dex="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\pre-dexed\debug\rxjava-1.0.10-f478d7ea6dc512fc2b56bbc4a42f67da1ccff9b8.jar" />
     </item>
     <item
         jar="C:\Users\mplienegger.ACDDOM\.gradle\caches\modules-2\files-2.1\com.google.dagger\dagger\2.0\da7ba0ee1d30edd955da276cdf01d3d7cb24aedc\dagger-2.0.jar"
@@ -56,6 +56,13 @@
         revision="21.1.2"
         sha1="57f2ab85c164ff1676ec64dee787981c046fab79">
         <dex dex="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\pre-dexed\debug\internal_impl-22.2.0-52918333e2fecef02520b9669dd16a4af63b48d2.jar" />
+    </item>
+    <item
+        jar="C:\Users\mplienegger.ACDDOM\.gradle\caches\modules-2\files-2.1\io.reactivex\rxjava\1.0.14\898f9ab61e2a23afd615f0b0389478bec86f49f9\rxjava-1.0.14.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="898f9ab61e2a23afd615f0b0389478bec86f49f9">
+        <dex dex="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\pre-dexed\debug\rxjava-1.0.14-1e6f9a40fb2d7ec4b5c5d7825bdac51606572dc2.jar" />
     </item>
 
 </items>
