@@ -1,6 +1,7 @@
 package to.marcus.rxtesting.data.api;
 
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import java.io.IOException;
@@ -20,6 +21,7 @@ public class WebParser {
     private static final String ENDPOINT = "http://www.spanishcentral.com/word-of-the-day";
     private static final String USERAGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36";
     private static final String WORD_ELEMENT = "div[class=main_view_spanish_wod_word_text mobile-hide";
+    private static final String DATE_ELEMENT = "div[class=main_view_spanish_wod_for_date mobile-hide";
     private static final String PHOTO_ELEMENT = "div[class=main_view_spanish_wod_photo";
     private static final String TRANSLATION_ELEMENT = "div[class=main_view_spanish_wod_translation_block_text";
     private static final String EXAMPLEESP_ELEMENT = "div[class=main_view_spanish_wod_example_block_spanish";
@@ -47,6 +49,41 @@ public class WebParser {
              }
         });
     }
+
+
+    public static Observable<ArrayList<String>> parseWordElements(){
+        return Observable.create(new Observable.OnSubscribe<ArrayList<String>>(){
+            @Override
+            public void call(Subscriber<? super ArrayList<String>> subscriber){
+                ArrayList<String> elementArray = new ArrayList<>();
+                try {
+                    Document doc;
+                    doc = Jsoup.connect(ENDPOINT).userAgent(USERAGENT).get();
+                    Elements elementDiv = doc.select(WORD_ELEMENT);
+                    for (Element table : elementDiv.select("Table")) {
+                        for (Element row : table.select("tr")) {
+                            String word = row.select("td").get(0).text();
+                            elementArray.add(0, word);
+                        }
+                    }
+                    elementDiv = doc.select(DATE_ELEMENT);
+                    String date = elementDiv.first().text();
+                    elementDiv = doc.select(PHOTO_ELEMENT);
+                    String imgsrc = WEBROOT + elementDiv.select("img").first().attr("src");
+                    elementDiv = doc.select(TRANSLATION_ELEMENT);
+                    String translation = elementDiv.select("p").first().text();
+                    elementArray.add(1, date);
+                    elementArray.add(2, imgsrc);
+                    elementArray.add(3, translation);
+                    subscriber.onNext(elementArray);
+                } catch (IOException e) {
+                    subscriber.onError(e);
+                }
+                subscriber.onCompleted();
+            }
+        });
+    }
+
 
     public static Observable<String> parseImage(){
         return Observable.create(new Observable.OnSubscribe<String>(){

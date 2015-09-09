@@ -1,36 +1,48 @@
 package to.marcus.rxtesting.model.repository;
 
+import java.util.ArrayList;
+
 import javax.inject.Inject;
-import rx.Observable;
-import to.marcus.rxtesting.data.api.WebParser;
-import to.marcus.rxtesting.model.Word;
+import to.marcus.rxtesting.model.WordStorage;
 import to.marcus.rxtesting.model.Words;
 
 /**
- * Created by mplienegger on 9/4/2015.
+ * Created by marcuson 9/4/2015.
  * Inject our model (database, json list) - WordStorage
  * use a repository interface (observable get methods)
  *      these will require an observable to obtain data from any source (database OR network pull)
 
  */
-public class RepositoryImpl implements Repository {
+public class RepositoryImpl implements Repository{
 
-   //get wordStorage injection
+    private final WordStorage mWordStorage;
 
     @Inject
-    public RepositoryImpl(){
+    public RepositoryImpl(WordStorage wordStorage){
+        mWordStorage = wordStorage;
     }
+
+
 
     @Override
-    public Word createWord() {
-        return null;
+    public void addWord(String word) {
+        mWordStorage.saveWord(word);
     }
 
+    /*
     @Override
     public Observable<String> getWord(){
+      //  mWordStorage.getWord();
         //if date of word != getdate then
-        return WebParser.parseWord();
+        //return WebParser.parseWord();
         //else get from WordStorage
+    }
+    */
+
+    @Override
+    public String getLatestWord(){
+        return null;
+       // return mWordStorage.query(0);
     }
 
     @Override
@@ -49,7 +61,7 @@ public class RepositoryImpl implements Repository {
     }
 
     @Override
-    public void open() {
+    public void open(){
 
     }
 

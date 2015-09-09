@@ -10,8 +10,9 @@ import to.marcus.rxtesting.model.Words;
  */
 public interface Repository {
 
-    public Word createWord();
-    public Observable<String> getWord();
+    public void addWord(String word);
+    //public Observable<String> getWord();
+    public String getLatestWord();
     public Words getAllWords();
     public void deleteWord();
     public void deleteWords();
