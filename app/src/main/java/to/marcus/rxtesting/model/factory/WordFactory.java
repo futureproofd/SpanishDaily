@@ -11,6 +11,6 @@ import to.marcus.rxtesting.model.Words;
  */
 public interface WordFactory{
 
-    public Word newWord();
-    public Words newWords();
+    public Word newWordInstance();
+    public Words newWordsInstance();
 }

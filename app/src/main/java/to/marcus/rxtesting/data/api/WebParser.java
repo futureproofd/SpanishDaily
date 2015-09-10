@@ -72,9 +72,15 @@ public class WebParser {
                     String imgsrc = WEBROOT + elementDiv.select("img").first().attr("src");
                     elementDiv = doc.select(TRANSLATION_ELEMENT);
                     String translation = elementDiv.select("p").first().text();
-                    elementArray.add(1, date);
-                    elementArray.add(2, imgsrc);
-                    elementArray.add(3, translation);
+                    elementDiv = doc.select(EXAMPLEEN_ELEMENT);
+                    String exampleEN = elementDiv.text();
+                    elementDiv = doc.select(EXAMPLEESP_ELEMENT);
+                    String exampleESP = elementDiv.text();
+                        elementArray.add(1, date);
+                        elementArray.add(2, imgsrc);
+                        elementArray.add(3, translation);
+                        elementArray.add(4, exampleEN);
+                        elementArray.add(5, exampleESP);
                     subscriber.onNext(elementArray);
                 } catch (IOException e) {
                     subscriber.onError(e);

@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 public class WordStorage {
 
-    protected static ArrayList<String> sWordsArchive;
+    protected static ArrayList<Word> sWordsArchive;
     private Context context;
 
     public WordStorage(Context context){
@@ -18,12 +18,19 @@ public class WordStorage {
         sWordsArchive = new ArrayList<>();
     }
 
-    public void saveWord(String word){
+    public void saveWord(Word word){
         sWordsArchive.add(word);
     }
 
-    public String query(String param){
-        return null;
-        //sWordsArchive.get(0).getDate   --gets the word object date
+    public Word getWord(){
+        return sWordsArchive.get(sWordsArchive.size()-1);
+    }
+
+    public String getLatestDate(){
+        return sWordsArchive.get(sWordsArchive.size() -1).getDate();
+    }
+
+    public int wordCount(){
+        return sWordsArchive.size();
     }
 }

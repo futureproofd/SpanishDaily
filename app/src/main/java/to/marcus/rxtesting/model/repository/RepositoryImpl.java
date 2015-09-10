@@ -3,6 +3,8 @@ package to.marcus.rxtesting.model.repository;
 import java.util.ArrayList;
 
 import javax.inject.Inject;
+
+import to.marcus.rxtesting.model.Word;
 import to.marcus.rxtesting.model.WordStorage;
 import to.marcus.rxtesting.model.Words;
 
@@ -25,29 +27,29 @@ public class RepositoryImpl implements Repository{
 
 
     @Override
-    public void addWord(String word) {
+    public void addWord(Word word) {
         mWordStorage.saveWord(word);
     }
 
-    /*
     @Override
-    public Observable<String> getWord(){
-      //  mWordStorage.getWord();
-        //if date of word != getdate then
-        //return WebParser.parseWord();
-        //else get from WordStorage
+    public Word getWord(){
+        return mWordStorage.getWord();
     }
-    */
+
 
     @Override
-    public String getLatestWord(){
-        return null;
-       // return mWordStorage.query(0);
+    public String getLatestWordDate(){
+        return mWordStorage.getLatestDate();
     }
 
     @Override
     public Words getAllWords() {
         return null;
+    }
+
+    @Override
+    public int getDatasetSize(){
+        return mWordStorage.wordCount();
     }
 
     @Override

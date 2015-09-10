@@ -26,6 +26,12 @@ public class HomeActivity extends ActionBarActivity {
     }
 
     @Override
+    public void onStart(){
+        super.onStart();
+        mTestPresenterImpl.onStart();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_home, menu);
         return true;

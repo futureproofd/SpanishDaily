@@ -7,4 +7,6 @@ import android.os.Bundle;
  */
 public interface TestPresenter {
 
+    void onStart();
+
 }

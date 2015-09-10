@@ -10,10 +10,11 @@ import to.marcus.rxtesting.model.Words;
  */
 public interface Repository {
 
-    public void addWord(String word);
-    //public Observable<String> getWord();
-    public String getLatestWord();
+    public void addWord(Word word);
+    public Word getWord();
+    public String getLatestWordDate();
     public Words getAllWords();
+    public int getDatasetSize();
     public void deleteWord();
     public void deleteWords();
     public void open();
