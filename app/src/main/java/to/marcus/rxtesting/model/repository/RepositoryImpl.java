@@ -3,7 +3,6 @@ package to.marcus.rxtesting.model.repository;
 import java.util.ArrayList;
 
 import javax.inject.Inject;
-
 import to.marcus.rxtesting.model.Word;
 import to.marcus.rxtesting.model.WordStorage;
 import to.marcus.rxtesting.model.Words;
@@ -24,10 +23,13 @@ public class RepositoryImpl implements Repository{
         mWordStorage = wordStorage;
     }
 
-
+    @Override
+    public void saveWords() {
+        mWordStorage.saveWordsToJSON();
+    }
 
     @Override
-    public void addWord(Word word) {
+    public void addWord(Word word){
         mWordStorage.saveWord(word);
     }
 
@@ -43,8 +45,8 @@ public class RepositoryImpl implements Repository{
     }
 
     @Override
-    public Words getAllWords() {
-        return null;
+    public ArrayList<Word> getWordsDataset() {
+        return mWordStorage.getWordsDataSet();
     }
 
     @Override
@@ -59,7 +61,7 @@ public class RepositoryImpl implements Repository{
 
     @Override
     public void deleteWords() {
-
+        mWordStorage.deleteAllWords();
     }
 
     @Override

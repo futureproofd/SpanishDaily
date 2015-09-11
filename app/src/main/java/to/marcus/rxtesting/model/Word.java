@@ -1,5 +1,8 @@
 package to.marcus.rxtesting.model;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 /**
@@ -8,12 +11,24 @@ import java.util.ArrayList;
 
 public class Word {
     public static final String TAG = Word.class.getSimpleName();
-
     private String date;
     private String imgUrl;
     private String word;
     private String translation;
-    private ArrayList<String> examples;
+    private String exampleEN;
+    private String exampleESP;
+
+    public Word(JSONObject json) throws JSONException{
+        word = json.getString("word");
+        date = json.getString("date");
+        imgUrl = json.getString("url");
+        translation = json.getString("translation");
+        exampleEN = json.getString("exampleEN");
+        exampleESP = json.getString("exampleESP");
+    }
+
+    //default constructor for factory
+    public Word(){}
 
     public String getDate() {
         return date;
@@ -47,12 +62,20 @@ public class Word {
         this.translation = translation;
     }
 
-    public ArrayList<String> getExamples() {
-        return examples;
+    public String getExampleEN() {
+        return exampleEN;
     }
 
-    public void setExamples(ArrayList<String> examples) {
-        this.examples = examples;
+    public void setExampleEN(String example) {
+        this.exampleEN = example;
+    }
+
+    public String getExampleESP() {
+        return exampleESP;
+    }
+
+    public void setExampleESP(String example) {
+        this.exampleESP = example;
     }
 
 }

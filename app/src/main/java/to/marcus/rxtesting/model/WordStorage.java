@@ -1,6 +1,7 @@
 package to.marcus.rxtesting.model;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -8,29 +9,55 @@ import java.util.ArrayList;
  * Created by marcus on 9/8/2015
  * For Caching
  */
-public class WordStorage {
+public class WordStorage{
+    private static final String TAG = WordStorage.class.getSimpleName();
+    private ArrayList<Word> mWords;
+    private Context mAppContext;
+    private WordSerializer mSerializer;
+    private static final String WORDS_DATASET = "words.json";
 
-    protected static ArrayList<Word> sWordsArchive;
-    private Context context;
-
-    public WordStorage(Context context){
-        this.context = context;
-        sWordsArchive = new ArrayList<>();
+    public WordStorage(Context appContext){
+        mSerializer = new WordSerializer(appContext, WORDS_DATASET);
+        try{
+            mWords = mSerializer.loadWords();
+        }catch(Exception e){
+            mWords = new ArrayList<>();
+        }
     }
 
     public void saveWord(Word word){
-        sWordsArchive.add(word);
+        Log.i(TAG, "saving word to array");
+        mWords.add(word);
+    }
+
+    public boolean saveWordsToJSON(){
+        try{
+            Log.i(TAG, "saving words to JSON");
+            mSerializer.saveWords(mWords);
+            return true;
+        }catch(Exception e){
+            return false;
+        }
+    }
+
+    public void deleteAllWords(){
+        mWords.clear();
+        saveWordsToJSON();
     }
 
     public Word getWord(){
-        return sWordsArchive.get(sWordsArchive.size()-1);
+        return mWords.get(mWords.size()-1);
+    }
+
+    public ArrayList<Word> getWordsDataSet(){
+        return mWords;
     }
 
     public String getLatestDate(){
-        return sWordsArchive.get(sWordsArchive.size() -1).getDate();
+        return mWords.get(mWords.size() -1).getDate();
     }
 
     public int wordCount(){
-        return sWordsArchive.size();
+        return mWords.size();
     }
 }

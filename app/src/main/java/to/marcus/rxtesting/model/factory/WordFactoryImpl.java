@@ -18,9 +18,11 @@ public class WordFactoryImpl{
                 defaultWord.setDate(wordElements.get(1));
                 defaultWord.setImgUrl(wordElements.get(2));
                 defaultWord.setTranslation(wordElements.get(3));
+                defaultWord.setExampleEN(wordElements.get(4));
+                defaultWord.setExampleESP(wordElements.get(5));
                 return defaultWord;
         }
-        public Words newWordsInstance() {
+        public static to.marcus.rxtesting.model.Words newWordsInstance() {
             return null;
         }
     }

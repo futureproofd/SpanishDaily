@@ -20,15 +20,21 @@ public class HomeActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
         initInjector();
+        setContentView(R.layout.activity_home);
         mTestPresenterImpl.initPresenter();
     }
 
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
         mTestPresenterImpl.onStart();
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        mTestPresenterImpl.onStop();
     }
 
     @Override
