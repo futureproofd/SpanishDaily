@@ -2,7 +2,6 @@ package to.marcus.rxtesting.model;
 
 import android.content.Context;
 import android.util.Log;
-
 import java.util.ArrayList;
 
 /**
@@ -12,7 +11,6 @@ import java.util.ArrayList;
 public class WordStorage{
     private static final String TAG = WordStorage.class.getSimpleName();
     private ArrayList<Word> mWords;
-    private Context mAppContext;
     private WordSerializer mSerializer;
     private static final String WORDS_DATASET = "words.json";
 

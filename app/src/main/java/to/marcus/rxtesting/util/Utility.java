@@ -29,7 +29,7 @@ public class Utility {
         DateTime today = new DateTime();
         DateTime word = new DateTime(wordDate);
         int diff = Days.daysBetween(today, word).getDays();
-        if(diff > 0){
+        if(diff < 0){
             return true;
         }else{
             return false;

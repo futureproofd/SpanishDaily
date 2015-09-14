@@ -2,11 +2,81 @@
 <items version="2" >
 
     <item
-        jar="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.0\classes.jar"
+        jar="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\exploded-aar\io.reactivex\rxandroid\1.0.1\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="aa81bfe8c5cc88c2472ca936ae71f0c3dd1766df">
+        <dex dex="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\pre-dexed\debug\classes-b323ca6a360587aecb69a2153053cded0d4e50b4.jar" />
+    </item>
+    <item
+        jar="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\libs\internal_impl-23.0.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="aa92916125166649d8ad4ba3940c3dd7515596d3">
+        <dex dex="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\pre-dexed\debug\internal_impl-23.0.1-6a251349a3645384e734e46a76fc0d7ecd0093c1.jar" />
+    </item>
+    <item
+        jar="C:\Users\mplienegger.ACDDOM\.gradle\caches\modules-2\files-2.1\com.google.dagger\dagger\2.0\da7ba0ee1d30edd955da276cdf01d3d7cb24aedc\dagger-2.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="da7ba0ee1d30edd955da276cdf01d3d7cb24aedc">
+        <dex dex="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\pre-dexed\debug\dagger-2.0-4a5550b58de404be6b6c71fb46d00ca34b292a63.jar" />
+    </item>
+    <item
+        jar="C:\Users\mplienegger.ACDDOM\.gradle\caches\modules-2\files-2.1\com.google.dagger\dagger\2.0\da7ba0ee1d30edd955da276cdf01d3d7cb24aedc\dagger-2.0.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="1ee588ff2c4daf7b97c1cbf922a6c7f027285c2f">
-        <dex dex="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\pre-dexed\debug\classes-731dea116408dc98eb39e123edb1a272ddcaa1d3.jar" />
+        sha1="da7ba0ee1d30edd955da276cdf01d3d7cb24aedc">
+        <dex dex="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\pre-dexed\debug\dagger-2.0-4a5550b58de404be6b6c71fb46d00ca34b292a63.jar" />
+    </item>
+    <item
+        jar="C:\Users\mplienegger.ACDDOM\.gradle\caches\modules-2\files-2.1\org.jsoup\jsoup\1.8.1\1eb6690b0c629d7000c77a72df5e822fb974f521\jsoup-1.8.1.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="1eb6690b0c629d7000c77a72df5e822fb974f521">
+        <dex dex="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\pre-dexed\debug\jsoup-1.8.1-c7e5acf37ec8f0c1ccda24efc23e465cda638dad.jar" />
+    </item>
+    <item
+        jar="C:\Users\mplienegger.ACDDOM\.gradle\caches\modules-2\files-2.1\javax.inject\javax.inject\1\6975da39a7040257bd51d21a231b76c915872d38\javax.inject-1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="6975da39a7040257bd51d21a231b76c915872d38">
+        <dex dex="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\pre-dexed\debug\javax.inject-1-2763103ffc6b792d7cd4ac765d5e5fe7e7ca51c4.jar" />
+    </item>
+    <item
+        jar="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\exploded-aar\com.android.support\cardview-v7\23.0.1\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="39ae02ce40c3ac828abbf780ce0ff5d7a28b7d6a">
+        <dex dex="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\pre-dexed\debug\classes-b63f2018784ce99684039b30753e5952969276d1.jar" />
+    </item>
+    <item
+        jar="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="c31e21b53ff2f74664e498248d01453a32e32d48">
+        <dex dex="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\pre-dexed\debug\classes-d75162b1f6a7af3e5c9c795faa1949a59011fa63.jar" />
+    </item>
+    <item
+        jar="C:\Users\mplienegger.ACDDOM\AppData\Local\Android\android-studio\sdk\extras\android\m2repository\com\android\support\support-annotations\23.0.1\support-annotations-23.0.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="1fce89a6428c51467090d7f424e4c9c3dbd55f7e">
+        <dex dex="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\pre-dexed\debug\support-annotations-23.0.1-3a11fde2cfa6ecf62cf4b71a3677c308505f3461.jar" />
+    </item>
+    <item
+        jar="C:\Users\mplienegger.ACDDOM\.gradle\caches\modules-2\files-2.1\joda-time\joda-time\2.8\9f2785d7184b97d005a44241ccaf980f43b9ccdb\joda-time-2.8.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="9f2785d7184b97d005a44241ccaf980f43b9ccdb">
+        <dex dex="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\pre-dexed\debug\joda-time-2.8-a8c72573ce78cbb4381d020430dfd69572bcf9a3.jar" />
+    </item>
+    <item
+        jar="C:\Users\mplienegger.ACDDOM\.gradle\caches\modules-2\files-2.1\org.jsoup\jsoup\1.8.1\1eb6690b0c629d7000c77a72df5e822fb974f521\jsoup-1.8.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="1eb6690b0c629d7000c77a72df5e822fb974f521">
+        <dex dex="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\pre-dexed\debug\jsoup-1.8.1-c7e5acf37ec8f0c1ccda24efc23e465cda638dad.jar" />
     </item>
     <item
         jar="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\exploded-aar\io.reactivex\rxandroid\1.0.1\classes.jar"
@@ -23,39 +93,39 @@
         <dex dex="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\pre-dexed\debug\javax.inject-1-2763103ffc6b792d7cd4ac765d5e5fe7e7ca51c4.jar" />
     </item>
     <item
-        jar="C:\Users\mplienegger.ACDDOM\.gradle\caches\modules-2\files-2.1\com.google.dagger\dagger\2.0\da7ba0ee1d30edd955da276cdf01d3d7cb24aedc\dagger-2.0.jar"
+        jar="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\classes.jar"
         jumboMode="false"
-        revision="21.1.2"
-        sha1="da7ba0ee1d30edd955da276cdf01d3d7cb24aedc">
-        <dex dex="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\pre-dexed\debug\dagger-2.0-4a5550b58de404be6b6c71fb46d00ca34b292a63.jar" />
+        revision="23.0.1"
+        sha1="d86429b0f0b3f3cafbeb78dda1b9d89119ccb05d">
+        <dex dex="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\pre-dexed\debug\classes-c69e3b1422b9386588d4e59ec9816d3b888d807a.jar" />
     </item>
     <item
-        jar="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.2.0\classes.jar"
+        jar="C:\Users\mplienegger.ACDDOM\.gradle\caches\modules-2\files-2.1\com.jakewharton\butterknife\7.0.1\d5d13ea991eab0252e3710e5df3d6a9d4b21d461\butterknife-7.0.1.jar"
         jumboMode="false"
-        revision="21.1.2"
-        sha1="73753982da6bde518f3a4c6b372749981d14d1a0">
-        <dex dex="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\pre-dexed\debug\classes-34d092ebff95b48c0d16f0a5b60ff2a335a543d9.jar" />
+        revision="23.0.1"
+        sha1="d5d13ea991eab0252e3710e5df3d6a9d4b21d461">
+        <dex dex="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\pre-dexed\debug\butterknife-7.0.1-2abb00b31be9575faafac1be99df57bffb1c87e1.jar" />
     </item>
     <item
-        jar="C:\Users\mplienegger.ACDDOM\AppData\Local\Android\android-studio\sdk\extras\android\m2repository\com\android\support\support-annotations\22.2.0\support-annotations-22.2.0.jar"
+        jar="C:\Users\mplienegger.ACDDOM\.gradle\caches\modules-2\files-2.1\io.reactivex\rxjava\1.0.14\898f9ab61e2a23afd615f0b0389478bec86f49f9\rxjava-1.0.14.jar"
         jumboMode="false"
-        revision="21.1.2"
-        sha1="66b42a1f3eb7676070b7ef7f14b603483aecbee1">
-        <dex dex="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\pre-dexed\debug\support-annotations-22.2.0-059d1c21c44e4e54c43610235e87a7f3359ed025.jar" />
+        revision="23.0.1"
+        sha1="898f9ab61e2a23afd615f0b0389478bec86f49f9">
+        <dex dex="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\pre-dexed\debug\rxjava-1.0.14-1e6f9a40fb2d7ec4b5c5d7825bdac51606572dc2.jar" />
     </item>
     <item
-        jar="C:\Users\mplienegger.ACDDOM\.gradle\caches\modules-2\files-2.1\org.jsoup\jsoup\1.8.1\1eb6690b0c629d7000c77a72df5e822fb974f521\jsoup-1.8.1.jar"
+        jar="C:\Users\mplienegger.ACDDOM\.gradle\caches\modules-2\files-2.1\joda-time\joda-time\2.8\9f2785d7184b97d005a44241ccaf980f43b9ccdb\joda-time-2.8.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="1eb6690b0c629d7000c77a72df5e822fb974f521">
-        <dex dex="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\pre-dexed\debug\jsoup-1.8.1-c7e5acf37ec8f0c1ccda24efc23e465cda638dad.jar" />
+        sha1="9f2785d7184b97d005a44241ccaf980f43b9ccdb">
+        <dex dex="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\pre-dexed\debug\joda-time-2.8-a8c72573ce78cbb4381d020430dfd69572bcf9a3.jar" />
     </item>
     <item
-        jar="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.0\libs\internal_impl-22.2.0.jar"
+        jar="C:\Users\mplienegger.ACDDOM\.gradle\caches\modules-2\files-2.1\com.squareup.picasso\picasso\2.5.2\7446d06ec8d4f7ffcc53f1da37c95f200dcb9387\picasso-2.5.2.jar"
         jumboMode="false"
-        revision="21.1.2"
-        sha1="57f2ab85c164ff1676ec64dee787981c046fab79">
-        <dex dex="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\pre-dexed\debug\internal_impl-22.2.0-52918333e2fecef02520b9669dd16a4af63b48d2.jar" />
+        revision="23.0.1"
+        sha1="7446d06ec8d4f7ffcc53f1da37c95f200dcb9387">
+        <dex dex="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\pre-dexed\debug\picasso-2.5.2-8522fc9fe70020c00eaa8693c9ab607ecc8f6abb.jar" />
     </item>
     <item
         jar="C:\Users\mplienegger.ACDDOM\.gradle\caches\modules-2\files-2.1\io.reactivex\rxjava\1.0.14\898f9ab61e2a23afd615f0b0389478bec86f49f9\rxjava-1.0.14.jar"
@@ -63,6 +133,13 @@
         revision="21.1.2"
         sha1="898f9ab61e2a23afd615f0b0389478bec86f49f9">
         <dex dex="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\pre-dexed\debug\rxjava-1.0.14-1e6f9a40fb2d7ec4b5c5d7825bdac51606572dc2.jar" />
+    </item>
+    <item
+        jar="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.0.1\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="4356e230a981d1bbf047d848b91bc0d9b7c5bacc">
+        <dex dex="C:\Work\Marcus\4DL\RxTesting\app\build\intermediates\pre-dexed\debug\classes-77523d47150cd7a993afc6cf13eac93358bafcff.jar" />
     </item>
 
 </items>

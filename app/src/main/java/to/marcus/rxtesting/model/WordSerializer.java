@@ -1,12 +1,10 @@
 package to.marcus.rxtesting.model;
 
 import android.content.Context;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
-
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -18,7 +16,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 
 /**
- * Created by mplienegger on 9/11/2015.
+ * Created by marcus on 9/11/2015
  */
 public class WordSerializer {
     private Context mAppContext;

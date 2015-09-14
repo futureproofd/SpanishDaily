@@ -3,7 +3,7 @@ package to.marcus.rxtesting.injection.component;
 import android.content.Context;
 
 import dagger.Component;
-import to.marcus.rxtesting.HomeActivity;
+import to.marcus.rxtesting.ui.HomeActivity;
 import to.marcus.rxtesting.injection.Activity;
 import to.marcus.rxtesting.injection.module.ActivityModule;
 
