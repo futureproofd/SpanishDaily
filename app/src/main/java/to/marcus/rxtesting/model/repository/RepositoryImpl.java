@@ -34,8 +34,8 @@ public class RepositoryImpl implements Repository{
     }
 
     @Override
-    public Word getWord(){
-        return mWordStorage.getWord();
+    public Word getWord(int position){
+        return mWordStorage.getWord(position);
     }
 
 

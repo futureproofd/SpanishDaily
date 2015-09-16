@@ -1,19 +1,16 @@
 package to.marcus.rxtesting.data.interactor;
 
 import java.util.ArrayList;
-
 import javax.inject.Inject;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import to.marcus.rxtesting.data.api.WebParser;
-import to.marcus.rxtesting.model.Word;
-import to.marcus.rxtesting.model.repository.Repository;
 
 /**
  * Created by marcus on 9/8/2015
  */
-public class WordInteractorImpl implements Interactor<Word> {
+public class WordInteractorImpl implements Interactor<ArrayList<String>> {
 
     @Inject
     public WordInteractorImpl(){}

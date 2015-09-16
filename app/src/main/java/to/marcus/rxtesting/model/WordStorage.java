@@ -43,8 +43,8 @@ public class WordStorage{
         saveWordsToJSON();
     }
 
-    public Word getWord(){
-        return mWords.get(mWords.size()-1);
+    public Word getWord(int position){
+        return mWords.get(position);
     }
 
     public ArrayList<Word> getWordsDataSet(){

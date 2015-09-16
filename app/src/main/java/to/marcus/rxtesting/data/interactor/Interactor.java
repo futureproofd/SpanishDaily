@@ -9,6 +9,6 @@ import rx.Observable;
  */
 public interface Interactor<T> {
 
-    Observable<ArrayList<String>> execute();
+    Observable<T> execute();
 
 }

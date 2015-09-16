@@ -28,7 +28,7 @@ public class Utility {
     public static boolean isWordStale(Date wordDate){
         DateTime today = new DateTime();
         DateTime word = new DateTime(wordDate);
-        int diff = Days.daysBetween(today, word).getDays();
+        int diff = Days.daysBetween(today.minusHours(7), word).getDays();
         if(diff < 0){
             return true;
         }else{

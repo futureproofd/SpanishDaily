@@ -14,7 +14,7 @@ public interface Repository {
 
     public void addWord(Word word);
     public void saveWords();
-    public Word getWord();
+    public Word getWord(int position);
     public String getLatestWordDate();
     public ArrayList<Word> getWordsDataset();
     public int getDatasetSize();

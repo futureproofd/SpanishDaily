@@ -21,15 +21,26 @@ import to.marcus.rxtesting.model.Word;
 
 public class WordRecyclerAdapter extends RecyclerView.Adapter<WordRecyclerAdapter.WordViewHolder>{
     private ArrayList<Word> mWordArrayList;
+    private final RecyclerViewItemClickListener clickListener;
 
-    public WordRecyclerAdapter(ArrayList<Word> wordArrayList){
+    public WordRecyclerAdapter(ArrayList<Word> wordArrayList, RecyclerViewItemClickListener listener){
         this.mWordArrayList = wordArrayList;
+        this.clickListener = listener;
     }
+
     @Override
     public WordViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         View cardView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.card_view_layout, parent, false);
-        return new WordViewHolder(cardView);
+        final WordViewHolder mViewHolder = new WordViewHolder(cardView);
+        cardView.setOnClickListener(new View.OnClickListener(){
+           //listen on presenter
+            @Override
+            public void onClick(View view){
+                clickListener.onObjectClick(view, mViewHolder.getAdapterPosition());
+            }
+        });
+        return mViewHolder;
     }
 
     @Override

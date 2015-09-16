@@ -15,12 +15,13 @@ android:layout_height="match_parent">
     <TextView
         android:id="@+id/txtWord"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
+        android:layout_height="wrap_content"
+        android:paddingLeft="2dp"
         android:text="Word data"
         android:layout_below="@id/imgWord"
         android:gravity="center_vertical"
         android:textColor="@android:color/black"
-        android:textSize="14dp"/>
+        android:textSize="26dp"/>
     <TextView
         android:id="@+id/txtTranslation"
         android:layout_width="wrap_content"

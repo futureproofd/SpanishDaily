@@ -1,6 +1,9 @@
 package to.marcus.rxtesting.presenter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
+import android.view.View;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.inject.Inject;
@@ -9,26 +12,31 @@ import to.marcus.rxtesting.data.interactor.WordInteractorImpl;
 import to.marcus.rxtesting.model.Word;
 import to.marcus.rxtesting.model.factory.WordFactoryImpl;
 import to.marcus.rxtesting.model.repository.RepositoryImpl;
-import to.marcus.rxtesting.presenter.view.HomeView;
+import to.marcus.rxtesting.presenter.view.BaseView;
+import to.marcus.rxtesting.ui.DetailActivity;
+import to.marcus.rxtesting.ui.adapter.RecyclerViewItemClickListener;
 import to.marcus.rxtesting.util.Utility;
 
 /**
  * Created by marcus on 9/2/2015
  * presenter for main view
  */
-public class TestPresenterImpl implements TestPresenter{
-    private static final String TAG = TestPresenterImpl.class.getSimpleName();
+public class HomePresenterImpl implements TestPresenter, RecyclerViewItemClickListener{
+    private static final String TAG = HomePresenterImpl.class.getSimpleName();
     private final WordInteractorImpl mInteractor;
     private ArrayList<Word> mWordsArray;
-    private HomeView homeView;
+    private BaseView baseView;
+    private Context mContext;
     @Inject RepositoryImpl mRepository;
 
-    @Inject public TestPresenterImpl(WordInteractorImpl interactor){
+    @Inject public HomePresenterImpl(WordInteractorImpl interactor, Context activity){
+        mContext = activity;
         mInteractor = interactor;
     }
 
-    public void initPresenter(HomeView activity){
-        this.homeView = activity;
+    @Override
+    public void initPresenter(BaseView activity){
+        this.baseView = activity;
         initWordDataset();
     }
 
@@ -46,7 +54,7 @@ public class TestPresenterImpl implements TestPresenter{
         }else{
             pullWordFromNetwork();
         }
-        homeView.showWordList(mRepository.getWordsDataset());
+        baseView.showWordList(mRepository.getWordsDataset());
     }
 
     private void pullLatestWord(){
@@ -60,7 +68,7 @@ public class TestPresenterImpl implements TestPresenter{
     }
 
     private void pullWordFromNetwork(){
-        this.homeView.showLoading();
+        this.baseView.showLoading();
         Log.i(TAG, "pull from network");
         mInteractor.execute()
             .subscribe(new Action1<ArrayList<String>>() {
@@ -72,11 +80,24 @@ public class TestPresenterImpl implements TestPresenter{
     }
 
     private void onWordElementsReceived(ArrayList<String> wordElements){
-        homeView.hideLoading();
+        baseView.hideLoading();
         Log.i(TAG, "network word received: " + wordElements.get(0));
         Word word = WordFactoryImpl.Word.newWordInstance(wordElements);
         mRepository.addWord(word);
-        homeView.updateWordList();
+        baseView.updateWordList();
+    }
+
+    /*
+    RecyclerView click listener
+    Puts Parcelable as extra
+     */
+    @Override
+    public void onObjectClick(View v, int position) {
+        Log.i(TAG, "clicked " + position);
+        Word detailWord = mRepository.getWord(position);
+        Intent i = new Intent(mContext, DetailActivity.class);
+        i.putExtra("Word_Object", detailWord);
+        mContext.startActivity(i);
     }
 
 }
