@@ -1,13 +1,29 @@
 package to.marcus.rxtesting.data.interactor;
 
+import javax.inject.Inject;
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import to.marcus.rxtesting.data.api.WebParser;
 
 /**
  * Created by marcus on 9/16/2015
  */
-public class SoundByteInteractorImpl implements Interactor<String> {
+public class SoundByteInteractorImpl implements Interactor<byte[]> {
+    private String mSoundRef;
+
+    @Inject
+    public SoundByteInteractorImpl(){}
+
+    public void getSoundByte(String soundRef){
+        this.mSoundRef = soundRef;
+        execute();
+    }
+
     @Override
-    public Observable<String> execute() {
-        return null;
+    public Observable<byte[]> execute() {
+        return WebParser.parseSoundByte(mSoundRef)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }

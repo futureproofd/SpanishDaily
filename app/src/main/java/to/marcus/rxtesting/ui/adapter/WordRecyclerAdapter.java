@@ -1,13 +1,17 @@
 package to.marcus.rxtesting.ui.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import butterknife.Bind;
@@ -44,16 +48,33 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<WordRecyclerAdapte
     }
 
     @Override
-    public void onBindViewHolder(WordViewHolder holder, int position) {
+    public void onBindViewHolder(final WordViewHolder holder, final int position) {
         Word word = mWordArrayList.get(position);
         Uri uri = Uri.parse(word.getImgUrl());
         Context context = holder.imageView.getContext();
-        Picasso.with(context).load(uri)
-                .into(holder.imageView);
+        Picasso.with(context)
+                .load(uri)
+                .into(holder.imageView, new Callback.EmptyCallback() {
+                    @Override
+                    public void onSuccess(){
+                        Bitmap bitmap = ((BitmapDrawable)holder.imageView.getDrawable()).getBitmap();
+                        Palette.from(bitmap)
+                                .generate(new Palette.PaletteAsyncListener() {
+                                    @Override
+                                    public void onGenerated(Palette palette) {
+                                        int mutedColor = palette.getMutedColor(holder.wordView.getContext().getResources().getColor(android.R.color.black));
+                                        holder.wordView.setBackgroundColor(mutedColor);
+                                    }
+                                });
+                    }
+                    @Override
+                    public void onError() {
+                        holder.wordView.setBackgroundColor(holder.wordView.getContext().getResources().getColor(android.R.color.black));
+                    }
+                });
+
         holder.wordView.setText(word.getWord());
-        holder.translationView.setText(word.getTranslation());
-        holder.exampleENView.setText(word.getExampleEN());
-        holder.exampleESPView.setText(word.getExampleESP());
+        holder.dateView.setText(word.getDate());
     }
 
     @Override
@@ -65,11 +86,9 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<WordRecyclerAdapte
     * ViewHolder Inner Class
     */
     public static class WordViewHolder extends RecyclerView.ViewHolder{
-        @Bind(R.id.imgWord)ImageView imageView;
-        @Bind(R.id.txtWord)TextView wordView;
-        @Bind(R.id.txtTranslation)TextView translationView;
-        @Bind(R.id.txtExampleEn)TextView exampleENView;
-        @Bind(R.id.txtExampleESP) TextView exampleESPView;
+        @Bind(R.id.imgWord) ImageView imageView;
+        @Bind(R.id.txtWord) TextView wordView;
+        @Bind(R.id.txtDate) TextView dateView;
 
         public WordViewHolder(View v){
             super(v);

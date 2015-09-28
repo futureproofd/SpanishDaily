@@ -4,7 +4,7 @@ import android.content.Context;
 
 import dagger.Component;
 import to.marcus.rxtesting.ui.DetailActivity;
-import to.marcus.rxtesting.ui.BaseActivity;
+import to.marcus.rxtesting.ui.HomeActivity;
 import to.marcus.rxtesting.data.interactor.WordInteractorImpl;
 import to.marcus.rxtesting.injection.Activity;
 import to.marcus.rxtesting.injection.module.ActivityModule;
@@ -16,9 +16,8 @@ import to.marcus.rxtesting.injection.module.WordInteractorModule;
 @Activity
 @Component(dependencies = BaseAppComponent.class, modules = {WordInteractorModule.class, ActivityModule.class})
 public interface WordInteractorComponent extends ActivityComponent {
-    void injectHome(BaseActivity activity);
+    void injectHome(HomeActivity activity);
     void injectDetail(DetailActivity activity);
-
     Context activityContext();
     WordInteractorImpl getWordInteractor();
 }

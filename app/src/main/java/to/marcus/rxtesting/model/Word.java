@@ -17,6 +17,7 @@ public class Word implements Parcelable {
     private String date;
     private String imgUrl;
     private String word;
+    private String soundRef;
     private String translation;
     private String exampleEN;
     private String exampleESP;
@@ -35,10 +36,11 @@ public class Word implements Parcelable {
     public Word(){}
 
     //Parcel constructor
-    public Word(String date, String imgUrl, String word, String translation, String exampleEN, String exampleESP){
+    public Word(String date, String imgUrl, String word, String soundRef, String translation, String exampleEN, String exampleESP){
         this.date = date;
         this.imgUrl = imgUrl;
         this.word = word;
+        this.soundRef = soundRef;
         this.translation = translation;
         this.exampleEN = exampleEN;
         this.exampleESP = exampleESP;
@@ -66,6 +68,12 @@ public class Word implements Parcelable {
 
     public void setWord(String word) {
         this.word = word;
+    }
+
+    public String getSoundRef(){return soundRef;}
+
+    public void setSoundRef(String soundRef){
+        this.soundRef = soundRef;
     }
 
     public String getTranslation() {
@@ -114,6 +122,7 @@ public class Word implements Parcelable {
                 in.readString(),
                 in.readString(),
                 in.readString(),
+                in.readString(),
                 in.readString()
         );
     }
@@ -123,6 +132,7 @@ public class Word implements Parcelable {
         out.writeString(date);
         out.writeString(imgUrl);
         out.writeString(word);
+        out.writeString(soundRef);
         out.writeString(translation);
         out.writeString(exampleEN);
         out.writeString(exampleESP);

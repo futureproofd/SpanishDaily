@@ -1,7 +1,7 @@
 package to.marcus.rxtesting.presenter.view;
 
+import android.app.Activity;
 import java.util.ArrayList;
-
 import to.marcus.rxtesting.model.Word;
 
 /**
@@ -10,7 +10,8 @@ import to.marcus.rxtesting.model.Word;
 public interface BaseView {
     void showLoading();
     void hideLoading();
-    void showWordDetails(Word word);
+    void showWordDetails();
     void showWordList(ArrayList<Word> words);
     void updateWordList();
+    Activity getActivity();
 }

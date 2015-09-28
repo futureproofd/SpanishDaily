@@ -18,7 +18,7 @@ public interface Repository {
     public String getLatestWordDate();
     public ArrayList<Word> getWordsDataset();
     public int getDatasetSize();
-    public void deleteWord();
+    public void deleteWord(String word);
     public void deleteWords();
     public void open();
     public void close();

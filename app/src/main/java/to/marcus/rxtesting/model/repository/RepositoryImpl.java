@@ -24,7 +24,7 @@ public class RepositoryImpl implements Repository{
     }
 
     @Override
-    public void saveWords() {
+    public void saveWords(){
         mWordStorage.saveWordsToJSON();
     }
 
@@ -55,7 +55,8 @@ public class RepositoryImpl implements Repository{
     }
 
     @Override
-    public void deleteWord() {
+    public void deleteWord(String word) {
+        mWordStorage.deleteWord(word);
 
     }
 

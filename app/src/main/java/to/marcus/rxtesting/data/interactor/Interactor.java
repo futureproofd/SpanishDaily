@@ -1,7 +1,5 @@
 package to.marcus.rxtesting.data.interactor;
 
-import java.util.ArrayList;
-
 import rx.Observable;
 
 /**

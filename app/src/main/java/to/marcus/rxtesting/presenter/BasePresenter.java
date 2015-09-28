@@ -1,12 +1,10 @@
 package to.marcus.rxtesting.presenter;
 
-import to.marcus.rxtesting.presenter.view.BaseView;
-
 /**
  * Created by marcus on 9/8/2015
  */
-public interface BasePresenter {
+public interface BasePresenter<V>{
     void onStart();
     void onStop();
-    void initPresenter(BaseView view) ;
+    void initPresenter(V view) ;
 }

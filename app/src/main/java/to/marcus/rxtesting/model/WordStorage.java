@@ -43,6 +43,10 @@ public class WordStorage{
         saveWordsToJSON();
     }
 
+    public void deleteWord(String word){
+        mWords.remove(word);
+    }
+
     public Word getWord(int position){
         return mWords.get(position);
     }

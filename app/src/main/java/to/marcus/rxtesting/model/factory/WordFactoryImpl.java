@@ -15,11 +15,12 @@ public class WordFactoryImpl{
         public static to.marcus.rxtesting.model.Word newWordInstance(ArrayList<String> wordElements){
             final to.marcus.rxtesting.model.Word defaultWord = new to.marcus.rxtesting.model.Word();
                 defaultWord.setWord(wordElements.get(0));
-                defaultWord.setDate(wordElements.get(1));
-                defaultWord.setImgUrl(wordElements.get(2));
-                defaultWord.setTranslation(wordElements.get(3));
-                defaultWord.setExampleEN(wordElements.get(4));
-                defaultWord.setExampleESP(wordElements.get(5));
+                defaultWord.setSoundRef(wordElements.get(1));
+                defaultWord.setDate(wordElements.get(2));
+                defaultWord.setImgUrl(wordElements.get(3));
+                defaultWord.setTranslation(wordElements.get(4));
+                defaultWord.setExampleEN(wordElements.get(5));
+                defaultWord.setExampleESP(wordElements.get(6));
                 return defaultWord;
         }
         public static to.marcus.rxtesting.model.Words newWordsInstance() {

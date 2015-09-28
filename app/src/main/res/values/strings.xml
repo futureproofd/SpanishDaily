@@ -3,4 +3,7 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="DETAIL_WORD">word detail</string>
+    <string name="transition_word">word transition</string>
+    <string name="transition_img">image transition</string>
 </resources>

@@ -1,12 +1,23 @@
 package to.marcus.rxtesting.ui;
 
-import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import javax.inject.Inject;
 import butterknife.Bind;
@@ -17,20 +28,22 @@ import to.marcus.rxtesting.injection.component.DaggerWordInteractorComponent;
 import to.marcus.rxtesting.injection.module.ActivityModule;
 import to.marcus.rxtesting.injection.module.WordInteractorModule;
 import to.marcus.rxtesting.model.Word;
-import to.marcus.rxtesting.presenter.TestPresenterImpl;
-import to.marcus.rxtesting.presenter.view.HomeView;
+import to.marcus.rxtesting.presenter.HomePresenterImpl;
+import to.marcus.rxtesting.presenter.view.BaseView;
+import to.marcus.rxtesting.ui.adapter.RecyclerViewItemClickListener;
 import to.marcus.rxtesting.ui.adapter.WordRecyclerAdapter;
 
 /*
 * Main, list (card) view
  */
 
-public class HomeActivity extends ActionBarActivity implements HomeView {
+public class HomeActivity extends Activity implements BaseView, RecyclerViewItemClickListener{
     public final String TAG = HomeActivity.class.getSimpleName();
-    @Bind(R.id.card_view) RecyclerView cardView;
+    private static final String WORD_OBJECT = "WORD_OBJECT";
+    @Bind(R.id.recycler_view) RecyclerView recyclerView;
 
     @Inject
-    TestPresenterImpl mTestPresenterImpl;
+    HomePresenterImpl mHomePresenterImpl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,19 +52,19 @@ public class HomeActivity extends ActionBarActivity implements HomeView {
         ButterKnife.bind(this);
         initInjector();
         initRecyclerView();
-        mTestPresenterImpl.initPresenter(this);
+        mHomePresenterImpl.initPresenter(this);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        mTestPresenterImpl.onStart();
+        mHomePresenterImpl.onStart();
     }
 
     @Override
     public void onStop(){
         super.onStop();
-        mTestPresenterImpl.onStop();
+        mHomePresenterImpl.onStop();
     }
 
     @Override
@@ -75,15 +88,14 @@ public class HomeActivity extends ActionBarActivity implements HomeView {
                 .activityModule(new ActivityModule(this))
                 .baseAppComponent(baseApplication.getBaseAppComponent())
                 .wordInteractorModule(new WordInteractorModule())
-                .build().inject(this);
+                .build().injectHome(this);
     }
 
     private void initRecyclerView(){
-        //cardView = (RecyclerView) findViewById(R.id.card_view);
-        cardView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
-        cardView.setLayoutManager(llm);
+        recyclerView.setLayoutManager(llm);
     }
 
     /*
@@ -101,12 +113,54 @@ public class HomeActivity extends ActionBarActivity implements HomeView {
 
     @Override
     public void showWordList(ArrayList<Word> wordArrayList){
-        WordRecyclerAdapter wordRecyclerAdapter = new WordRecyclerAdapter(wordArrayList);
-        cardView.setAdapter(wordRecyclerAdapter);
+        WordRecyclerAdapter wordRecyclerAdapter = new WordRecyclerAdapter(wordArrayList, this);
+        recyclerView.setAdapter(wordRecyclerAdapter);
+    }
+
+    @Override
+    public void showWordDetails(){
     }
 
     @Override
     public void updateWordList(){
-        cardView.getAdapter().notifyDataSetChanged();
+        Log.i(TAG, "updated adapter dataset");
+        recyclerView.getAdapter().notifyDataSetChanged();
+    }
+
+    @Override
+    public Activity getActivity(){
+        return this;
+    }
+
+    /*
+    RecyclerView click listener
+     */
+    @Override
+    public void onObjectClick(View v, int position) {
+        Word detailWord = mHomePresenterImpl.onElementSelected(position);
+        Intent intent = new Intent(HomeActivity.this, DetailActivity.class);
+        intent.putExtra(WORD_OBJECT, detailWord);
+        //create bitmap intent
+            ImageView wordImage = (ImageView)v.findViewById(R.id.imgWord);
+            Drawable mDrawable = wordImage.getDrawable();
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            ((BitmapDrawable)mDrawable).getBitmap().compress(Bitmap.CompressFormat.PNG, 100, stream);
+        intent.putExtra("IMAGE", stream.toByteArray());
+        //animateTransition(v, intent);
+        this.startActivity(intent);
+    }
+
+    private void animateTransition(View view, Intent intent){
+        ImageView wordImage = (ImageView)view.findViewById(R.id.imgWord);
+        LinearLayout wordString = (LinearLayout)view.findViewById(R.id.wordNameHolder);
+
+        String transitionImgName = this.getString(R.string.transition_img);
+        String transitionWordName = this.getString(R.string.transition_word);
+        Pair<View, String> p1 = Pair.create((View) wordImage, transitionImgName);
+        Pair<View, String> p2 = Pair.create((View) wordString, transitionWordName);
+
+        ActivityOptionsCompat options = ActivityOptionsCompat
+                .makeSceneTransitionAnimation(HomeActivity.this,p1,p2);
+        ActivityCompat.startActivity(this, intent, options.toBundle());
     }
 }
