@@ -27,6 +27,7 @@ public class Word implements Parcelable {
         word = json.getString("word");
         date = json.getString("date");
         imgUrl = json.getString("url");
+        soundRef = json.getString("soundRef");
         translation = json.getString("translation");
         exampleEN = json.getString("exampleEN");
         exampleESP = json.getString("exampleESP");

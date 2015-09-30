@@ -1,9 +1,11 @@
 <resources>
     <string name="app_name">RxTesting</string>
-
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="DETAIL_WORD">word detail</string>
     <string name="transition_word">word transition</string>
     <string name="transition_img">image transition</string>
+    <string name="drawer_open">Navigation drawer opened</string>
+    <string name="drawer_close">Navigation drawer closed</string>
+    <string name="navigation_title">Navegación</string>
 </resources>

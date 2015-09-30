@@ -24,6 +24,7 @@ public class WordSerializer {
     private static final String JSON_WORD = "word";
     private static final String JSON_DATE = "date";
     private static final String JSON_URL = "url";
+    private static final String JSON_SOUNDREF = "soundRef";
     private static final String JSON_TRANSLATION = "translation";
     private static final String JSON_EXAMPLEEN = "exampleEN";
     private static final String JSON_EXAMPLEESP = "exampleESP";
@@ -56,6 +57,7 @@ public class WordSerializer {
         json.put(JSON_WORD, word.getWord());
         json.put(JSON_DATE, word.getDate());
         json.put(JSON_URL, word.getImgUrl());
+        json.put(JSON_SOUNDREF, word.getSoundRef());
         json.put(JSON_TRANSLATION, word.getTranslation());
         json.put(JSON_EXAMPLEEN, word.getExampleEN());
         json.put(JSON_EXAMPLEESP, word.getExampleESP());

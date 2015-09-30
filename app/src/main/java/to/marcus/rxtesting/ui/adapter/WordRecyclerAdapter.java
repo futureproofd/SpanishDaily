@@ -2,10 +2,12 @@ package to.marcus.rxtesting.ui.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,10 +28,14 @@ import to.marcus.rxtesting.model.Word;
 public class WordRecyclerAdapter extends RecyclerView.Adapter<WordRecyclerAdapter.WordViewHolder>{
     private ArrayList<Word> mWordArrayList;
     private final RecyclerViewItemClickListener clickListener;
+    private final RecyclerViewMenuClickListener menuClickListener;
 
-    public WordRecyclerAdapter(ArrayList<Word> wordArrayList, RecyclerViewItemClickListener listener){
+    public WordRecyclerAdapter(ArrayList<Word> wordArrayList
+            ,RecyclerViewItemClickListener listener
+            ,RecyclerViewMenuClickListener menuListener){
         this.mWordArrayList = wordArrayList;
         this.clickListener = listener;
+        this.menuClickListener = menuListener;
     }
 
     @Override
@@ -38,10 +44,16 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<WordRecyclerAdapte
                 .inflate(R.layout.card_view_layout, parent, false);
         final WordViewHolder mViewHolder = new WordViewHolder(cardView);
         cardView.setOnClickListener(new View.OnClickListener(){
-           //listen on presenter
+        //listen on presenter for click types
             @Override
             public void onClick(View view){
                 clickListener.onObjectClick(view, mViewHolder.getAdapterPosition());
+            }
+        });
+        mViewHolder.cardMenu.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                menuClickListener.onObjectMenuClick(view, mViewHolder.getAdapterPosition());
             }
         });
         return mViewHolder;
@@ -64,6 +76,7 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<WordRecyclerAdapte
                                     public void onGenerated(Palette palette) {
                                         int mutedColor = palette.getMutedColor(holder.wordView.getContext().getResources().getColor(android.R.color.black));
                                         holder.wordView.setBackgroundColor(mutedColor);
+                                        holder.cardMenu.setColorFilter(mutedColor, PorterDuff.Mode.MULTIPLY);
                                     }
                                 });
                     }
@@ -89,6 +102,7 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<WordRecyclerAdapte
         @Bind(R.id.imgWord) ImageView imageView;
         @Bind(R.id.txtWord) TextView wordView;
         @Bind(R.id.txtDate) TextView dateView;
+        @Bind(R.id.card_overflow_menu) ImageView cardMenu;
 
         public WordViewHolder(View v){
             super(v);

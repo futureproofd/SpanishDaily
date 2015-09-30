@@ -7,17 +7,17 @@ import to.marcus.rxtesting.data.interactor.WordInteractorImpl;
 import to.marcus.rxtesting.model.Word;
 import to.marcus.rxtesting.model.factory.WordFactoryImpl;
 import to.marcus.rxtesting.model.repository.RepositoryImpl;
-import to.marcus.rxtesting.presenter.view.BaseView;
+import to.marcus.rxtesting.presenter.view.HomeView;
 import to.marcus.rxtesting.util.Utility;
 
 /**
  * Created by marcus on 9/2/2015
  * presenter for main view
  */
-public class HomePresenterImpl implements BasePresenter<BaseView>{
+public class HomePresenterImpl implements HomePresenter<HomeView>{
     private static final String TAG = HomePresenterImpl.class.getSimpleName();
     private final WordInteractorImpl wordInteractor;
-    private BaseView baseView;
+    private HomeView homeView;
     @Inject RepositoryImpl mRepository;
 
     @Inject public HomePresenterImpl(WordInteractorImpl interactor){
@@ -25,9 +25,9 @@ public class HomePresenterImpl implements BasePresenter<BaseView>{
     }
 
     @Override
-    public void initPresenter(BaseView activity){
-        this.baseView = activity;
-        initWordDataset();
+    public void initPresenter(HomeView activity){
+        this.homeView = activity;
+        initWordDataSet();
     }
 
     @Override
@@ -36,17 +36,19 @@ public class HomePresenterImpl implements BasePresenter<BaseView>{
     @Override
     public void onStop(){mRepository.saveWords();}
 
-    private void initWordDataset(){
+    @Override
+    public Word onElementSelected(int position){
+        return mRepository.getWord(position);
+    }
+
+    @Override
+    public void initWordDataSet(){
         if(mRepository.getDatasetSize()!=0){
             pullLatestWord();
         }else{
             pullWordFromNetwork();
         }
-        baseView.showWordList(mRepository.getWordsDataset());
-    }
-
-    public Word onElementSelected(int position){
-        return mRepository.getWord(position);
+        homeView.showWordList(mRepository.getWordsDataset());
     }
 
     private void pullLatestWord(){
@@ -55,7 +57,7 @@ public class HomePresenterImpl implements BasePresenter<BaseView>{
     }
 
     private void pullWordFromNetwork(){
-        this.baseView.showLoading();
+        homeView.showLoading();
         wordInteractor.execute()
             .subscribe(new Action1<ArrayList<String>>() {
                 @Override
@@ -66,10 +68,10 @@ public class HomePresenterImpl implements BasePresenter<BaseView>{
     }
 
     private void onWordElementsReceived(ArrayList<String> wordElements){
-        baseView.hideLoading();
+        homeView.hideLoading();
         Word word = WordFactoryImpl.Word.newWordInstance(wordElements);
         mRepository.addWord(word);
-        baseView.updateWordList();
+        homeView.updateWordList();
     }
 
 }

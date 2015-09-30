@@ -26,23 +26,26 @@
             android:transitionName="@string/transition_word">
             <TextView
                 android:id="@+id/txtDetailWord"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:gravity="left"
+                android:padding="5dp"
+                android:paddingLeft="15dp"
+                android:textSize="25dp"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:gravity="center_vertical"
-                android:textColor="@android:color/white"
-                />
+                android:fontFamily="sans-serif-condensed-light"
+                android:textAllCaps="true"
+                android:textColor="@android:color/white" />
         </LinearLayout>
         <ImageButton
             android:id="@+id/btn_narration"
-            android:src="@drawable/ic_play"
+            android:src="@drawable/ic_play_white_36dp"
             android:layout_width="@dimen/floating_button_size"
             android:layout_height="@dimen/floating_button_size"
             android:layout_gravity="end"
             android:layout_marginEnd="10dp"
             android:layout_marginTop="30dp"
-            android:alpha="1.0"
             android:background="@drawable/btn_background"
             android:contentDescription="@null"
             android:elevation="@dimen/button_elevation"/>
@@ -50,6 +53,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/accent"
         android:orientation="vertical">
     <TextView
         android:id="@+id/txtTranslationLabel"
