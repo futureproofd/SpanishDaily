@@ -1,11 +1,9 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="220dp"
@@ -13,98 +11,124 @@
             android:id="@+id/imgDetailWord"
             android:transitionName="@string/transition_img"
             />
-    </FrameLayout>
-
-    <FrameLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-        <LinearLayout
-            android:id="@+id/wordNameHolder"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="@color/primary_dark"
-            android:transitionName="@string/transition_word">
             <TextView
                 android:id="@+id/txtDetailWord"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="60dp"
                 android:layout_gravity="center_vertical"
+                android:layout_below="@id/imgDetailWord"
                 android:gravity="left"
+                android:background="@color/primary_dark"
                 android:padding="5dp"
-                android:paddingLeft="15dp"
+                android:paddingLeft="18dp"
                 android:textSize="25dp"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:fontFamily="sans-serif-condensed-light"
                 android:textAllCaps="true"
-                android:textColor="@android:color/white" />
-        </LinearLayout>
-        <ImageButton
-            android:id="@+id/btn_narration"
-            android:src="@drawable/ic_play_white_36dp"
-            android:layout_width="@dimen/floating_button_size"
-            android:layout_height="@dimen/floating_button_size"
-            android:layout_gravity="end"
-            android:layout_marginEnd="10dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/btn_background"
-            android:contentDescription="@null"
-            android:elevation="@dimen/button_elevation"/>
-    </FrameLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/accent"
-        android:orientation="vertical">
-    <TextView
-        android:id="@+id/txtTranslationLabel"
+                android:elevation="3dp"
+                android:textColor="@android:color/white"
+                />
+    <to.marcus.rxtesting.ui.widgets.FloatingActionButton
+        android:id="@+id/btn_narration"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_alignBottom="@id/imgDetailWord"
+        android:layout_alignRight="@id/imgDetailWord"
+        android:layout_marginBottom="-32dp"
+        android:layout_marginRight="12dp"
+        android:clickable="true"
+        android:background="@drawable/btn_background"
+        android:elevation="6dp">
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_play_white_24dp"
+            android:layout_gravity="center"
+            android:duplicateParentState="true"/>
+        />
+    </to.marcus.rxtesting.ui.widgets.FloatingActionButton>
+
+<LinearLayout
+    android:id="@+id/body_container"
+    android:layout_width="match_parent"
+    android:padding="15dp"
+    android:layout_height="match_parent"
+    android:layout_below="@id/txtDetailWord"
+    android:orientation="vertical"
+    android:background="@color/accent">
+    <TableRow
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Traducción"
-        android:gravity="left"
-        android:textSize="16dp"
-        android:textStyle="bold"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="5dp"/>
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_comment_processing_outline_grey600_36dp"
+            android:id="@+id/trans_img"
+            />
+        <TextView
+            android:id="@+id/txtTranslationLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Traducción"
+            android:textSize="22dp"
+            android:textStyle="bold"
+            android:layout_marginTop="2dp"
+            android:layout_marginLeft="5dp"
+            />
+    </TableRow>
         <TextView
             android:id="@+id/txtTranslation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/txtTranslationLabel"
             android:text="Traducción"
-            android:gravity="left"
-            android:textSize="12dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="8dp"/>
-    <TextView
-        android:id="@+id/txtExampleLabel"
+            android:textSize="14dp"
+            android:textStyle="italic"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="42dp"/>
+    <TableRow
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Ejemplo"
-        android:gravity="center_vertical"
-        android:textStyle="bold"
-        android:textSize="16dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="5dp"/>
-    <TextView
-        android:id="@+id/txtExampleEn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ExampleEN"
-        android:gravity="center_vertical"
-        android:textSize="12dp"
-        android:layout_below="@id/txtTranslation"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="8dp"/>
-    <TextView
-        android:id="@+id/txtExampleESP"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ExampleESP"
-        android:gravity="center_vertical"
-        android:textSize="12dp"
-        android:layout_below="@id/txtExampleEn"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="8dp" />
-        </LinearLayout>
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_book_open_grey600_36dp"
+            android:id="@+id/example_img"
+            />
+        <TextView
+            android:id="@+id/txtExampleLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtTranslation"
+            android:text="Ejemplo"
+            android:gravity="center_vertical"
+            android:textStyle="bold"
+            android:textSize="22dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="8dp"/>
 
+    </TableRow>
 
+        <TextView
+            android:id="@+id/txtExampleEn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtExampleLabel"
+            android:text="ExampleEN"
+            android:textSize="14dp"
+            android:textStyle="italic"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="42dp"/>
+        <TextView
+            android:id="@+id/txtExampleESP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtExampleEn"
+            android:text="ExampleESP"
+            android:textSize="14dp"
+            android:textStyle="italic"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="42dp"/>
 </LinearLayout>
+</RelativeLayout>

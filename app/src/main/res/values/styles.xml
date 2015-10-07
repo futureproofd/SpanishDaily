@@ -16,4 +16,14 @@
         <item name="android:windowSharedElementExitTransition">@transition/changebounds</item>
         <!-- specify exit transition -->
     </style>
+
+
+    <style name="CardDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowAnimationStyle">@style/MyAnimation.Window</item>
+    </style>
+
+    <style name="MyAnimation.Window" parent="@android:style/Animation.Activity">
+        <item name="android:windowEnterAnimation">@anim/card_dialog_anim_in</item>
+        <item name="android:windowExitAnimation">@anim/card_dialog_anim_out</item>
+    </style>
 </resources>

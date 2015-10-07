@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 /**
  * Created by marcus on 9/8/2015
- * For Caching
+ * Backend For Caching
  */
 public class WordStorage{
     private static final String TAG = WordStorage.class.getSimpleName();
@@ -43,8 +43,19 @@ public class WordStorage{
         saveWordsToJSON();
     }
 
-    public void deleteWord(String word){
-        mWords.remove(word);
+    public void deleteWord(int position){
+        mWords.remove(position);
+        saveWordsToJSON();
+    }
+
+    public void addFavorite(int position){
+        getWord(position).setFavorite(1);
+        saveWordsToJSON();
+    }
+
+    public void setHidden(int position){
+        getWord(position).setVisibility(0);
+        saveWordsToJSON();
     }
 
     public Word getWord(int position){

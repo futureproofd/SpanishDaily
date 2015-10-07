@@ -1,11 +1,9 @@
 package to.marcus.rxtesting.model.repository;
 
 import java.util.ArrayList;
-
 import javax.inject.Inject;
 import to.marcus.rxtesting.model.Word;
 import to.marcus.rxtesting.model.WordStorage;
-import to.marcus.rxtesting.model.Words;
 
 /**
  * Created by marcuson 9/4/2015.
@@ -45,7 +43,7 @@ public class RepositoryImpl implements Repository{
     }
 
     @Override
-    public ArrayList<Word> getWordsDataset() {
+    public ArrayList<Word> getWordsDataset(){
         return mWordStorage.getWordsDataSet();
     }
 
@@ -55,14 +53,23 @@ public class RepositoryImpl implements Repository{
     }
 
     @Override
-    public void deleteWord(String word) {
-        mWordStorage.deleteWord(word);
-
+    public void deleteWord(int position) {
+        mWordStorage.deleteWord(position);
     }
 
     @Override
     public void deleteWords() {
         mWordStorage.deleteAllWords();
+    }
+
+    @Override
+    public void addFavorite(int position){
+        mWordStorage.addFavorite(position);
+    }
+
+    @Override
+    public void setHidden(int position){
+        mWordStorage.setHidden(position);
     }
 
     @Override

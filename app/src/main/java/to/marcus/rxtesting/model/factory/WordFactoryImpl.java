@@ -1,9 +1,6 @@
 package to.marcus.rxtesting.model.factory;
 
 import java.util.ArrayList;
-
-import to.marcus.rxtesting.model.Words;
-
 /**
  * Created by marcus on 9/8/2015
  */
@@ -21,6 +18,8 @@ public class WordFactoryImpl{
                 defaultWord.setTranslation(wordElements.get(4));
                 defaultWord.setExampleEN(wordElements.get(5));
                 defaultWord.setExampleESP(wordElements.get(6));
+                defaultWord.setFavorite(0);
+                defaultWord.setVisibility(1);
                 return defaultWord;
         }
         public static to.marcus.rxtesting.model.Words newWordsInstance() {

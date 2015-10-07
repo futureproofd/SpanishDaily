@@ -2,18 +2,14 @@ package to.marcus.rxtesting.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 /**
  * Created by marcus on 9/4/2015
  */
 
 public class Word implements Parcelable {
-    public static final String TAG = Word.class.getSimpleName();
     private String date;
     private String imgUrl;
     private String word;
@@ -21,6 +17,8 @@ public class Word implements Parcelable {
     private String translation;
     private String exampleEN;
     private String exampleESP;
+    private int favorite;
+    private int visibility;
 
     //De-Serializer constructor
     public Word(JSONObject json) throws JSONException{
@@ -31,13 +29,16 @@ public class Word implements Parcelable {
         translation = json.getString("translation");
         exampleEN = json.getString("exampleEN");
         exampleESP = json.getString("exampleESP");
+        favorite = json.getInt("favorite");
+        visibility = json.getInt("visibility");
     }
 
     //Factory constructor
     public Word(){}
 
     //Parcel constructor
-    public Word(String date, String imgUrl, String word, String soundRef, String translation, String exampleEN, String exampleESP){
+    public Word(String date, String imgUrl, String word, String soundRef, String translation
+            ,String exampleEN, String exampleESP, int favorite, int visibility){
         this.date = date;
         this.imgUrl = imgUrl;
         this.word = word;
@@ -45,6 +46,8 @@ public class Word implements Parcelable {
         this.translation = translation;
         this.exampleEN = exampleEN;
         this.exampleESP = exampleESP;
+        this.favorite = favorite;
+        this.visibility = visibility;
     }
 
     public String getDate() {
@@ -101,6 +104,18 @@ public class Word implements Parcelable {
         this.exampleESP = example;
     }
 
+    public int getFavorite(){return favorite;}
+
+    public void setFavorite(int favorite){
+        this.favorite = favorite;
+    }
+
+    public int getVisibility(){return visibility;}
+
+    public void setVisibility(int visibility){
+        this.visibility = visibility;
+    }
+
     /*
     * Parcelable Methods
      */
@@ -124,7 +139,9 @@ public class Word implements Parcelable {
                 in.readString(),
                 in.readString(),
                 in.readString(),
-                in.readString()
+                in.readString(),
+                in.readInt(),
+                in.readInt()
         );
     }
 
@@ -137,6 +154,8 @@ public class Word implements Parcelable {
         out.writeString(translation);
         out.writeString(exampleEN);
         out.writeString(exampleESP);
+        out.writeInt(favorite);
+        out.writeInt(visibility);
     }
 
     //generally not used

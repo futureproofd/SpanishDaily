@@ -51,6 +51,25 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
         homeView.showWordList(mRepository.getWordsDataset());
     }
 
+    @Override
+    public void onDismissOptionSelected(int position){
+        mRepository.setHidden(position);
+        //need to re-filter arraylist where visible =1 
+        homeView.updateWordList();
+    }
+
+    @Override
+    public void onFavOptionSelected(int position){
+        mRepository.addFavorite(position);
+        homeView.updateWordList();
+    }
+
+    @Override
+    public void onDeleteOptionSelected(int position){
+        mRepository.deleteWord(position);
+        homeView.updateWordList();
+    }
+
     private void pullLatestWord(){
         if(Utility.isWordStale(Utility.formatDateString(mRepository.getLatestWordDate())))
             pullWordFromNetwork();

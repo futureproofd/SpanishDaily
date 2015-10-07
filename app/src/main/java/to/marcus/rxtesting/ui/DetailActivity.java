@@ -3,9 +3,13 @@ package to.marcus.rxtesting.ui;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.graphics.Palette;
 import android.view.View;
 import android.widget.ImageButton;
@@ -32,22 +36,26 @@ import to.marcus.rxtesting.presenter.view.DetailView;
 /**
  * get the details of a clicked word object
  */
-public class DetailActivity extends Activity implements DetailView {
+public class DetailActivity extends Activity implements DetailView,
+        Palette.PaletteAsyncListener{
     private static final String WORD_OBJECT = "WORD_OBJECT";
     @Inject DetailPresenterImpl mDetailPresenterImpl;
-    @Bind(R.id.wordNameHolder)  LinearLayout wordNameHolder;
     @Bind(R.id.imgDetailWord)   ImageView imgWord;
     @Bind(R.id.txtDetailWord)   TextView strWord;
+    @Bind(R.id.body_container)  LinearLayout bodyContainer;
     @Bind(R.id.txtTranslation)  TextView strTranslation;
     @Bind(R.id.txtExampleEn)    TextView strExampleEN;
     @Bind(R.id.txtExampleESP)   TextView strExampleESP;
-    @Bind(R.id.btn_narration)   ImageButton btnNarration;
+    @Bind(R.id.btn_narration)   to.marcus.rxtesting.ui.widgets.FloatingActionButton btnNarration;
+    @Bind(R.id.trans_img)       ImageView imgTrans;
+    @Bind(R.id.example_img)     ImageView imgExample;
     private String txtWord;
     private String txtSoundRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        getActionBar().hide();
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
         initInjector();
@@ -62,7 +70,6 @@ public class DetailActivity extends Activity implements DetailView {
             }
         });
     }
-
 
     private void initInjector(){
         BaseApplication baseApplication = (BaseApplication)getApplication();
@@ -90,6 +97,8 @@ public class DetailActivity extends Activity implements DetailView {
         txtSoundRef = word.getSoundRef();
         byte[] byteArray = getIntent().getByteArrayExtra("IMAGE");
         Bitmap detailBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+        Palette.generateAsync(detailBitmap, this);
+
         imgWord.setImageBitmap(detailBitmap);
         strWord.setText(word.getWord());
         strTranslation.setText(word.getTranslation());
@@ -117,4 +126,32 @@ public class DetailActivity extends Activity implements DetailView {
         }
     }
 
+    @Override
+    public void onGenerated(Palette palette) {
+        if(palette != null){
+            setWordColorElement(palette.getDarkMutedSwatch());
+            setBtnColorElement(palette.getMutedSwatch());
+            setBodyColorElement(palette.getLightMutedSwatch());
+        }
+    }
+
+    private void setWordColorElement(Palette.Swatch swatch){
+        if(swatch != null) {
+            strWord.setBackgroundColor(swatch.getRgb());
+            imgTrans.setColorFilter(swatch.getRgb(), PorterDuff.Mode.MULTIPLY);
+            imgExample.setColorFilter(swatch.getRgb(), PorterDuff.Mode.MULTIPLY);
+        }
+    }
+
+    private void setBtnColorElement(Palette.Swatch swatch){
+        if(swatch != null){
+            btnNarration.setBackgroundColor(swatch.getRgb());
+        }
+    }
+
+    private void setBodyColorElement(Palette.Swatch swatch){
+        if(swatch != null){
+            bodyContainer.setBackgroundColor(swatch.getRgb());
+        }
+    }
 }

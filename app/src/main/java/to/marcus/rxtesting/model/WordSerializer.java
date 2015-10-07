@@ -28,6 +28,8 @@ public class WordSerializer {
     private static final String JSON_TRANSLATION = "translation";
     private static final String JSON_EXAMPLEEN = "exampleEN";
     private static final String JSON_EXAMPLEESP = "exampleESP";
+    private static final String JSON_FAVORITE = "favorite";
+    private static final String JSON_VISIBILITY = "visibility";
 
     public WordSerializer(Context c, String filename){
         mAppContext = c;
@@ -61,6 +63,8 @@ public class WordSerializer {
         json.put(JSON_TRANSLATION, word.getTranslation());
         json.put(JSON_EXAMPLEEN, word.getExampleEN());
         json.put(JSON_EXAMPLEESP, word.getExampleESP());
+        json.put(JSON_FAVORITE, word.getFavorite());
+        json.put(JSON_VISIBILITY, word.getVisibility());
         return json;
     }
 

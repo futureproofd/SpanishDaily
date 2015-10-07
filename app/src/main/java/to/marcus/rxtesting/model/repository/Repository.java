@@ -13,12 +13,14 @@ import to.marcus.rxtesting.model.Words;
 public interface Repository {
 
     public void addWord(Word word);
+    public void addFavorite(int position);
     public void saveWords();
+    public void setHidden(int position);
     public Word getWord(int position);
     public String getLatestWordDate();
     public ArrayList<Word> getWordsDataset();
     public int getDatasetSize();
-    public void deleteWord(String word);
+    public void deleteWord(int position);
     public void deleteWords();
     public void open();
     public void close();

@@ -22,6 +22,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
+
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import javax.inject.Inject;
@@ -43,8 +45,10 @@ import to.marcus.rxtesting.ui.adapter.WordRecyclerAdapter;
 * Main, list (card) view
  */
 
-public class HomeActivity extends Activity implements HomeView,RecyclerViewItemClickListener,
-        RecyclerViewMenuClickListener{
+public class HomeActivity extends Activity implements HomeView
+        ,RecyclerViewItemClickListener
+        ,RecyclerViewMenuClickListener
+        ,CardDialogFragment.CardDialogListener{
     public final String TAG = HomeActivity.class.getSimpleName();
     private static final String WORD_OBJECT = "WORD_OBJECT";
     //NavDrawer
@@ -168,9 +172,37 @@ public class HomeActivity extends Activity implements HomeView,RecyclerViewItemC
 
     @Override
     public void onObjectMenuClick(View v, int position){
-        Log.i(TAG, "clicked for dialog");
         //launch dialog fragment
+        CardDialogFragment dialogFragment = new CardDialogFragment();
+        Bundle args = new Bundle();
+        args.putInt("position", position);
+        dialogFragment.setArguments(args);
+        dialogFragment.show(getFragmentManager(), TAG);
     }
+
+    /*
+    CardView dialog listeners
+     */
+    @Override
+    public void onDialogClickDismiss(CardDialogFragment dialogFragment, int position){
+        Toast.makeText(this, "word dismissed", Toast.LENGTH_SHORT).show();
+        mHomePresenterImpl.onDismissOptionSelected(position);
+    }
+
+    @Override
+    public void onDialogClickFavorite(CardDialogFragment dialogFragment, int position){
+        Toast.makeText(this, "favorite added", Toast.LENGTH_SHORT).show();
+        mHomePresenterImpl.onFavOptionSelected(position);
+    }
+
+    @Override
+    public void onDialogClickDelete(CardDialogFragment dialogFragment, int position){
+        Toast.makeText(this, "word deleted", Toast.LENGTH_SHORT).show();
+        mHomePresenterImpl.onDeleteOptionSelected(position);
+    }
+
+
+    //animation stuff
 
     private void animateTransition(View view, Intent intent){
         ImageView wordImage = (ImageView)view.findViewById(R.id.imgWord);
@@ -220,4 +252,5 @@ public class HomeActivity extends Activity implements HomeView,RecyclerViewItemC
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
+
 }
