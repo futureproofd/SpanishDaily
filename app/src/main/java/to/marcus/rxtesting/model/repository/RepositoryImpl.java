@@ -6,7 +6,7 @@ import to.marcus.rxtesting.model.Word;
 import to.marcus.rxtesting.model.WordStorage;
 
 /**
- * Created by marcuson 9/4/2015.
+ * Created by marcus on 9/4/2015.
  * Inject our model (database, json list) - WordStorage
  * use a repository interface (observable get methods)
  *      these will require an observable to obtain data from any source (database OR network pull)

@@ -10,5 +10,6 @@ public interface HomeView {
     void showLoading();
     void hideLoading();
     void showWordList(ArrayList<Word> words);
-    void updateWordList();
+    void refreshWordList();
+    void showNotification(String notification);
 }

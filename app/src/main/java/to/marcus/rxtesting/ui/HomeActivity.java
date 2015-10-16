@@ -2,13 +2,7 @@ package to.marcus.rxtesting.ui;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.util.Pair;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,11 +14,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import javax.inject.Inject;
 import butterknife.Bind;
@@ -40,11 +31,11 @@ import to.marcus.rxtesting.presenter.view.HomeView;
 import to.marcus.rxtesting.ui.adapter.RecyclerViewItemClickListener;
 import to.marcus.rxtesting.ui.adapter.RecyclerViewMenuClickListener;
 import to.marcus.rxtesting.ui.adapter.WordRecyclerAdapter;
+import to.marcus.rxtesting.util.ImageUtility;
 
 /*
 * Main, list (card) view
  */
-
 public class HomeActivity extends Activity implements HomeView
         ,RecyclerViewItemClickListener
         ,RecyclerViewMenuClickListener
@@ -58,6 +49,7 @@ public class HomeActivity extends Activity implements HomeView
     private ActionBarDrawerToggle mDrawerToggle;
     //RecyclerView
     @Bind(R.id.recycler_view) RecyclerView recyclerView;
+    private WordRecyclerAdapter mWordRecyclerAdapter;
     @Inject HomePresenterImpl mHomePresenterImpl;
 
     @Override
@@ -68,7 +60,6 @@ public class HomeActivity extends Activity implements HomeView
         initInjector();
         initRecyclerView();
         mHomePresenterImpl.initPresenter(this);
-        //Navigation Drawer
         addDrawerItems();
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
@@ -93,7 +84,6 @@ public class HomeActivity extends Activity implements HomeView
         mHomePresenterImpl.onStop();
     }
 
-
     private void initInjector(){
         BaseApplication baseApplication = (BaseApplication)getApplication();
         DaggerWordInteractorComponent.builder()
@@ -109,7 +99,6 @@ public class HomeActivity extends Activity implements HomeView
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -128,9 +117,7 @@ public class HomeActivity extends Activity implements HomeView
         return super.onOptionsItemSelected(item);
     }
 
-    /*
-    * View Implementations
-     */
+    //View Implementations
     @Override
     public void showLoading() {
         Log.i(TAG, "loading initiated");
@@ -142,30 +129,27 @@ public class HomeActivity extends Activity implements HomeView
     }
 
     @Override
-    public void showWordList(ArrayList<Word> wordArrayList){
-        WordRecyclerAdapter wordRecyclerAdapter = new WordRecyclerAdapter(wordArrayList, this, this);
-        recyclerView.setAdapter(wordRecyclerAdapter);
+    public void showNotification(String notification){
+        Toast.makeText(this, notification, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void updateWordList(){
-        recyclerView.getAdapter().notifyDataSetChanged();
+    public void showWordList(ArrayList<Word> wordArrayList){
+        mWordRecyclerAdapter = new WordRecyclerAdapter(wordArrayList, this, this);
+        recyclerView.setAdapter(mWordRecyclerAdapter);
     }
 
-    /*
-    RecyclerView click listeners
-     */
+    @Override
+    public void refreshWordList(){
+        mWordRecyclerAdapter.notifyDataSetChanged();
+    }
+
+    //RecyclerView click listeners
     @Override
     public void onObjectClick(View v, int position) {
-        Word detailWord = mHomePresenterImpl.onElementSelected(position);
         Intent intent = new Intent(HomeActivity.this, DetailActivity.class);
-        intent.putExtra(WORD_OBJECT, detailWord);
-        //create bitmap intent
-            ImageView wordImage = (ImageView)v.findViewById(R.id.imgWord);
-            Drawable mDrawable = wordImage.getDrawable();
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            ((BitmapDrawable)mDrawable).getBitmap().compress(Bitmap.CompressFormat.PNG, 100, stream);
-        intent.putExtra("IMAGE", stream.toByteArray());
+        intent.putExtra(WORD_OBJECT, mHomePresenterImpl.onElementSelected(position));
+        intent.putExtra("IMAGE",ImageUtility.getImage((ImageView)v.findViewById(R.id.imgWord)).toByteArray());
         //animateTransition(v, intent);
         this.startActivity(intent);
     }
@@ -180,47 +164,18 @@ public class HomeActivity extends Activity implements HomeView
         dialogFragment.show(getFragmentManager(), TAG);
     }
 
-    /*
-    CardView dialog listeners
-     */
+    //CardView dialog listeners
     @Override
     public void onDialogClickDismiss(CardDialogFragment dialogFragment, int position){
-        Toast.makeText(this, "word dismissed", Toast.LENGTH_SHORT).show();
         mHomePresenterImpl.onDismissOptionSelected(position);
     }
 
     @Override
     public void onDialogClickFavorite(CardDialogFragment dialogFragment, int position){
-        Toast.makeText(this, "favorite added", Toast.LENGTH_SHORT).show();
         mHomePresenterImpl.onFavOptionSelected(position);
     }
 
-    @Override
-    public void onDialogClickDelete(CardDialogFragment dialogFragment, int position){
-        Toast.makeText(this, "word deleted", Toast.LENGTH_SHORT).show();
-        mHomePresenterImpl.onDeleteOptionSelected(position);
-    }
-
-
-    //animation stuff
-
-    private void animateTransition(View view, Intent intent){
-        ImageView wordImage = (ImageView)view.findViewById(R.id.imgWord);
-        LinearLayout wordString = (LinearLayout)view.findViewById(R.id.wordNameHolder);
-
-        String transitionImgName = this.getString(R.string.transition_img);
-        String transitionWordName = this.getString(R.string.transition_word);
-        Pair<View, String> p1 = Pair.create((View) wordImage, transitionImgName);
-        Pair<View, String> p2 = Pair.create((View) wordString, transitionWordName);
-
-        ActivityOptionsCompat options = ActivityOptionsCompat
-                .makeSceneTransitionAnimation(HomeActivity.this,p1,p2);
-        ActivityCompat.startActivity(this, intent, options.toBundle());
-    }
-
-    /*
-    Navigation Drawer setup
-     */
+    //Navigation Drawer setup
     private void addDrawerItems() {
         String[] optionsArray = { "Opciones", "Buscar", "Favoritos", "About"};
         mNavAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, optionsArray);
@@ -241,7 +196,6 @@ public class HomeActivity extends Activity implements HomeView
                 getActionBar().setTitle(R.string.navigation_title);
                 invalidateOptionsMenu();
             }
-
             public void onDrawerClosed(View view){
                 super.onDrawerClosed(view);
                 getActionBar().setTitle(getTitle().toString());
@@ -252,5 +206,4 @@ public class HomeActivity extends Activity implements HomeView
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
-
 }

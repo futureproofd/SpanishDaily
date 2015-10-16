@@ -37,6 +37,12 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<WordRecyclerAdapte
         this.menuClickListener = menuListener;
     }
 
+    public void swapDataSet(ArrayList<Word> wordArrayList){
+        mWordArrayList.clear();
+        mWordArrayList.addAll(wordArrayList);
+        notifyDataSetChanged();
+    }
+
     @Override
     public WordViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         View cardView = LayoutInflater.from(parent.getContext())

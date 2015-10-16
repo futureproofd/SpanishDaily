@@ -49,12 +49,12 @@ public class WordStorage{
     }
 
     public void addFavorite(int position){
-        getWord(position).setFavorite(1);
+        mWords.get(position).setFavorite(1);
         saveWordsToJSON();
     }
 
     public void setHidden(int position){
-        getWord(position).setVisibility(0);
+        mWords.get(position).setVisibility(0);
         saveWordsToJSON();
     }
 
@@ -73,4 +73,5 @@ public class WordStorage{
     public int wordCount(){
         return mWords.size();
     }
+
 }

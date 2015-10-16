@@ -18,7 +18,6 @@ public class CardDialogFragment extends DialogFragment{
     public interface CardDialogListener{
         void onDialogClickDismiss(CardDialogFragment dialogFragment, int position);
         void onDialogClickFavorite(CardDialogFragment dialogFragment, int position);
-        void onDialogClickDelete(CardDialogFragment dialogFragment, int position);
     }
 
     @Override
@@ -45,9 +44,6 @@ public class CardDialogFragment extends DialogFragment{
                                 break;
                             case 1:
                                 mListener.onDialogClickDismiss(CardDialogFragment.this, position);
-                                break;
-                            case 2:
-                                mListener.onDialogClickDelete(CardDialogFragment.this, position);
                                 break;
                         }
                     }

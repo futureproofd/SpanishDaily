@@ -13,5 +13,4 @@ public interface HomePresenter<V>{
     Word onElementSelected(int position);
     void onDismissOptionSelected(int position);
     void onFavOptionSelected(int position);
-    void onDeleteOptionSelected(int position);
 }

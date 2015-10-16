@@ -8,7 +8,7 @@ import to.marcus.rxtesting.model.Word;
 import to.marcus.rxtesting.model.factory.WordFactoryImpl;
 import to.marcus.rxtesting.model.repository.RepositoryImpl;
 import to.marcus.rxtesting.presenter.view.HomeView;
-import to.marcus.rxtesting.util.Utility;
+import to.marcus.rxtesting.util.DateUtility;
 
 /**
  * Created by marcus on 9/2/2015
@@ -53,44 +53,46 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
 
     @Override
     public void onDismissOptionSelected(int position){
-        mRepository.setHidden(position);
-        //need to re-filter arraylist where visible =1 
-        homeView.updateWordList();
+       // mRepository.setHidden(position);
+        mRepository.deleteWord(position);
+        homeView.showNotification("Word dismissed");
+        homeView.refreshWordList();
     }
 
     @Override
     public void onFavOptionSelected(int position){
+        homeView.showNotification("Favorite added");
         mRepository.addFavorite(position);
-        homeView.updateWordList();
-    }
-
-    @Override
-    public void onDeleteOptionSelected(int position){
-        mRepository.deleteWord(position);
-        homeView.updateWordList();
     }
 
     private void pullLatestWord(){
-        if(Utility.isWordStale(Utility.formatDateString(mRepository.getLatestWordDate())))
+        if(DateUtility.isWordStale(DateUtility.formatDateString(mRepository.getLatestWordDate())))
             pullWordFromNetwork();
     }
 
     private void pullWordFromNetwork(){
         homeView.showLoading();
         wordInteractor.execute()
-            .subscribe(new Action1<ArrayList<String>>() {
-                @Override
-                public void call(ArrayList<String> elements) {
-                    onWordElementsReceived(elements);
+            .subscribe(
+                new Action1<ArrayList<String>>(){
+                    @Override
+                    public void call(ArrayList<String> elements){
+                        onWordElementsReceived(elements);
+                    }
+                },
+                new Action1<Throwable>(){
+                    @Override
+                    public void call(Throwable error){
+                        homeView.showNotification("Error fetching Word from network");
+                    }
                 }
-            });
+            );
     }
 
     private void onWordElementsReceived(ArrayList<String> wordElements){
         homeView.hideLoading();
         Word word = WordFactoryImpl.Word.newWordInstance(wordElements);
         mRepository.addWord(word);
-        homeView.updateWordList();
+        homeView.refreshWordList();
     }
-
 }
