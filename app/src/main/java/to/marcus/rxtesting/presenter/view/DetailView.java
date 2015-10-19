@@ -8,4 +8,5 @@ public interface DetailView {
     void hideLoading();
     void showWordDetails();
     void onClickPlayback(byte[] soundByte);
+    void showNotification(String notification);
 }

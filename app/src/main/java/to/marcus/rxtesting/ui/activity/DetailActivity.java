@@ -1,18 +1,13 @@
-package to.marcus.rxtesting.ui;
+package to.marcus.rxtesting.ui.activity;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.graphics.Palette;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -88,6 +83,11 @@ public class DetailActivity extends Activity implements DetailView,
     @Override
     public void hideLoading() {
 
+    }
+
+    @Override
+    public void showNotification(String notification){
+        Toast.makeText(this, notification, Toast.LENGTH_SHORT).show();
     }
 
     @Override

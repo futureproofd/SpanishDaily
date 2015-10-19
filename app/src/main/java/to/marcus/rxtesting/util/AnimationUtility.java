@@ -2,15 +2,11 @@ package to.marcus.rxtesting.util;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.util.Pair;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import to.marcus.rxtesting.R;
-import to.marcus.rxtesting.ui.HomeActivity;
 
 /**
  * Created by marcus on 10/16/2015.

@@ -44,17 +44,24 @@ public class DetailPresenterImpl implements DetailPresenter<DetailView> {
     private void pullSoundByteFromNetwork(String soundRef){
         soundByteInteractor.getSoundByte(soundRef);
         soundByteInteractor.execute()
-                .subscribe(new Action1<byte[]>() {
+            .subscribe(
+                new Action1<byte[]>() {
                     @Override
                     public void call(byte[] bytes) {
                         onSoundByteElementsReceived(bytes);
                     }
-                });
+                },
+                new Action1<Throwable>(){
+                    @Override
+                    public void call(Throwable error){
+                        detailView.showNotification("Error fetching Word from network");
+                    }
+                }
+            );
     }
 
     private void onSoundByteElementsReceived(byte[] bytes){
         detailView.onClickPlayback(bytes);
         //add to sound cache
     }
-
 }
