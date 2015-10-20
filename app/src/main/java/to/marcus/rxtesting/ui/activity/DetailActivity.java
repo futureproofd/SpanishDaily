@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.view.View;
 import android.widget.ImageView;
@@ -31,7 +32,7 @@ import to.marcus.rxtesting.presenter.view.DetailView;
 /**
  * get the details of a clicked word object
  */
-public class DetailActivity extends Activity implements DetailView,
+public class DetailActivity extends AppCompatActivity implements DetailView,
         Palette.PaletteAsyncListener{
     private static final String WORD_OBJECT = "WORD_OBJECT";
     @Inject DetailPresenterImpl mDetailPresenterImpl;

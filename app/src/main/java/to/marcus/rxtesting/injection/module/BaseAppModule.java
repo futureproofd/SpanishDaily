@@ -1,7 +1,6 @@
 package to.marcus.rxtesting.injection.module;
 
 import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
 import to.marcus.rxtesting.BaseApplication;

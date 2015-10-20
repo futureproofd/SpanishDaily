@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_options"
+            android:icon="@drawable/ic_book_open_grey600_18dp"
+            android:title="Opciones" />
+        <item
+            android:id="@+id/nav_search"
+            android:icon="@drawable/ic_play_white_36dp"
+            android:title="Buscar" />
+        <item
+            android:id="@+id/nav_favorites"
+            android:icon="@drawable/abc_ic_commit_search_api_mtrl_alpha"
+            android:title="Favoritos" />
+        <item
+            android:id="@+id/nav_history"
+            android:icon="@drawable/ic_comment_processing_outline_grey600_48dp"
+            android:title="Historia" />
+        <item android:title="About">
+            <menu>
+                <item
+                    android:id="@+id/nav_about"
+                    android:icon="@drawable/abc_ic_menu_moreoverflow_mtrl_alpha"
+                    android:title="Créditos"
+                />
+            </menu>
+        </item>
+    </group>
+
+</menu>

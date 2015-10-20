@@ -60,8 +60,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="3dp"
             android:src="@drawable/ic_comment_processing_outline_grey600_36dp"
             android:id="@+id/trans_img"
             />
@@ -90,8 +91,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginTop="6dp"
             android:src="@drawable/ic_book_open_grey600_36dp"
             android:id="@+id/example_img"
             />

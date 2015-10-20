@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme"
         android:name=".BaseApplication">
         <activity
-            android:name=".ui.HomeActivity"
+            android:name=".ui.activity.HomeActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,7 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.DetailActivity"
+        <activity android:name=".ui.activity.DetailActivity"
             android:launchMode="singleInstance"
             android:label="@string/app_name">
         </activity>
