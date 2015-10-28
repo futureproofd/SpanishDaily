@@ -45,7 +45,6 @@ public class DetailActivity extends AppCompatActivity implements DetailView,
     @Bind(R.id.btn_narration)   to.marcus.rxtesting.ui.widgets.FloatingActionButton btnNarration;
     @Bind(R.id.trans_img)       ImageView imgTrans;
     @Bind(R.id.example_img)     ImageView imgExample;
-    private String txtWord;
     private String txtSoundRef;
 
     @Override
@@ -93,7 +92,6 @@ public class DetailActivity extends AppCompatActivity implements DetailView,
     @Override
     public void showWordDetails(){
         Word word = getIntent().getParcelableExtra(WORD_OBJECT);
-        txtWord = word.getWord();
         txtSoundRef = word.getSoundRef();
         byte[] byteArray = getIntent().getByteArrayExtra("IMAGE");
         Bitmap detailBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);

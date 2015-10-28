@@ -6,16 +6,16 @@ import java.util.ArrayList;
 
 /**
  * Created by marcus on 9/8/2015
- * Back end For Caching
+ * Back-end For Caching
  */
 public class WordStorage{
     private static final String TAG = WordStorage.class.getSimpleName();
     private ArrayList<Word> mWords;
-    private WordSerializer mSerializer;
+    private ObjectSerializer mSerializer;
     private static final String WORDS_DATASET = "words.json";
 
     public WordStorage(Context appContext){
-        mSerializer = new WordSerializer(appContext, WORDS_DATASET);
+        mSerializer = new ObjectSerializer(appContext, WORDS_DATASET);
         try{
             mWords = mSerializer.loadWords();
         }catch(Exception e){

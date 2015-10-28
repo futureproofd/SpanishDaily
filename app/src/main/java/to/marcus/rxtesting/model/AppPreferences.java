@@ -14,18 +14,17 @@ public class AppPreferences{
     private static final String KEY_PULL = "key_pull";
     private static final String KEY_NOTIFY = "key_notify";
     private Map<String, Boolean> mPreferences;
-    private WordSerializer mSerializer;
+    private ObjectSerializer mSerializer;
     private static final String APP_PREFERENCES = "app_prefs.json";
 
     public AppPreferences(Context appContext){
-        mSerializer = new WordSerializer(appContext, APP_PREFERENCES);
+        mSerializer = new ObjectSerializer(appContext, APP_PREFERENCES);
         try{
             mPreferences = mSerializer.loadPreferences();
             if(mPreferences.size() == 0)
                 setDefaultPrefs();
         }catch(Exception e){
-            mPreferences = new HashMap<String, Boolean>();
-
+            mPreferences = new HashMap<>();
         }
     }
 
@@ -58,7 +57,7 @@ public class AppPreferences{
     }
 
     public void setPullPref(String key, boolean value){
-        mPreferences.put(KEY_PULL,value);
+        mPreferences.put(KEY_PULL, value);
         savePrefsToJSON();
     }
 

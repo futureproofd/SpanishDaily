@@ -50,103 +50,69 @@ public class Word implements Parcelable {
         this.visibility = visibility;
     }
 
-    public String getDate() {
-        return date;
-    }
+    public String getDate(){return date;}
 
-    public void setDate(String date) {
-        this.date = date;
-    }
+    public void setDate(String date){this.date = date;}
 
-    public String getImgUrl() {
-        return imgUrl;
-    }
+    public String getImgUrl(){return imgUrl;}
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
-    }
+    public void setImgUrl(String imgUrl){this.imgUrl = imgUrl;}
 
-    public String getWord() {
-        return word;
-    }
+    public String getWord(){ return word;}
 
-    public void setWord(String word) {
-        this.word = word;
-    }
+    public void setWord(String word){this.word = word;}
 
     public String getSoundRef(){return soundRef;}
 
-    public void setSoundRef(String soundRef){
-        this.soundRef = soundRef;
-    }
+    public void setSoundRef(String soundRef){this.soundRef = soundRef;}
 
-    public String getTranslation() {
-        return translation;
-    }
+    public String getTranslation(){return translation;}
 
-    public void setTranslation(String translation) {
-        this.translation = translation;
-    }
+    public void setTranslation(String translation){this.translation = translation;}
 
-    public String getExampleEN() {
-        return exampleEN;
-    }
+    public String getExampleEN(){return exampleEN;}
 
-    public void setExampleEN(String example) {
-        this.exampleEN = example;
-    }
+    public void setExampleEN(String example){this.exampleEN = example;}
 
-    public String getExampleESP() {
-        return exampleESP;
-    }
+    public String getExampleESP(){return exampleESP;}
 
-    public void setExampleESP(String example) {
-        this.exampleESP = example;
-    }
+    public void setExampleESP(String example){this.exampleESP = example;}
 
     public int getFavorite(){return favorite;}
 
-    public void setFavorite(int favorite){
-        this.favorite = favorite;
-    }
+    public void setFavorite(int favorite){this.favorite = favorite;}
 
     public int getVisibility(){return visibility;}
 
-    public void setVisibility(int visibility){
-        this.visibility = visibility;
-    }
+    public void setVisibility(int visibility){this.visibility = visibility;}
 
     /*
     * Parcelable Methods
      */
     public static final Parcelable.Creator<Word> CREATOR = new Parcelable.Creator<Word>(){
         @Override
-        public Word createFromParcel(Parcel parcel) {
-            return new Word(parcel);
-        }
+        public Word createFromParcel(Parcel parcel){ return new Word(parcel);}
 
         @Override
-        public Word[] newArray(int i) {
-            return new Word[i];
-        }
+        public Word[] newArray(int i){ return new Word[i];}
     };
 
     private Word(Parcel in){
         this(
-                in.readString(),
-                in.readString(),
-                in.readString(),
-                in.readString(),
-                in.readString(),
-                in.readString(),
-                in.readString(),
-                in.readInt(),
-                in.readInt()
+            in.readString(),
+            in.readString(),
+            in.readString(),
+            in.readString(),
+            in.readString(),
+            in.readString(),
+            in.readString(),
+            in.readInt(),
+            in.readInt()
         );
     }
 
     @Override
-    public void writeToParcel(Parcel out, int flags) {
+    public void writeToParcel(Parcel out, int flags){
         out.writeString(date);
         out.writeString(imgUrl);
         out.writeString(word);
@@ -158,9 +124,7 @@ public class Word implements Parcelable {
         out.writeInt(visibility);
     }
 
-    //generally not used
+    //generally unused
     @Override
-    public int describeContents() {
-        return 0;
-    }
+    public int describeContents(){return 0;}
 }
