@@ -3,25 +3,25 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_options"
-            android:icon="@drawable/ic_book_open_grey600_18dp"
+            android:icon="@drawable/ic_settings_grey600_24dp"
             android:title="Opciones" />
         <item
             android:id="@+id/nav_search"
-            android:icon="@drawable/ic_play_white_36dp"
+            android:icon="@drawable/ic_magnify_grey600_24dp"
             android:title="Buscar" />
         <item
             android:id="@+id/nav_favorites"
-            android:icon="@drawable/abc_ic_commit_search_api_mtrl_alpha"
+            android:icon="@drawable/ic_star_grey600_24dp"
             android:title="Favoritos" />
         <item
             android:id="@+id/nav_history"
-            android:icon="@drawable/ic_comment_processing_outline_grey600_48dp"
+            android:icon="@drawable/ic_history_grey600_24dp"
             android:title="Historia" />
         <item android:title="About">
             <menu>
                 <item
                     android:id="@+id/nav_about"
-                    android:icon="@drawable/abc_ic_menu_moreoverflow_mtrl_alpha"
+                    android:icon="@drawable/ic_information_grey600_24dp"
                     android:title="Créditos"
                 />
             </menu>

@@ -24,17 +24,23 @@
             android:elevation="4dp"
             android:theme="@style/Base.ThemeOverlay.AppCompat.Light"
             />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_below="@id/toolbar"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_below="@id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="4dp"/>
+        <!--Nav Fragments container-->
+        <FrameLayout
+            android:id="@+id/fragment_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="4dp"/>
+            android:layout_below="@id/toolbar"/>
     </RelativeLayout>
+
     <!--Drawer Nav UI-->
     <android.support.design.widget.NavigationView
-        android:id="@+id/navList"
+        android:id="@+id/nav_drawer"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"

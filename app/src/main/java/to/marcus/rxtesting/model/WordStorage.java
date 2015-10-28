@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 /**
  * Created by marcus on 9/8/2015
- * Backend For Caching
+ * Back end For Caching
  */
 public class WordStorage{
     private static final String TAG = WordStorage.class.getSimpleName();

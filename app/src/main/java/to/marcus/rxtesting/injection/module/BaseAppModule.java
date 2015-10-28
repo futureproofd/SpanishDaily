@@ -4,6 +4,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import to.marcus.rxtesting.BaseApplication;
+import to.marcus.rxtesting.model.AppPreferences;
 import to.marcus.rxtesting.model.WordStorage;
 import to.marcus.rxtesting.model.repository.Repository;
 import to.marcus.rxtesting.model.repository.RepositoryImpl;
@@ -21,8 +22,7 @@ public class BaseAppModule {
         this.mBaseApplication = baseApplication;
     }
 
-    @Provides
-    @Singleton
+    @Provides @Singleton
     BaseApplication provideBaseApplicationContext() {
         return mBaseApplication;
     }
@@ -31,8 +31,13 @@ public class BaseAppModule {
         return new WordStorage(mBaseApplication);
     }
 
-    @Provides @Singleton Repository provideRepository(WordStorage wordStorage){
-        return new RepositoryImpl(wordStorage);
+    @Provides @Singleton AppPreferences provideAppPreferences(){
+        return new AppPreferences(mBaseApplication);
+    }
+
+    @Provides @Singleton Repository provideRepository(WordStorage wordStorage
+            ,AppPreferences appPreferences){
+        return new RepositoryImpl(wordStorage, appPreferences);
     }
 
 }

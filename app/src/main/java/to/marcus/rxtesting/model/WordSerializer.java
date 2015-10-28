@@ -14,6 +14,9 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Created by marcus on 9/11/2015
@@ -95,6 +98,57 @@ public class WordSerializer {
                 reader.close();
         }
         return words;
+    }
+
+    public void savePreferences(Map<String,Boolean> preferences) throws JSONException, IOException{
+        JSONObject jsonObj = new JSONObject();
+        Iterator<Map.Entry<String, Boolean>> entries = preferences.entrySet().iterator();
+        while (entries.hasNext()) {
+            Map.Entry<String, Boolean> entry = entries.next();
+            jsonObj.put(entry.getKey(),entry.getValue());
+        }
+        Writer writer = null;
+        try{
+            OutputStream out = mAppContext.openFileOutput(mFilename, Context.MODE_PRIVATE);
+            writer = new OutputStreamWriter(out);
+            writer.write(jsonObj.toString());
+        }finally {
+            if(writer != null)
+                writer.close();
+        }
+    }
+
+    public HashMap<String,Boolean> loadPreferences() throws JSONException, IOException{
+        HashMap<String, Boolean> prefs = new HashMap<>();
+
+        BufferedReader reader = null;
+        try{
+            //open and read the file into a stringBuilder
+            InputStream in = mAppContext.openFileInput(mFilename);
+            reader = new BufferedReader(new InputStreamReader(in));
+
+            StringBuilder jsonString = new StringBuilder();
+            String line = null;
+            while ((line = reader.readLine()) != null){
+                jsonString.append(line);
+            }
+
+            JSONObject jObject = new JSONObject(jsonString.toString());
+            Iterator<?> keys = jObject.keys();
+
+            while( keys.hasNext() ){
+                String key = (String)keys.next();
+                Boolean value = jObject.getBoolean(key);
+                prefs.put(key, value);
+
+            }
+        } catch (FileNotFoundException e){
+            return prefs;
+        } finally{
+            if (reader != null)
+                reader.close();
+        }
+        return prefs;
     }
 
 }

@@ -1,12 +1,22 @@
 package to.marcus.rxtesting.ui.activity;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.app.TaskStackBuilder;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 import java.util.ArrayList;
 import javax.inject.Inject;
@@ -96,6 +106,11 @@ public class HomeActivity extends BaseActivity implements HomeView
     }
 
     @Override
+    public Context getContext() {
+        return getApplicationContext();
+    }
+
+    @Override
     public void refreshWordList(){
         mWordRecyclerAdapter.notifyDataSetChanged();
     }
@@ -103,9 +118,23 @@ public class HomeActivity extends BaseActivity implements HomeView
     //RecyclerView click listeners
     @Override
     public void onObjectClick(View v, int position) {
-        Intent intent = new Intent(HomeActivity.this, DetailActivity.class);
+        Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra(WORD_OBJECT, mHomePresenterImpl.onElementSelected(position));
-        intent.putExtra("IMAGE",ImageUtility.getImage((ImageView)v.findViewById(R.id.imgWord)).toByteArray());
+        intent.putExtra("IMAGE", ImageUtility.getImage((ImageView) v.findViewById(R.id.imgWord)).toByteArray());
+
+        ImageView wordImage = (ImageView)v.findViewById(R.id.imgWord);
+        LinearLayout wordString = (LinearLayout)v.findViewById(R.id.wordNameHolder);
+
+           String transitionImgName = this.getString(R.string.transition_img);
+           String transitionWordName = this.getString(R.string.transition_word);
+           Pair<View, String> p1 = Pair.create((View) wordImage, transitionImgName);
+           Pair<View, String> p2 = Pair.create((View) wordString, transitionWordName);
+
+        ActivityOptionsCompat options = ActivityOptionsCompat
+                .makeSceneTransitionAnimation(this, p1, p2);
+        ActivityCompat.startActivity(this, intent, options.toBundle());
+
+
         //animateTransition(v, intent);
         this.startActivity(intent);
     }

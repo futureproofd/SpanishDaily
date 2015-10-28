@@ -65,6 +65,7 @@
             android:layout_marginTop="3dp"
             android:src="@drawable/ic_comment_processing_outline_grey600_36dp"
             android:id="@+id/trans_img"
+            android:color="@color/primary_text"
             />
         <TextView
             android:id="@+id/txtTranslationLabel"
@@ -96,6 +97,7 @@
             android:layout_marginTop="6dp"
             android:src="@drawable/ic_book_open_grey600_36dp"
             android:id="@+id/example_img"
+            android:color="@color/primary_text"
             />
         <TextView
             android:id="@+id/txtExampleLabel"

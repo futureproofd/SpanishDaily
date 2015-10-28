@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <PreferenceCategory
+        android:title="@string/pref_cat_general"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListPreference
+            android:key="YesNo_preference"
+            android:title="Clear words"
+            android:dialogMessage="Confirm"
+            android:positiveButtonText="Yes"
+            android:negativeButtonText="No"/>
+
+        <ListPreference
+            android:key="list_preference"
+            android:title="Clear Favorites"
+            android:dialogTitle="dialog title"
+            android:entries="@array/dialog_options"
+            android:entryValues="@array/dialog_options" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_cat_network">
+        <CheckBoxPreference
+            android:key="@string/pref_key_wireless"
+            android:title="@string/pref_title_wireless"
+            android:summary="Download words over WiFi only"
+            android:defaultValue="false"/>
+        <CheckBoxPreference
+            android:key="@string/pref_key_notify"
+            android:title="@string/pref_title_notify"
+            android:summary="Notify me when new word is available"
+            android:defaultValue="true"/>
+        <CheckBoxPreference
+            android:key="@string/pref_key_pull"
+            android:title="@string/pref_title_Pull"
+            android:summary="Fetch new words as they become available"
+            android:defaultValue="true"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/pref_cat_other">
+        <Preference
+            android:title="@string/pref_title_rate">
+            <intent android:action="android.intent.action.VIEW"
+                android:data="http://play.google.com"/>
+        </Preference>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

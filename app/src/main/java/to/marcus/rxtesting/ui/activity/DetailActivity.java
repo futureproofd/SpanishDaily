@@ -51,7 +51,6 @@ public class DetailActivity extends AppCompatActivity implements DetailView,
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        getActionBar().hide();
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
         initInjector();
@@ -139,8 +138,6 @@ public class DetailActivity extends AppCompatActivity implements DetailView,
     private void setWordColorElement(Palette.Swatch swatch){
         if(swatch != null) {
             strWord.setBackgroundColor(swatch.getRgb());
-            imgTrans.setColorFilter(swatch.getRgb(), PorterDuff.Mode.MULTIPLY);
-            imgExample.setColorFilter(swatch.getRgb(), PorterDuff.Mode.MULTIPLY);
         }
     }
 

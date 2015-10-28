@@ -1,10 +1,10 @@
 package to.marcus.rxtesting.injection.component;
 
 import javax.inject.Singleton;
-
 import dagger.Component;
 import to.marcus.rxtesting.BaseApplication;
 import to.marcus.rxtesting.injection.module.BaseAppModule;
+import to.marcus.rxtesting.model.AppPreferences;
 import to.marcus.rxtesting.model.WordStorage;
 import to.marcus.rxtesting.model.repository.Repository;
 
@@ -17,5 +17,6 @@ import to.marcus.rxtesting.model.repository.Repository;
 public interface BaseAppComponent {
     BaseApplication getBaseApplication();
     WordStorage getWordStorage();
+    AppPreferences getAppPreferences();
     Repository getRepository();
 }

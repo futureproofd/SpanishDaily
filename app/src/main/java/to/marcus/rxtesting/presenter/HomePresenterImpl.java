@@ -9,17 +9,16 @@ import to.marcus.rxtesting.model.factory.WordFactoryImpl;
 import to.marcus.rxtesting.model.repository.RepositoryImpl;
 import to.marcus.rxtesting.presenter.view.HomeView;
 import to.marcus.rxtesting.util.DateUtility;
+import to.marcus.rxtesting.util.NetworkUtility;
 
 /**
  * Created by marcus on 9/2/2015
  * presenter for main view
  */
 public class HomePresenterImpl implements HomePresenter<HomeView>{
-    private static final String TAG = HomePresenterImpl.class.getSimpleName();
     private final WordInteractorImpl wordInteractor;
     private HomeView homeView;
     @Inject RepositoryImpl mRepository;
-
     @Inject public HomePresenterImpl(WordInteractorImpl interactor){
         wordInteractor = interactor;
     }
@@ -27,7 +26,13 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
     @Override
     public void initPresenter(HomeView activity){
         this.homeView = activity;
-        initWordDataSet();
+        if(NetworkUtility.isWiFi(homeView.getContext()) && mRepository.getWirelessPref()){
+            initWordDataSet();
+        }else if(!mRepository.getWirelessPref()){
+            initWordDataSet();
+        }else{
+            showWordList();
+        }
     }
 
     @Override
@@ -48,7 +53,7 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
         }else{
             pullWordFromNetwork();
         }
-        homeView.showWordList(mRepository.getWordsDataset());
+        showWordList();
     }
 
     @Override
@@ -94,5 +99,9 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
         Word word = WordFactoryImpl.Word.newWordInstance(wordElements);
         mRepository.addWord(word);
         homeView.refreshWordList();
+    }
+
+    private void showWordList(){
+        homeView.showWordList(mRepository.getWordsDataset());
     }
 }

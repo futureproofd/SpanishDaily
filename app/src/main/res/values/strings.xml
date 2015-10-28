@@ -12,4 +12,15 @@
         <item>Add to favorites</item>
         <item>Dismiss Card</item>
     </string-array>
+    <!--Preferences for OptionsFragment-->
+    <string name="pref_key_wireless">key_wireless</string>
+    <string name="pref_key_pull">key_pull</string>
+    <string name="pref_key_notify">key_notify</string>
+    <string name="pref_cat_general">Data</string>
+    <string name="pref_cat_network">Network</string>
+    <string name="pref_cat_other">Other</string>
+    <string name="pref_title_wireless">Wireless</string>
+    <string name="pref_title_Pull">Pull</string>
+    <string name="pref_title_notify">Notifications</string>
+    <string name="pref_title_rate">Rate/Send Feedback</string>
 </resources>
