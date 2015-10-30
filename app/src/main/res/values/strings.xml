@@ -23,4 +23,10 @@
     <string name="pref_title_Pull">Pull</string>
     <string name="pref_title_notify">Notifications</string>
     <string name="pref_title_rate">Rate/Send Feedback</string>
+    <string name="pref_key_del_words">key_delete_words</string>
+    <string name="pref_key_del_favs">key_delete_favs</string>
+    <string name="pref_title_words">Remove words</string>
+    <string name="pref_msg_del_words">This action is irreversible. Are you sure?</string>
+    <string name="pref_title_del_words">Remove all words</string>
+    <string name="pref_title_del_favs">Remove Favorites</string>
 </resources>

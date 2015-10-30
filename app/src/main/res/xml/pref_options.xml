@@ -8,19 +8,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ListPreference
-            android:key="YesNo_preference"
-            android:title="Clear words"
-            android:dialogMessage="Confirm"
-            android:positiveButtonText="Yes"
-            android:negativeButtonText="No"/>
+        <to.marcus.rxtesting.ui.widgets.DeleteWordsPref
+            android:key="@string/pref_key_del_words"
+            android:title="@string/pref_title_words"
+            android:defaultValue="false"
+            android:dialogTitle="@string/pref_title_del_words"
+            android:dialogMessage="@string/pref_msg_del_words"
+            android:summary="Delete all words"
+            />
 
-        <ListPreference
-            android:key="list_preference"
-            android:title="Clear Favorites"
+        <to.marcus.rxtesting.ui.widgets.DeleteFavsPref
+            android:key="@string/pref_key_del_favs"
+            android:title="@string/pref_title_del_favs"
             android:dialogTitle="dialog title"
-            android:entries="@array/dialog_options"
-            android:entryValues="@array/dialog_options" />
+            android:defaultValue="false"
+            android:summary="Delete all favorites"
+             />
 
     </PreferenceCategory>
 

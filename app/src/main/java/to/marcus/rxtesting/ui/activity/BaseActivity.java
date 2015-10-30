@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import javax.inject.Inject;
@@ -174,8 +175,8 @@ public class BaseActivity extends AppCompatActivity implements BaseView{
         sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         mListener = new SharedPreferences.OnSharedPreferenceChangeListener(){
             @Override
-            //TODO convert the yes/no dialog to return booleans
             public void onSharedPreferenceChanged(SharedPreferences sharedPrefs, String key){
+                Log.i(TAG, "changed pref:" + key);
                     mBasePresenterImpl.onPrefSelected(key, sharedPrefs.getBoolean(key, false));
             }
         };

@@ -19,13 +19,13 @@
                 android:layout_below="@id/imgDetailWord"
                 android:gravity="left"
                 android:background="@color/primary_dark"
-                android:padding="5dp"
-                android:paddingLeft="18dp"
+                android:paddingTop="11dp"
+                android:paddingLeft="15dp"
                 android:textSize="25dp"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:fontFamily="sans-serif-condensed-light"
                 android:textAllCaps="true"
-                android:elevation="3dp"
+                android:elevation="4dp"
                 android:textColor="@android:color/white"
                 />
     <to.marcus.rxtesting.ui.widgets.FloatingActionButton

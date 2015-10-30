@@ -23,7 +23,6 @@ import to.marcus.rxtesting.model.Word;
 /**
  * Created by marcus on 9/14/2015
  */
-
 public class WordRecyclerAdapter extends RecyclerView.Adapter<WordRecyclerAdapter.WordViewHolder>{
     private ArrayList<Word> mWordArrayList;
     private final RecyclerViewItemClickListener clickListener;
@@ -90,7 +89,6 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<WordRecyclerAdapte
                         holder.wordView.setBackgroundColor(holder.wordView.getContext().getResources().getColor(android.R.color.black));
                     }
                 });
-
         holder.wordView.setText(word.getWord());
         holder.dateView.setText(word.getDate());
     }

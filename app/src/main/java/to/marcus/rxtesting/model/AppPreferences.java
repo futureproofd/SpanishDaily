@@ -21,10 +21,8 @@ public class AppPreferences{
         mSerializer = new ObjectSerializer(appContext, APP_PREFERENCES);
         try{
             mPreferences = mSerializer.loadPreferences();
-            if(mPreferences.size() == 0)
-                setDefaultPrefs();
         }catch(Exception e){
-            mPreferences = new HashMap<>();
+            setDefaultPrefs();
         }
     }
 
@@ -66,6 +64,7 @@ public class AppPreferences{
     }
 
     private void setDefaultPrefs(){
+        mPreferences = new HashMap<>();
         mPreferences.put(KEY_WIRELESS,false);
         mPreferences.put(KEY_NOTIFY,true);
         mPreferences.put(KEY_PULL,true);
