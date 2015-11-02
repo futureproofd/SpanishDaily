@@ -1,5 +1,8 @@
 package to.marcus.rxtesting.ui.activity;
 
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -24,6 +27,8 @@ import to.marcus.rxtesting.injection.module.ActivityModule;
 import to.marcus.rxtesting.injection.module.WordInteractorModule;
 import to.marcus.rxtesting.presenter.BasePresenterImpl;
 import to.marcus.rxtesting.presenter.view.BaseView;
+import to.marcus.rxtesting.service.ServiceController;
+import to.marcus.rxtesting.service.WordNotificationService;
 import to.marcus.rxtesting.ui.fragment.OptionsFragment;
 import to.marcus.rxtesting.ui.fragment.FavoritesFragment;
 
@@ -33,6 +38,8 @@ import to.marcus.rxtesting.ui.fragment.FavoritesFragment;
  */
 public class BaseActivity extends AppCompatActivity implements BaseView{
     private final static String TAG = BaseActivity.class.getSimpleName();
+    private final static int REQ_CODE = 1337;
+    private final static String ALARM_ACTION = "ALARM_ACTION";
     private static SharedPreferences.OnSharedPreferenceChangeListener mListener;
     private static SharedPreferences sharedPrefs;
     @Bind(R.id.toolbar)         Toolbar mToolbar;
@@ -52,6 +59,16 @@ public class BaseActivity extends AppCompatActivity implements BaseView{
         setupDrawer();
         setupDrawerNav(mNavDrawer);
         initSharedPrefsListener();
+        initServiceAlarm();
+    }
+
+    private void initInjector(){
+        BaseApplication baseApplication = (BaseApplication)getApplication();
+        DaggerWordInteractorComponent.builder()
+                .activityModule(new ActivityModule(this))
+                .baseAppComponent(baseApplication.getBaseAppComponent())
+                .wordInteractorModule(new WordInteractorModule())
+                .build().injectBase(this);
     }
 
     @Override
@@ -79,15 +96,6 @@ public class BaseActivity extends AppCompatActivity implements BaseView{
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mDrawerToggle.syncState();
-    }
-
-    private void initInjector(){
-        BaseApplication baseApplication = (BaseApplication)getApplication();
-        DaggerWordInteractorComponent.builder()
-            .activityModule(new ActivityModule(this))
-                .baseAppComponent(baseApplication.getBaseAppComponent())
-                .wordInteractorModule(new WordInteractorModule())
-            .build().injectBase(this);
     }
 
     private void initToolbar(){
@@ -180,6 +188,19 @@ public class BaseActivity extends AppCompatActivity implements BaseView{
                     mBasePresenterImpl.onPrefSelected(key, sharedPrefs.getBoolean(key, false));
             }
         };
+    }
+
+    private void initServiceAlarm(){
+        Context appContext = getApplicationContext();
+        boolean alarmActive = (PendingIntent.getBroadcast(appContext
+                ,REQ_CODE
+                ,new Intent(appContext, WordNotificationService.class).setAction(ALARM_ACTION)
+                ,PendingIntent.FLAG_NO_CREATE) != null);
+        if(mBasePresenterImpl.isNotification()){
+            if(!alarmActive){
+                ServiceController.startService(appContext);
+            }
+        }
     }
 
 }

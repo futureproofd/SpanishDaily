@@ -71,7 +71,7 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
     }
 
     private void pullLatestWord(){
-        if(DateUtility.isWordStale(DateUtility.formatDateString(mRepository.getLatestWordDate())))
+        if(isWordStale())
             pullWordFromNetwork();
     }
 
@@ -99,6 +99,13 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
         Word word = WordFactoryImpl.Word.newWordInstance(wordElements);
         mRepository.addWord(word);
         homeView.refreshWordList();
+    }
+
+    public boolean isWordStale(){
+        boolean isStale = false;
+        if(DateUtility.isWordStale(DateUtility.formatDateString(mRepository.getLatestWordDate())))
+            isStale=true;
+        return isStale;
     }
 
     private void showWordList(){

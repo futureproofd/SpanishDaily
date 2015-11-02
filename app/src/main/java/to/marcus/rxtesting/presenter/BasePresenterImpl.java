@@ -51,4 +51,9 @@ public class BasePresenterImpl implements BasePresenter<BaseView> {
                 break;
         }
     }
+
+    @Override
+    public boolean isNotification(){
+        return mRepository.getNotifyPref();
+    }
 }

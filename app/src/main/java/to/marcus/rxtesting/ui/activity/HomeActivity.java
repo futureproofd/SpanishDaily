@@ -1,15 +1,10 @@
 package to.marcus.rxtesting.ui.activity;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -133,8 +128,6 @@ public class HomeActivity extends BaseActivity implements HomeView
         ActivityOptionsCompat options = ActivityOptionsCompat
                 .makeSceneTransitionAnimation(this, p1, p2);
         ActivityCompat.startActivity(this, intent, options.toBundle());
-
-
         //animateTransition(v, intent);
         this.startActivity(intent);
     }

@@ -104,6 +104,7 @@ public class DetailActivity extends AppCompatActivity implements DetailView,
         strExampleESP.setText(word.getExampleESP());
     }
 
+    //todo cache mp3?
     @Override
     public void onClickPlayback(byte[] soundByte) {
         try{
@@ -119,6 +120,7 @@ public class DetailActivity extends AppCompatActivity implements DetailView,
             mediaPlayer.setDataSource(fis.getFD());
             mediaPlayer.prepare();
             mediaPlayer.start();
+          //  mediaPlayer.release();
         }catch (IOException ex){
             ex.printStackTrace();
         }
