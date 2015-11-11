@@ -1,7 +1,6 @@
 package to.marcus.rxtesting.presenter.view;
 
 import android.content.Context;
-
 import java.util.ArrayList;
 import to.marcus.rxtesting.model.Word;
 

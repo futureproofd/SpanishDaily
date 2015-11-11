@@ -27,6 +27,7 @@
                 android:textAllCaps="true"
                 android:elevation="4dp"
                 android:textColor="@android:color/white"
+                android:transitionName="@string/transition_word"
                 />
     <to.marcus.rxtesting.ui.widgets.FloatingActionButton
         android:id="@+id/btn_narration"
@@ -37,6 +38,7 @@
         android:layout_marginBottom="-32dp"
         android:layout_marginRight="12dp"
         android:clickable="true"
+        android:alpha="0"
         android:background="@drawable/btn_background"
         android:elevation="6dp">
         <ImageView
@@ -121,7 +123,7 @@
             android:layout_below="@id/txtExampleLabel"
             android:text="ExampleEN"
             android:textSize="14dp"
-            android:textStyle="italic"
+            android:textStyle="bold"
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="42dp"/>
         <TextView

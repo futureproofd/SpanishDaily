@@ -40,7 +40,6 @@ public class HomeActivity extends BaseActivity implements HomeView
         ,CardDialogFragment.CardDialogListener {
     public final String TAG = HomeActivity.class.getSimpleName();
     private static final String WORD_OBJECT = "WORD_OBJECT";
-    //RecyclerView
     @Bind(R.id.recycler_view) RecyclerView recyclerView;
     private WordRecyclerAdapter mWordRecyclerAdapter;
     @Inject HomePresenterImpl mHomePresenterImpl;
@@ -51,6 +50,8 @@ public class HomeActivity extends BaseActivity implements HomeView
         ButterKnife.bind(this);
         initInjector();
         initRecyclerView();
+        //todo get savedInstanceState mode (favorites?) if so, mHomePresenterImpl.showWordList(favs),
+        //else, contine
         mHomePresenterImpl.initPresenter(this);
     }
 
@@ -128,7 +129,6 @@ public class HomeActivity extends BaseActivity implements HomeView
         ActivityOptionsCompat options = ActivityOptionsCompat
                 .makeSceneTransitionAnimation(this, p1, p2);
         ActivityCompat.startActivity(this, intent, options.toBundle());
-        //animateTransition(v, intent);
         this.startActivity(intent);
     }
 

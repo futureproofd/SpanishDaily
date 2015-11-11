@@ -197,7 +197,6 @@ public class BaseActivity extends AppCompatActivity implements BaseView{
                 ,PendingIntent.FLAG_NO_CREATE) != null);
         if(mBasePresenterImpl.isNotification()){
             if(!alarmActive){
-                Log.i(TAG, "alarm is inactive. Starting...");
                 ServiceController.queueService(appContext);
             }
         }else{

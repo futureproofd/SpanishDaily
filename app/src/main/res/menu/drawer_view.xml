@@ -2,21 +2,25 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_options"
-            android:icon="@drawable/ic_settings_grey600_24dp"
-            android:title="Opciones" />
-        <item
-            android:id="@+id/nav_search"
-            android:icon="@drawable/ic_magnify_grey600_24dp"
-            android:title="Buscar" />
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home"
+            android:title="Home" />
         <item
             android:id="@+id/nav_favorites"
             android:icon="@drawable/ic_star_grey600_24dp"
             android:title="Favoritos" />
         <item
+            android:id="@+id/nav_search"
+            android:icon="@drawable/ic_magnify_grey600_24dp"
+            android:title="Buscar" />
+        <item
             android:id="@+id/nav_history"
             android:icon="@drawable/ic_history_grey600_24dp"
             android:title="Historia" />
+        <item
+            android:id="@+id/nav_options"
+            android:icon="@drawable/ic_settings_grey600_24dp"
+            android:title="Opciones" />
         <item android:title="About">
             <menu>
                 <item

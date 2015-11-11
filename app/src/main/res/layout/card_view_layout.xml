@@ -49,11 +49,11 @@
             android:layout_gravity="center_vertical"
             android:gravity="left"
             android:padding="5dp"
-            android:paddingLeft="16dp"
+            android:paddingLeft="20dp"
             android:textSize="25dp"
             android:alpha=".8"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:fontFamily="sans-serif-condensed-light"
+            android:fontFamily="sans-serif-condensed"
             android:textAllCaps="true"
             android:textColor="@android:color/white" />
     </LinearLayout>

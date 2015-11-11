@@ -1,13 +1,14 @@
 package to.marcus.rxtesting.ui.activity;
 
-import android.app.Activity;
+import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.PorterDuff;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
+import android.transition.Transition;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,6 +29,9 @@ import to.marcus.rxtesting.injection.module.WordInteractorModule;
 import to.marcus.rxtesting.model.Word;
 import to.marcus.rxtesting.presenter.DetailPresenterImpl;
 import to.marcus.rxtesting.presenter.view.DetailView;
+import to.marcus.rxtesting.ui.adapter.TransitionAdapter;
+import to.marcus.rxtesting.util.TransitionUtility;
+import to.marcus.rxtesting.util.UIUtility;
 
 /**
  * get the details of a clicked word object
@@ -54,6 +58,7 @@ public class DetailActivity extends AppCompatActivity implements DetailView,
         ButterKnife.bind(this);
         initInjector();
         mDetailPresenterImpl.initPresenter(this);
+        initWindowTransition();
         showWordDetails();
 
         btnNarration.setOnClickListener(new View.OnClickListener() {
@@ -96,7 +101,6 @@ public class DetailActivity extends AppCompatActivity implements DetailView,
         byte[] byteArray = getIntent().getByteArrayExtra("IMAGE");
         Bitmap detailBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
         Palette.generateAsync(detailBitmap, this);
-
         imgWord.setImageBitmap(detailBitmap);
         strWord.setText(word.getWord());
         strTranslation.setText(word.getTranslation());
@@ -129,9 +133,24 @@ public class DetailActivity extends AppCompatActivity implements DetailView,
     @Override
     public void onGenerated(Palette palette) {
         if(palette != null){
-            setWordColorElement(palette.getDarkMutedSwatch());
-            setBtnColorElement(palette.getMutedSwatch());
-            setBodyColorElement(palette.getLightMutedSwatch());
+            final Palette.Swatch darkVibrantSwatch    = palette.getDarkVibrantSwatch();
+            final Palette.Swatch darkMutedSwatch      = palette.getDarkMutedSwatch();
+            final Palette.Swatch lightVibrantSwatch   = palette.getLightVibrantSwatch();
+            final Palette.Swatch lightMutedSwatch     = palette.getLightMutedSwatch();
+            final Palette.Swatch mutedSwatch          = palette.getMutedSwatch();
+
+            final Palette.Swatch wordElementColor = (darkMutedSwatch != null)
+                    ? darkMutedSwatch : darkVibrantSwatch;
+
+            final Palette.Swatch btnElementColor = (mutedSwatch != null)
+                    ? mutedSwatch : lightMutedSwatch;
+
+            final Palette.Swatch bodyElementColor = (lightMutedSwatch != null)
+                    ? lightMutedSwatch : lightVibrantSwatch;
+
+            setWordColorElement(wordElementColor);
+            setBtnColorElement(btnElementColor);
+            setBodyColorElement(bodyElementColor);
         }
     }
 
@@ -152,4 +171,26 @@ public class DetailActivity extends AppCompatActivity implements DetailView,
             bodyContainer.setBackgroundColor(swatch.getRgb());
         }
     }
+
+    private void initWindowTransition(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            UIUtility.setTranslucentStatusBar(this);
+            initEnterTransition();
+        }else{
+            btnNarration.animate().alpha(1.0f);
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void initEnterTransition() {
+        getWindow().setEnterTransition(TransitionUtility.makeEnterTransition());
+        getWindow().getEnterTransition().addListener(new TransitionAdapter() {
+            @Override
+            public void onTransitionEnd(Transition transition) {
+                btnNarration.animate().alpha(1.0f);
+                getWindow().getEnterTransition().removeListener(this);
+            }
+        });
+    }
+
 }

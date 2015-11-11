@@ -36,7 +36,9 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
     }
 
     @Override
-    public void onStart(){}
+    public void onStart(){
+
+    }
 
     @Override
     public void onStop(){mRepository.saveWords();}

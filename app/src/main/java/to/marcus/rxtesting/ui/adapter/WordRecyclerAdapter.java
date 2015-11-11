@@ -72,15 +72,19 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<WordRecyclerAdapte
                         .generate(new Palette.PaletteAsyncListener() {
                             @Override
                             public void onGenerated(Palette palette) {
-                                int mutedColor = palette.getMutedColor(holder.wordView.getContext().getResources().getColor(android.R.color.black));
-                                holder.wordView.setBackgroundColor(mutedColor);
-                                holder.cardMenu.setColorFilter(mutedColor, PorterDuff.Mode.MULTIPLY);
+                                if (palette != null) {
+                                    final Palette.Swatch swatch = getSwatch(palette);
+                                    holder.wordView.setBackgroundColor(swatch.getRgb());
+                                    holder.wordView.setTextColor(swatch.getBodyTextColor());
+                                    holder.dateView.setTextColor(swatch.getBodyTextColor());
+                                    holder.cardMenu.setColorFilter(palette.getMutedColor(0x000000), PorterDuff.Mode.MULTIPLY);
+                                }
                             }
                         });
                 }
                 @Override
                 public void onError() {
-                    holder.wordView.setBackgroundColor(holder.wordView.getContext().getResources().getColor(android.R.color.black));
+                    holder.wordView.setBackgroundColor(0x000000);
                 }
             });
         holder.wordView.setText(word.getWord());
@@ -90,6 +94,20 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<WordRecyclerAdapte
     @Override
     public int getItemCount() {
         return mWordArrayList.size();
+    }
+
+    private Palette.Swatch getSwatch(Palette palette){
+        final Palette.Swatch darkVibrantSwatch = palette.getDarkVibrantSwatch();
+        final Palette.Swatch darkMutedSwatch = palette.getDarkMutedSwatch();
+        final Palette.Swatch lightVibrantSwatch = palette.getLightVibrantSwatch();
+        final Palette.Swatch vibrantSwatch = palette.getVibrantSwatch();
+
+        Palette.Swatch wordElementColor = (darkMutedSwatch != null)
+                ? darkMutedSwatch : darkVibrantSwatch;
+        if (wordElementColor == null) {
+            wordElementColor = (vibrantSwatch != null) ? vibrantSwatch : lightVibrantSwatch;
+        }
+        return wordElementColor;
     }
 
     /*
