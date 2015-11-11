@@ -11,14 +11,12 @@ import to.marcus.rxtesting.presenter.view.BaseView;
  * Interaction with Preference selections
  */
 public class BasePresenterImpl implements BasePresenter<BaseView> {
-    private static final String TAG = BasePresenterImpl.class.getSimpleName();
     private static final String KEY_WIRELESS = "key_wireless";
     private static final String KEY_PULL = "key_pull";
     private static final String KEY_NOTIFY = "key_notify";
     private static final String KEY_DEL_WORDS = "key_delete_words";
     private static final String KEY_DEL_FAVS = "key_delete_favs";
     private BaseView baseView;
-    private static Context context;
     private final WordInteractorImpl wordInteractor; //// TODO: 24/10/15 need another type of interactor?search
     @Inject RepositoryImpl mRepository;
 

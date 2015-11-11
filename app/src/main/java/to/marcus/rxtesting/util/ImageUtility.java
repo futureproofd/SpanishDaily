@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import java.io.ByteArrayOutputStream;
 
 /**
- * Created by marcus on 10/16/2015.
+ * Created by marcus on 10/16/2015
  */
 public class ImageUtility {
 
@@ -15,6 +15,12 @@ public class ImageUtility {
         Drawable mDrawable = imageView.getDrawable();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         ((BitmapDrawable)mDrawable).getBitmap().compress(Bitmap.CompressFormat.PNG, 100, stream);
+        return stream;
+    }
+
+    public static ByteArrayOutputStream convertImage(Bitmap bitmap){
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         return stream;
     }
 }

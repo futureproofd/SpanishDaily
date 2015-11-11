@@ -30,5 +30,6 @@ public interface Repository {
     public boolean getWirelessPref();
     public boolean getNotifyPref();
     public boolean getPullPref();
+    public Word getLatestWord();
 
 }

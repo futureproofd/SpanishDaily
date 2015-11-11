@@ -70,6 +70,10 @@ public class WordStorage{
         return mWords.get(mWords.size() -1).getDate();
     }
 
+    public Word getLatestWord(){
+        return mWords.get(mWords.size() -1);
+    }
+
     public int wordCount(){
         return mWords.size();
     }

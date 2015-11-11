@@ -10,8 +10,6 @@ import to.marcus.rxtesting.presenter.view.DetailView;
  * Created by marcus on 9/15/2015
  */
 public class DetailPresenterImpl implements DetailPresenter<DetailView> {
-    private final String TAG = DetailPresenterImpl.class.getSimpleName();
-    private static final String WORD_OBJECT = "WORD_OBJECT";
     @Inject RepositoryImpl mRepository;
     private final SoundByteInteractorImpl soundByteInteractor;
     private DetailView detailView;

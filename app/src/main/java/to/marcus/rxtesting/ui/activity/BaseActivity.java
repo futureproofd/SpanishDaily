@@ -59,7 +59,7 @@ public class BaseActivity extends AppCompatActivity implements BaseView{
         setupDrawer();
         setupDrawerNav(mNavDrawer);
         initSharedPrefsListener();
-        initServiceAlarm();
+        initNotificationService();
     }
 
     private void initInjector(){
@@ -184,23 +184,34 @@ public class BaseActivity extends AppCompatActivity implements BaseView{
         mListener = new SharedPreferences.OnSharedPreferenceChangeListener(){
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPrefs, String key){
-                Log.i(TAG, "changed pref:" + key);
-                    mBasePresenterImpl.onPrefSelected(key, sharedPrefs.getBoolean(key, false));
+                mBasePresenterImpl.onPrefSelected(key, sharedPrefs.getBoolean(key, false));
             }
         };
     }
 
-    private void initServiceAlarm(){
+    private void initNotificationService(){
         Context appContext = getApplicationContext();
-        boolean alarmActive = (PendingIntent.getBroadcast(appContext
+        boolean alarmActive = (PendingIntent.getService(appContext
                 ,REQ_CODE
                 ,new Intent(appContext, WordNotificationService.class).setAction(ALARM_ACTION)
                 ,PendingIntent.FLAG_NO_CREATE) != null);
         if(mBasePresenterImpl.isNotification()){
             if(!alarmActive){
-                ServiceController.startService(appContext);
+                Log.i(TAG, "alarm is inactive. Starting...");
+                ServiceController.queueService(appContext);
             }
+        }else{
+            cancelNotification();
         }
+    }
+
+    private void cancelNotification(){
+        Context appContext = getApplicationContext();
+        PendingIntent.getService(appContext
+                ,REQ_CODE
+                ,new Intent(appContext, WordNotificationService.class).setAction(ALARM_ACTION)
+                ,PendingIntent.FLAG_UPDATE_CURRENT)
+                .cancel();
     }
 
 }

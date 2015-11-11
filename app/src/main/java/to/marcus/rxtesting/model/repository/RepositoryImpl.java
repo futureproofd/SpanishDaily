@@ -48,6 +48,11 @@ public class RepositoryImpl implements Repository{
     }
 
     @Override
+    public Word getLatestWord(){
+        return mWordStorage.getLatestWord();
+    }
+
+    @Override
     public ArrayList<Word> getWordsDataset(){
         return mWordStorage.getWordsDataSet();
     }

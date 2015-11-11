@@ -36,12 +36,6 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<WordRecyclerAdapte
         this.menuClickListener = menuListener;
     }
 
-    public void swapDataSet(ArrayList<Word> wordArrayList){
-        mWordArrayList.clear();
-        mWordArrayList.addAll(wordArrayList);
-        notifyDataSetChanged();
-    }
-
     @Override
     public WordViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         View cardView = LayoutInflater.from(parent.getContext())
@@ -69,26 +63,26 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<WordRecyclerAdapte
         Uri uri = Uri.parse(word.getImgUrl());
         Context context = holder.imageView.getContext();
         Picasso.with(context)
-                .load(uri)
-                .into(holder.imageView, new Callback.EmptyCallback() {
-                    @Override
-                    public void onSuccess(){
-                        Bitmap bitmap = ((BitmapDrawable)holder.imageView.getDrawable()).getBitmap();
-                        Palette.from(bitmap)
-                                .generate(new Palette.PaletteAsyncListener() {
-                                    @Override
-                                    public void onGenerated(Palette palette) {
-                                        int mutedColor = palette.getMutedColor(holder.wordView.getContext().getResources().getColor(android.R.color.black));
-                                        holder.wordView.setBackgroundColor(mutedColor);
-                                        holder.cardMenu.setColorFilter(mutedColor, PorterDuff.Mode.MULTIPLY);
-                                    }
-                                });
-                    }
-                    @Override
-                    public void onError() {
-                        holder.wordView.setBackgroundColor(holder.wordView.getContext().getResources().getColor(android.R.color.black));
-                    }
-                });
+            .load(uri)
+            .into(holder.imageView, new Callback.EmptyCallback() {
+                @Override
+                public void onSuccess() {
+                    Bitmap bitmap = ((BitmapDrawable) holder.imageView.getDrawable()).getBitmap();
+                    Palette.from(bitmap)
+                        .generate(new Palette.PaletteAsyncListener() {
+                            @Override
+                            public void onGenerated(Palette palette) {
+                                int mutedColor = palette.getMutedColor(holder.wordView.getContext().getResources().getColor(android.R.color.black));
+                                holder.wordView.setBackgroundColor(mutedColor);
+                                holder.cardMenu.setColorFilter(mutedColor, PorterDuff.Mode.MULTIPLY);
+                            }
+                        });
+                }
+                @Override
+                public void onError() {
+                    holder.wordView.setBackgroundColor(holder.wordView.getContext().getResources().getColor(android.R.color.black));
+                }
+            });
         holder.wordView.setText(word.getWord());
         holder.dateView.setText(word.getDate());
     }

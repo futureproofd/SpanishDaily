@@ -28,7 +28,7 @@ public class DateUtility {
     public static boolean isWordStale(Date wordDate){
         //todo revisit time calculation - does word get released at 12am or 7am?
         DateTime word = new DateTime(wordDate);
-        int diff = Days.daysBetween(today.minusHours(7), word).getDays();
+        int diff = Days.daysBetween(today, word).getDays();
         word = null;
         if(diff < 0){
             return true;

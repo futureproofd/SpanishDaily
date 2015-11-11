@@ -58,7 +58,6 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
 
     @Override
     public void onDismissOptionSelected(int position){
-       // mRepository.setHidden(position);
         mRepository.deleteWord(position);
         homeView.showNotification("Word dismissed");
         homeView.refreshWordList();
@@ -70,12 +69,12 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
         mRepository.addFavorite(position);
     }
 
-    private void pullLatestWord(){
+    public void pullLatestWord(){
         if(isWordStale())
             pullWordFromNetwork();
     }
 
-    private void pullWordFromNetwork(){
+    public void pullWordFromNetwork(){
         homeView.showLoading();
         wordInteractor.execute()
             .subscribe(
