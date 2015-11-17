@@ -3,12 +3,17 @@ package to.marcus.rxtesting.ui.activity;
 import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
+import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -38,9 +43,12 @@ import to.marcus.rxtesting.util.UIUtility;
  */
 public class DetailActivity extends AppCompatActivity implements DetailView,
         Palette.PaletteAsyncListener{
+    private static final String TAG = DetailActivity.class.getSimpleName();
     private static final String WORD_OBJECT = "WORD_OBJECT";
     @Inject DetailPresenterImpl mDetailPresenterImpl;
+    @Bind(R.id.detail_toolbar)  Toolbar mToolbar;
     @Bind(R.id.imgDetailWord)   ImageView imgWord;
+    @Bind(R.id.nav_back_arrow)  ImageView btnNavBk;
     @Bind(R.id.txtDetailWord)   TextView strWord;
     @Bind(R.id.body_container)  LinearLayout bodyContainer;
     @Bind(R.id.txtTranslation)  TextView strTranslation;
@@ -50,6 +58,9 @@ public class DetailActivity extends AppCompatActivity implements DetailView,
     @Bind(R.id.trans_img)       ImageView imgTrans;
     @Bind(R.id.example_img)     ImageView imgExample;
     private String txtSoundRef;
+    private Word mWord;
+    MenuItem actionFavorite;
+    private int mActionFavoriteColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -60,6 +71,7 @@ public class DetailActivity extends AppCompatActivity implements DetailView,
         mDetailPresenterImpl.initPresenter(this);
         initWindowTransition();
         showWordDetails();
+        initToolbar();
 
         btnNarration.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,10 +85,54 @@ public class DetailActivity extends AppCompatActivity implements DetailView,
     private void initInjector(){
         BaseApplication baseApplication = (BaseApplication)getApplication();
         DaggerWordInteractorComponent.builder()
-                .activityModule(new ActivityModule(this))
-                .baseAppComponent(baseApplication.getBaseAppComponent())
-                .wordInteractorModule(new WordInteractorModule())
-                .build().injectDetail(this);
+            .activityModule(new ActivityModule(this))
+            .baseAppComponent(baseApplication.getBaseAppComponent())
+            .wordInteractorModule(new WordInteractorModule())
+            .build().injectDetail(this);
+    }
+
+    private void initToolbar() {
+        mToolbar.inflateMenu(R.menu.menu_details);
+        actionFavorite = mToolbar.getMenu().findItem(R.id.action_favorite);
+
+        if (mWord.getFavorite() == 1) {
+            actionFavorite.setIcon(R.drawable.ic_star_white_24dp);
+        } else {
+            actionFavorite.setIcon(R.drawable.ic_star_outline_white_24dp);
+        }
+
+        if(mToolbar != null){
+            mToolbar.setTitle("");
+            btnNavBk.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
+                }
+            });
+            mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    int id = item.getItemId();
+                    switch(id){
+                        case R.id.action_favorite:
+                            if (mWord.getFavorite() == 1) {
+                                actionFavorite.setIcon(R.drawable.ic_star_outline_white_24dp);
+                                showNotification("Removed from Favorites");
+                                mWord.setFavorite(0);
+                                mDetailPresenterImpl.onFavoriteToggled(mWord);
+                            } else {
+                                actionFavorite.setIcon(R.drawable.ic_star_white_24dp);
+                                showNotification("Added to Favorites");
+                                mWord.setFavorite(1);
+                                mDetailPresenterImpl.onFavoriteToggled(mWord);
+                            }
+                            actionFavorite.getIcon().setColorFilter(new PorterDuffColorFilter(mActionFavoriteColor, PorterDuff.Mode.MULTIPLY));
+                            break;
+                    }
+                    return true;
+                }
+            });
+        }
     }
 
     @Override
@@ -96,16 +152,16 @@ public class DetailActivity extends AppCompatActivity implements DetailView,
 
     @Override
     public void showWordDetails(){
-        Word word = getIntent().getParcelableExtra(WORD_OBJECT);
-        txtSoundRef = word.getSoundRef();
+        mWord = getIntent().getParcelableExtra(WORD_OBJECT);
+        txtSoundRef = mWord.getSoundRef();
         byte[] byteArray = getIntent().getByteArrayExtra("IMAGE");
         Bitmap detailBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
         Palette.generateAsync(detailBitmap, this);
         imgWord.setImageBitmap(detailBitmap);
-        strWord.setText(word.getWord());
-        strTranslation.setText(word.getTranslation());
-        strExampleEN.setText(word.getExampleEN());
-        strExampleESP.setText(word.getExampleESP());
+        strWord.setText(mWord.getWord());
+        strTranslation.setText(mWord.getTranslation());
+        strExampleEN.setText(mWord.getExampleEN());
+        strExampleESP.setText(mWord.getExampleESP());
     }
 
     //todo cache mp3?
@@ -156,7 +212,12 @@ public class DetailActivity extends AppCompatActivity implements DetailView,
 
     private void setWordColorElement(Palette.Swatch swatch){
         if(swatch != null) {
+            mActionFavoriteColor = swatch.getRgb();
             strWord.setBackgroundColor(swatch.getRgb());
+            imgTrans.setColorFilter(swatch.getRgb());
+            imgExample.setColorFilter(swatch.getRgb());
+            btnNavBk.setColorFilter(swatch.getRgb());
+            actionFavorite.getIcon().setColorFilter(new PorterDuffColorFilter(swatch.getRgb(), PorterDuff.Mode.MULTIPLY));
         }
     }
 

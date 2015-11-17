@@ -5,7 +5,7 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
-        <item name="android:displayOptions">disableHome</item>
+       <!-- <item name="android:displayOptions">disableHome</item> -->
 
     <!--For animation
         <item name="windowContentTransitions">true</item>

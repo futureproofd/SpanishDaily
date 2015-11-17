@@ -15,11 +15,12 @@ public interface Repository {
 
     public void addWord(Word word);
     public void addFavorite(int position);
+    public void toggleFavorite(Word word);
     public void saveWords();
     public void setHidden(int position);
     public Word getWord(int position);
     public String getLatestWordDate();
-    public ArrayList<Word> getWordsDataset();
+    public ArrayList<Word> getWordsDataset(int filterCondition);
     public int getDatasetSize();
     public void deleteWord(int position);
     public void deleteWords();

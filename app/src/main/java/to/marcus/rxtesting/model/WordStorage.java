@@ -53,6 +53,19 @@ public class WordStorage{
         saveWordsToJSON();
     }
 
+    public void toggleFavorite(Word word){
+        for(Word dataSetWord : mWords){
+            if(word.getImgUrl().equals(dataSetWord.getImgUrl())){
+                if(word.getFavorite() == 0){
+                    dataSetWord.setFavorite(0);
+                }else{
+                    dataSetWord.setFavorite(1);
+                }
+                saveWordsToJSON();
+            }
+        }
+    }
+
     public void setHidden(int position){
         mWords.get(position).setVisibility(0);
         saveWordsToJSON();
@@ -62,8 +75,20 @@ public class WordStorage{
         return mWords.get(position);
     }
 
-    public ArrayList<Word> getWordsDataSet(){
-        return mWords;
+    public ArrayList<Word> getWordsDataSet(int filter){
+        ArrayList<Word> words = new ArrayList<>();
+        switch (filter){
+            case 0:
+                words = mWords;
+                break;
+            case 1:
+                for(Word w : mWords){
+                    if(w.getFavorite() == 1)
+                        words.add(w);
+                }
+                return words;
+        }
+        return words;
     }
 
     public String getLatestDate(){

@@ -26,13 +26,6 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
     @Override
     public void initPresenter(HomeView activity){
         this.homeView = activity;
-        if(NetworkUtility.isWiFi(homeView.getContext()) && mRepository.getWirelessPref()){
-            initWordDataSet();
-        }else if(!mRepository.getWirelessPref()){
-            initWordDataSet();
-        }else{
-            showWordList();
-        }
     }
 
     @Override
@@ -44,9 +37,7 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
     public void onStop(){mRepository.saveWords();}
 
     @Override
-    public Word onElementSelected(int position){
-        return mRepository.getWord(position);
-    }
+    public Word onElementSelected(int position){return mRepository.getWord(position);}
 
     @Override
     public void initWordDataSet(){
@@ -55,8 +46,24 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
         }else{
             pullWordFromNetwork();
         }
-        showWordList();
+        showWordList(0);
     }
+
+    public void selectDataset(int datasetMode){
+        switch(datasetMode){
+            case 0:
+                if(NetworkUtility.isWiFi(homeView.getContext()) && mRepository.getWirelessPref()){
+                    initWordDataSet();
+                }else if(!mRepository.getWirelessPref()){
+                    initWordDataSet();
+                }else{
+                    showWordList(datasetMode);
+                }break;
+            case 1:
+                showWordList(datasetMode);
+        }
+    }
+
 
     @Override
     public void onDismissOptionSelected(int position){
@@ -109,7 +116,8 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
         return isStale;
     }
 
-    private void showWordList(){
-        homeView.showWordList(mRepository.getWordsDataset());
+    private void showWordList(int datasetMode){
+        //todo add param to method, get favorites or main list?
+        homeView.showWordList(mRepository.getWordsDataset(datasetMode));
     }
 }

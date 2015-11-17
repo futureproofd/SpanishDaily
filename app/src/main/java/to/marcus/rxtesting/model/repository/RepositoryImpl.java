@@ -53,8 +53,8 @@ public class RepositoryImpl implements Repository{
     }
 
     @Override
-    public ArrayList<Word> getWordsDataset(){
-        return mWordStorage.getWordsDataSet();
+    public ArrayList<Word> getWordsDataset(int filter){
+        return mWordStorage.getWordsDataSet(filter);
     }
 
     @Override
@@ -75,6 +75,11 @@ public class RepositoryImpl implements Repository{
     @Override
     public void addFavorite(int position){
         mWordStorage.addFavorite(position);
+    }
+
+    @Override
+    public void toggleFavorite(Word word){
+        mWordStorage.toggleFavorite(word);
     }
 
     @Override

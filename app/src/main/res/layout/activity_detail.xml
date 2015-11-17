@@ -3,32 +3,31 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
-
-        <ImageView
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="265dp"
+        android:scaleType="centerCrop"
+        android:id="@+id/imgDetailWord"
+        android:transitionName="@string/transition_img"
+        />
+        <TextView
+            android:id="@+id/txtDetailWord"
             android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:scaleType="centerCrop"
-            android:id="@+id/imgDetailWord"
-            android:transitionName="@string/transition_img"
+            android:layout_height="60dp"
+            android:layout_gravity="center_vertical"
+            android:layout_below="@id/imgDetailWord"
+            android:gravity="left"
+            android:background="@color/primary_dark"
+            android:paddingTop="11dp"
+            android:paddingLeft="15dp"
+            android:textSize="25dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:fontFamily="sans-serif-condensed-light"
+            android:textAllCaps="true"
+            android:elevation="4dp"
+            android:textColor="@android:color/white"
+            android:transitionName="@string/transition_word"
             />
-            <TextView
-                android:id="@+id/txtDetailWord"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_gravity="center_vertical"
-                android:layout_below="@id/imgDetailWord"
-                android:gravity="left"
-                android:background="@color/primary_dark"
-                android:paddingTop="11dp"
-                android:paddingLeft="15dp"
-                android:textSize="25dp"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:fontFamily="sans-serif-condensed-light"
-                android:textAllCaps="true"
-                android:elevation="4dp"
-                android:textColor="@android:color/white"
-                android:transitionName="@string/transition_word"
-                />
     <to.marcus.rxtesting.ui.widgets.FloatingActionButton
         android:id="@+id/btn_narration"
         android:layout_width="56dp"
@@ -49,7 +48,6 @@
             android:duplicateParentState="true"/>
         />
     </to.marcus.rxtesting.ui.widgets.FloatingActionButton>
-
 <LinearLayout
     android:id="@+id/body_container"
     android:layout_width="match_parent"
@@ -137,4 +135,22 @@
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="42dp"/>
 </LinearLayout>
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/detail_toolbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:background="@android:color/transparent"
+        android:layout_alignParentTop="true"
+        android:fitsSystemWindows="true"
+        android:theme="@style/Base.ThemeOverlay.AppCompat.Light"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:src="@drawable/ic_arrow_left_white_24dp"
+            android:id="@+id/nav_back_arrow"
+            />
+    </android.support.v7.widget.Toolbar>
 </RelativeLayout>

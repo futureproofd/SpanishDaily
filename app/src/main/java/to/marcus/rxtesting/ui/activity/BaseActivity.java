@@ -14,7 +14,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import javax.inject.Inject;
@@ -30,7 +29,6 @@ import to.marcus.rxtesting.presenter.view.BaseView;
 import to.marcus.rxtesting.service.ServiceController;
 import to.marcus.rxtesting.service.WordNotificationService;
 import to.marcus.rxtesting.ui.fragment.OptionsFragment;
-import to.marcus.rxtesting.ui.fragment.FavoritesFragment;
 
 /**
  * Created by marcus on 10/19/2015.
@@ -60,6 +58,7 @@ public class BaseActivity extends AppCompatActivity implements BaseView{
         setupDrawerNav(mNavDrawer);
         initSharedPrefsListener();
         initNotificationService();
+
     }
 
     private void initInjector(){
@@ -139,24 +138,25 @@ public class BaseActivity extends AppCompatActivity implements BaseView{
         switch(menuItem.getItemId()) {
             case R.id.nav_options:
                 fragmentClass = OptionsFragment.class;
+                try{
+                    fragment = (android.app.Fragment) fragmentClass.newInstance();
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
+                // Insert the fragment by replacing any existing fragment
+                getFragmentManager().beginTransaction()
+                        .add(R.id.fragment_container, fragment)
+                        .addToBackStack(null)
+                        .commit();
                 break;
             case R.id.nav_favorites:
-                fragmentClass = FavoritesFragment.class;
+                HomeActivity.instance.selectDataset(1);
                 break;
+            case R.id.nav_home:
+                HomeActivity.instance.selectDataset(0);
             default:
                 fragmentClass = OptionsFragment.class;
         }
-        try{
-            fragment = (android.app.Fragment) fragmentClass.newInstance();
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-        // Insert the fragment by replacing any existing fragment
-        getFragmentManager().beginTransaction()
-                .add(R.id.fragment_container, fragment)
-                .addToBackStack(null)
-                .commit();
-
         // Highlight the selected item, update the title, and close the drawer
         menuItem.setChecked(true);
         mDrawerLayout.closeDrawers();

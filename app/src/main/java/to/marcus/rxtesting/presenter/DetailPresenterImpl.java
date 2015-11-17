@@ -3,6 +3,7 @@ package to.marcus.rxtesting.presenter;
 import javax.inject.Inject;
 import rx.functions.Action1;
 import to.marcus.rxtesting.data.interactor.SoundByteInteractorImpl;
+import to.marcus.rxtesting.model.Word;
 import to.marcus.rxtesting.model.repository.RepositoryImpl;
 import to.marcus.rxtesting.presenter.view.DetailView;
 
@@ -60,6 +61,12 @@ public class DetailPresenterImpl implements DetailPresenter<DetailView> {
 
     private void onSoundByteElementsReceived(byte[] bytes){
         detailView.onClickPlayback(bytes);
-        //add to sound cache
+        //todo add to sound cache
     }
+
+    @Override
+    public void onFavoriteToggled(Word word) {
+        mRepository.toggleFavorite(word);
+    }
+
 }

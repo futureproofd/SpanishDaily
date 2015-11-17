@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import to.marcus.rxtesting.BaseApplication;
+import to.marcus.rxtesting.Constants;
 import to.marcus.rxtesting.R;
 import to.marcus.rxtesting.injection.component.DaggerWordInteractorComponent;
 import to.marcus.rxtesting.injection.module.ActivityModule;
@@ -39,6 +40,8 @@ public class HomeActivity extends BaseActivity implements HomeView
         ,RecyclerViewMenuClickListener
         ,CardDialogFragment.CardDialogListener {
     public final String TAG = HomeActivity.class.getSimpleName();
+    public int datasetMode = 0; //default dataset
+    public static HomeActivity instance = null;
     private static final String WORD_OBJECT = "WORD_OBJECT";
     @Bind(R.id.recycler_view) RecyclerView recyclerView;
     private WordRecyclerAdapter mWordRecyclerAdapter;
@@ -47,12 +50,17 @@ public class HomeActivity extends BaseActivity implements HomeView
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        instance = this;
         ButterKnife.bind(this);
         initInjector();
         initRecyclerView();
-        //todo get savedInstanceState mode (favorites?) if so, mHomePresenterImpl.showWordList(favs),
-        //else, contine
         mHomePresenterImpl.initPresenter(this);
+        if(savedInstanceState != null){
+            datasetMode = savedInstanceState.getInt(Constants.MODE_KEY);
+            mHomePresenterImpl.selectDataset(datasetMode);
+        }else{
+            mHomePresenterImpl.selectDataset(datasetMode);
+        }
     }
 
     @Override
@@ -65,6 +73,12 @@ public class HomeActivity extends BaseActivity implements HomeView
     public void onStop(){
         super.onStop();
         mHomePresenterImpl.onStop();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState){
+        outState.putInt(Constants.MODE_KEY, datasetMode);
+        super.onSaveInstanceState(outState);
     }
 
     private void initInjector(){
@@ -81,6 +95,11 @@ public class HomeActivity extends BaseActivity implements HomeView
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
+    }
+
+    public void selectDataset(int datasetMode){
+        this.datasetMode = datasetMode;
+        mHomePresenterImpl.selectDataset(datasetMode);
     }
 
     //View Implementations
@@ -107,9 +126,7 @@ public class HomeActivity extends BaseActivity implements HomeView
     }
 
     @Override
-    public void refreshWordList(){
-        mWordRecyclerAdapter.notifyDataSetChanged();
-    }
+    public void refreshWordList(){mWordRecyclerAdapter.notifyDataSetChanged();}
 
     //RecyclerView click listeners
     @Override
