@@ -150,10 +150,13 @@ public class BaseActivity extends AppCompatActivity implements BaseView{
                         .commit();
                 break;
             case R.id.nav_favorites:
-                HomeActivity.instance.selectDataset(1);
+                HomeActivity.instance.selectDataset("favorites");
                 break;
             case R.id.nav_home:
-                HomeActivity.instance.selectDataset(0);
+                HomeActivity.instance.selectDataset("unfiltered");
+                break;
+            case R.id.nav_history:
+                HomeActivity.instance.selectDataset("dismissed");
             default:
                 fragmentClass = OptionsFragment.class;
         }

@@ -13,24 +13,25 @@ import to.marcus.rxtesting.model.Words;
  */
 public interface Repository {
 
-    public void addWord(Word word);
-    public void addFavorite(int position);
-    public void toggleFavorite(Word word);
-    public void saveWords();
-    public void setHidden(int position);
-    public Word getWord(int position);
-    public String getLatestWordDate();
-    public ArrayList<Word> getWordsDataset(int filterCondition);
-    public int getDatasetSize();
-    public void deleteWord(int position);
-    public void deleteWords();
+    void addWord(Word word);
+    void addFavorite(int position);
+    void toggleFavorite(Word word);
+    void saveWords();
+    void setHidden(int position);
+    Word getWord(int position);
+    String getLatestWordDate();
+    ArrayList<Word> getWordsDataset();
+    int getDatasetSize();
+    void deleteWord(int position);
+    void deleteWords();
+    void deleteFavorites();
     //Preference values
-    public void saveWirelessPref(String key, boolean value);
-    public void saveNotifyPref(String key, boolean value);
-    public void savePullPref(String key, boolean value);
-    public boolean getWirelessPref();
-    public boolean getNotifyPref();
-    public boolean getPullPref();
-    public Word getLatestWord();
+    void saveWirelessPref(String key, boolean value);
+    void saveNotifyPref(String key, boolean value);
+    void savePullPref(String key, boolean value);
+    boolean getWirelessPref();
+    boolean getNotifyPref();
+    boolean getPullPref();
+    Word getLatestWord();
 
 }

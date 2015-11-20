@@ -42,7 +42,6 @@ public class WebParser {
     private static String elementHolder;
     private static ArrayList<String> elementArray = new ArrayList<>();
 
-
     @Inject public WebParser(){}
 
     /*

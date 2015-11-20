@@ -44,7 +44,7 @@ public class BasePresenterImpl implements BasePresenter<BaseView> {
                 mRepository.deleteWords();
                 break;
             case KEY_DEL_FAVS:
-                //mRepository.deleteFavorites();
+                mRepository.deleteFavorites();
                 break;
         }
     }

@@ -10,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.squareup.picasso.Callback;
@@ -23,7 +25,8 @@ import to.marcus.rxtesting.model.Word;
 /**
  * Created by marcus on 9/14/2015
  */
-public class WordRecyclerAdapter extends RecyclerView.Adapter<WordRecyclerAdapter.WordViewHolder>{
+public class WordRecyclerAdapter extends RecyclerView.Adapter<WordRecyclerAdapter.WordViewHolder>
+                implements Filterable{
     private ArrayList<Word> mWordArrayList;
     private final RecyclerViewItemClickListener clickListener;
     private final RecyclerViewMenuClickListener menuClickListener;
@@ -96,6 +99,12 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<WordRecyclerAdapte
         return mWordArrayList.size();
     }
 
+    public void resetDataSet(ArrayList<Word> words){
+        mWordArrayList.clear();
+        mWordArrayList.addAll(words);
+        notifyDataSetChanged();
+    }
+
     private Palette.Swatch getSwatch(Palette palette){
         final Palette.Swatch darkVibrantSwatch = palette.getDarkVibrantSwatch();
         final Palette.Swatch darkMutedSwatch = palette.getDarkMutedSwatch();
@@ -110,9 +119,66 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<WordRecyclerAdapte
         return wordElementColor;
     }
 
-    /*
-    * ViewHolder Inner Class
-    */
+    //Filter implementation: Switch between dataSet types
+    @Override
+    public Filter getFilter() {
+        Filter filter = new Filter(){
+
+            @SuppressWarnings("unchecked")
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                mWordArrayList = (ArrayList<Word>)results.values;
+                notifyDataSetChanged();
+            }
+
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                FilterResults results = new FilterResults(); // holds the results
+                ArrayList<Word> filteredArray = new ArrayList<>();
+
+                if(constraint == null || constraint.length() == 0){
+                    results.count = mWordArrayList.size();
+                    results.values = mWordArrayList;
+                }else{
+                    String option = constraint.toString();
+                    switch(option){
+                        case "favorites":
+                            for(int i = 0; i < mWordArrayList.size(); i++){
+                                Word w = mWordArrayList.get(i);
+                                if(w.getFavorite() == 1){
+                                    filteredArray.add(w);
+                                }
+                            }
+                            results.count = filteredArray.size();
+                            results.values = filteredArray;
+                            break;
+                        case "dismissed":
+                            for(int i = 0; i < mWordArrayList.size(); i++){
+                                Word w = mWordArrayList.get(i);
+                                if(w.getVisibility() == 0){
+                                    filteredArray.add(w);
+                                }
+                            }
+                            results.count = filteredArray.size();
+                            results.values = filteredArray;
+                            break;
+                        case "unfiltered":
+                            for(int i = 0; i < mWordArrayList.size(); i++) {
+                                Word w = mWordArrayList.get(i);
+                                filteredArray.add(w);
+                            }
+                            results.count = filteredArray.size();
+                            results.values = filteredArray;
+                            break;
+                    }
+                }
+                return results;
+            }
+        };
+        return filter;
+    }
+
+    //ViewHolder Inner Class
     public static class WordViewHolder extends RecyclerView.ViewHolder{
         @Bind(R.id.imgWord) ImageView imageView;
         @Bind(R.id.txtWord) TextView wordView;

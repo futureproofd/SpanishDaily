@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -40,11 +40,13 @@ public class HomeActivity extends BaseActivity implements HomeView
         ,RecyclerViewMenuClickListener
         ,CardDialogFragment.CardDialogListener {
     public final String TAG = HomeActivity.class.getSimpleName();
-    public int datasetMode = 0; //default dataset
+    public String datasetMode = "unfiltered"; //default dataset
+    private ArrayList<Word> mUnfilteredDataset;
     public static HomeActivity instance = null;
     private static final String WORD_OBJECT = "WORD_OBJECT";
     @Bind(R.id.recycler_view) RecyclerView recyclerView;
     private WordRecyclerAdapter mWordRecyclerAdapter;
+    private StaggeredGridLayoutManager mGridLayoutManager;
     @Inject HomePresenterImpl mHomePresenterImpl;
 
     @Override
@@ -56,10 +58,10 @@ public class HomeActivity extends BaseActivity implements HomeView
         initRecyclerView();
         mHomePresenterImpl.initPresenter(this);
         if(savedInstanceState != null){
-            datasetMode = savedInstanceState.getInt(Constants.MODE_KEY);
-            mHomePresenterImpl.selectDataset(datasetMode);
+            datasetMode = savedInstanceState.getString(Constants.MODE_KEY);
+            selectDataset(datasetMode);
         }else{
-            mHomePresenterImpl.selectDataset(datasetMode);
+            selectDataset(datasetMode);
         }
     }
 
@@ -77,7 +79,7 @@ public class HomeActivity extends BaseActivity implements HomeView
 
     @Override
     public void onSaveInstanceState(Bundle outState){
-        outState.putInt(Constants.MODE_KEY, datasetMode);
+        outState.putString(Constants.MODE_KEY, datasetMode);
         super.onSaveInstanceState(outState);
     }
 
@@ -90,16 +92,28 @@ public class HomeActivity extends BaseActivity implements HomeView
                 .build().injectHome(this);
     }
 
-    private void initRecyclerView(){
+    public void initRecyclerView(){
+        mGridLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setHasFixedSize(true);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(llm);
+        recyclerView.setLayoutManager(mGridLayoutManager);
     }
 
-    public void selectDataset(int datasetMode){
-        this.datasetMode = datasetMode;
-        mHomePresenterImpl.selectDataset(datasetMode);
+    public void selectDataset(String datasetMode){
+        if(mWordRecyclerAdapter == null){
+            mHomePresenterImpl.selectDataset(datasetMode);
+        }else{
+            switch (datasetMode){
+                case "unfiltered":
+                    mWordRecyclerAdapter.resetDataSet(mUnfilteredDataset);
+                    mWordRecyclerAdapter.getFilter().filter(datasetMode);
+                    mGridLayoutManager.setSpanCount(1);
+                    break;
+                case "favorites":
+                    mWordRecyclerAdapter.getFilter().filter(datasetMode);
+                    mGridLayoutManager.setSpanCount(2);
+                    break;
+            }
+        }
     }
 
     //View Implementations
@@ -116,6 +130,7 @@ public class HomeActivity extends BaseActivity implements HomeView
 
     @Override
     public void showWordList(ArrayList<Word> wordArrayList){
+        mUnfilteredDataset = wordArrayList;
         mWordRecyclerAdapter = new WordRecyclerAdapter(wordArrayList, this, this);
         recyclerView.setAdapter(mWordRecyclerAdapter);
     }

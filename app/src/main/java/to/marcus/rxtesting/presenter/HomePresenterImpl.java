@@ -46,21 +46,22 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
         }else{
             pullWordFromNetwork();
         }
-        showWordList(0);
+        showWordList();
     }
 
-    public void selectDataset(int datasetMode){
+    public void selectDataset(String datasetMode){
         switch(datasetMode){
-            case 0:
+            case "unfiltered":
                 if(NetworkUtility.isWiFi(homeView.getContext()) && mRepository.getWirelessPref()){
                     initWordDataSet();
                 }else if(!mRepository.getWirelessPref()){
                     initWordDataSet();
                 }else{
-                    showWordList(datasetMode);
+                    showWordList();
                 }break;
-            case 1:
-                showWordList(datasetMode);
+            case "favorites":
+                showWordList();
+                break;
         }
     }
 
@@ -116,8 +117,7 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
         return isStale;
     }
 
-    private void showWordList(int datasetMode){
-        //todo add param to method, get favorites or main list?
-        homeView.showWordList(mRepository.getWordsDataset(datasetMode));
+    private void showWordList(){
+        homeView.showWordList(mRepository.getWordsDataset());
     }
 }

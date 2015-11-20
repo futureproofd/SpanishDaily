@@ -6,7 +6,8 @@ package to.marcus.rxtesting;
 public class Constants {
 
     public static final String MODE_KEY = "selected_dataset";
-    public static final int MAIN_MODE = 0;
-    public static final int FAVORITES_MODE = 1;
-    public static final int SEARCH_MODE = 2;
+    public static final String MAIN_MODE = "unfiltered";
+    public static final String FAVORITES_MODE = "favorites";
+    public static final String HISTORY_MODE = "dismissed";
+    public static final String SEARCH_MODE = "search";
 }

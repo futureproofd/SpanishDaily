@@ -48,6 +48,13 @@ public class WordStorage{
         saveWordsToJSON();
     }
 
+    public void deleteFavorites(){
+        for(Word w : mWords){
+            if(w.getFavorite() == 1)
+                w.setFavorite(0);
+        }
+    }
+
     public void addFavorite(int position){
         mWords.get(position).setFavorite(1);
         saveWordsToJSON();
@@ -75,20 +82,8 @@ public class WordStorage{
         return mWords.get(position);
     }
 
-    public ArrayList<Word> getWordsDataSet(int filter){
-        ArrayList<Word> words = new ArrayList<>();
-        switch (filter){
-            case 0:
-                words = mWords;
-                break;
-            case 1:
-                for(Word w : mWords){
-                    if(w.getFavorite() == 1)
-                        words.add(w);
-                }
-                return words;
-        }
-        return words;
+    public ArrayList<Word> getWordsDataSet(){
+        return mWords;
     }
 
     public String getLatestDate(){
