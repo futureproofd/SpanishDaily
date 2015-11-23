@@ -43,8 +43,8 @@ public class WordStorage{
         saveWordsToJSON();
     }
 
-    public void deleteWord(int position){
-        mWords.remove(position);
+    public void deleteWord(String itemId){
+        mWords.remove(getWord(itemId));
         saveWordsToJSON();
     }
 
@@ -55,8 +55,8 @@ public class WordStorage{
         }
     }
 
-    public void addFavorite(int position){
-        mWords.get(position).setFavorite(1);
+    public void addFavorite(String itemId){
+        getWord(itemId).setFavorite(1);
         saveWordsToJSON();
     }
 
@@ -78,8 +78,14 @@ public class WordStorage{
         saveWordsToJSON();
     }
 
-    public Word getWord(int position){
-        return mWords.get(position);
+    public Word getWord(String itemId){
+        Word matchedWord = new Word();
+        for(Word word : mWords) {
+            if (word.getImgUrl().equals(itemId)) {
+                matchedWord = word;
+            }
+        }
+        return matchedWord;
     }
 
     public ArrayList<Word> getWordsDataSet(){

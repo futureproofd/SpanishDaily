@@ -37,7 +37,7 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
     public void onStop(){mRepository.saveWords();}
 
     @Override
-    public Word onElementSelected(int position){return mRepository.getWord(position);}
+    public Word onElementSelected(String position){return mRepository.getWord(position);}
 
     @Override
     public void initWordDataSet(){
@@ -67,16 +67,16 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
 
 
     @Override
-    public void onDismissOptionSelected(int position){
-        mRepository.deleteWord(position);
+    public void onDismissOptionSelected(String itemId){
+        mRepository.deleteWord(itemId);
         homeView.showNotification("Word dismissed");
         homeView.refreshWordList();
     }
 
     @Override
-    public void onFavOptionSelected(int position){
+    public void onFavOptionSelected(String itemId){
         homeView.showNotification("Favorite added");
-        mRepository.addFavorite(position);
+        mRepository.addFavorite(itemId);
     }
 
     public void pullLatestWord(){

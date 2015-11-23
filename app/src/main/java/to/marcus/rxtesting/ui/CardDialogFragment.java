@@ -16,8 +16,8 @@ public class CardDialogFragment extends DialogFragment{
     public CardDialogFragment(){}
 
     public interface CardDialogListener{
-        void onDialogClickDismiss(CardDialogFragment dialogFragment, int position);
-        void onDialogClickFavorite(CardDialogFragment dialogFragment, int position);
+        void onDialogClickDismiss(CardDialogFragment dialogFragment, String itemId);
+        void onDialogClickFavorite(CardDialogFragment dialogFragment, String itemId);
     }
 
     @Override
@@ -34,16 +34,16 @@ public class CardDialogFragment extends DialogFragment{
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
         Bundle args = getArguments();
-        final int position = args.getInt("position");
+        final String itemId = args.getString("itemId");
         return new AlertDialog.Builder(getActivity(), R.style.CardDialogTheme)
                 .setItems(R.array.dialog_options, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int option) {
                         switch (option) {
                             case 0:
-                                mListener.onDialogClickFavorite(CardDialogFragment.this, position);
+                                mListener.onDialogClickFavorite(CardDialogFragment.this, itemId);
                                 break;
                             case 1:
-                                mListener.onDialogClickDismiss(CardDialogFragment.this, position);
+                                mListener.onDialogClickDismiss(CardDialogFragment.this, itemId);
                                 break;
                         }
                     }

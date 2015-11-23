@@ -145,9 +145,9 @@ public class HomeActivity extends BaseActivity implements HomeView
 
     //RecyclerView click listeners
     @Override
-    public void onObjectClick(View v, int position) {
+    public void onObjectClick(View v, String itemId) {
         Intent intent = new Intent(this, DetailActivity.class);
-        intent.putExtra(WORD_OBJECT, mHomePresenterImpl.onElementSelected(position));
+        intent.putExtra(WORD_OBJECT, mHomePresenterImpl.onElementSelected(itemId));
         intent.putExtra("IMAGE", ImageUtility.getImage((ImageView) v.findViewById(R.id.imgWord)).toByteArray());
 
         ImageView wordImage = (ImageView)v.findViewById(R.id.imgWord);
@@ -165,23 +165,23 @@ public class HomeActivity extends BaseActivity implements HomeView
     }
 
     @Override
-    public void onObjectMenuClick(View v, int position){
+    public void onObjectMenuClick(View v, String itemId){
         //launch dialog fragment
         CardDialogFragment dialogFragment = new CardDialogFragment();
         Bundle args = new Bundle();
-        args.putInt("position", position);
+        args.putString("itemId", itemId);
         dialogFragment.setArguments(args);
         dialogFragment.show(getFragmentManager(), TAG);
     }
 
     //CardView dialog listeners
     @Override
-    public void onDialogClickDismiss(CardDialogFragment dialogFragment, int position){
-        mHomePresenterImpl.onDismissOptionSelected(position);
+    public void onDialogClickDismiss(CardDialogFragment dialogFragment, String itemId){
+        mHomePresenterImpl.onDismissOptionSelected(itemId);
     }
 
     @Override
-    public void onDialogClickFavorite(CardDialogFragment dialogFragment, int position){
-        mHomePresenterImpl.onFavOptionSelected(position);
+    public void onDialogClickFavorite(CardDialogFragment dialogFragment, String itemId){
+        mHomePresenterImpl.onFavOptionSelected(itemId);
     }
 }

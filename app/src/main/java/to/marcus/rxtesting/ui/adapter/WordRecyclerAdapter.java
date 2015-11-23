@@ -48,13 +48,13 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<WordRecyclerAdapte
         //listen on presenter for click types
             @Override
             public void onClick(View view){
-                clickListener.onObjectClick(view, mViewHolder.getAdapterPosition());
+                clickListener.onObjectClick(view, (String)mViewHolder.imageView.getTag());
             }
         });
         mViewHolder.cardMenu.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                menuClickListener.onObjectMenuClick(view, mViewHolder.getAdapterPosition());
+                menuClickListener.onObjectMenuClick(view, (String)mViewHolder.imageView.getTag());
             }
         });
         return mViewHolder;
@@ -92,6 +92,9 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<WordRecyclerAdapte
             });
         holder.wordView.setText(word.getWord());
         holder.dateView.setText(word.getDate());
+        //Set TAG as a unique id, instead of position. This allows updates to the original object,
+        //not dependent on DataSet
+        holder.imageView.setTag(word.getImgUrl());
     }
 
     @Override
@@ -185,7 +188,7 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<WordRecyclerAdapte
         @Bind(R.id.txtDate) TextView dateView;
         @Bind(R.id.card_overflow_menu) ImageView cardMenu;
 
-        public WordViewHolder(View v){
+        public WordViewHolder(View v) {
             super(v);
             ButterKnife.bind(this, v);
         }

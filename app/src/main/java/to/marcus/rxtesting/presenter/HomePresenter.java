@@ -10,7 +10,7 @@ public interface HomePresenter<V>{
     void onStop();
     void initPresenter(V view);
     void initWordDataSet();
-    Word onElementSelected(int position);
-    void onDismissOptionSelected(int position);
-    void onFavOptionSelected(int position);
+    Word onElementSelected(String itemId);
+    void onDismissOptionSelected(String itemId);
+    void onFavOptionSelected(String itemId);
 }

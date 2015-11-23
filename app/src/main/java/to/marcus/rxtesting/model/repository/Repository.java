@@ -14,15 +14,15 @@ import to.marcus.rxtesting.model.Words;
 public interface Repository {
 
     void addWord(Word word);
-    void addFavorite(int position);
+    void addFavorite(String itemId);
     void toggleFavorite(Word word);
     void saveWords();
     void setHidden(int position);
-    Word getWord(int position);
+    Word getWord(String position);
     String getLatestWordDate();
     ArrayList<Word> getWordsDataset();
     int getDatasetSize();
-    void deleteWord(int position);
+    void deleteWord(String itemId);
     void deleteWords();
     void deleteFavorites();
     //Preference values
