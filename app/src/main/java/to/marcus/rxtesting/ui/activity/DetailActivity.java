@@ -136,14 +136,10 @@ public class DetailActivity extends AppCompatActivity implements DetailView,
     }
 
     @Override
-    public void showLoading() {
-
-    }
+    public void showLoading(){}
 
     @Override
-    public void hideLoading() {
-
-    }
+    public void hideLoading(){}
 
     @Override
     public void showNotification(String notification){

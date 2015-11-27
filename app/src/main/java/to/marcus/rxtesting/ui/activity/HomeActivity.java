@@ -41,6 +41,10 @@ public class HomeActivity extends BaseActivity implements HomeView
         ,CardDialogFragment.CardDialogListener {
     public final String TAG = HomeActivity.class.getSimpleName();
     public String datasetMode = "unfiltered"; //default dataset
+    private final String UNFILTERED_MODE = Constants.MAIN_MODE;
+    private final String DISMISSED_MODE = Constants.DISMISSED_MODE;
+    private final String FAVORITES_MODE = Constants.FAVORITES_MODE;
+    private final String SEARCH_MODE = Constants.SEARCH_MODE;
     private ArrayList<Word> mUnfilteredDataset;
     public static HomeActivity instance = null;
     private static final String WORD_OBJECT = "WORD_OBJECT";
@@ -103,16 +107,14 @@ public class HomeActivity extends BaseActivity implements HomeView
             mHomePresenterImpl.selectDataset(datasetMode);
         }else{
             switch (datasetMode){
-                case "unfiltered":
-                    mWordRecyclerAdapter.resetDataSet(mUnfilteredDataset);
-                    mWordRecyclerAdapter.getFilter().filter(datasetMode);
-                    mGridLayoutManager.setSpanCount(1);
+                case UNFILTERED_MODE:mGridLayoutManager.setSpanCount(1);
                     break;
-                case "favorites":
-                    mWordRecyclerAdapter.getFilter().filter(datasetMode);
-                    mGridLayoutManager.setSpanCount(2);
+                case FAVORITES_MODE:mGridLayoutManager.setSpanCount(2);
                     break;
+                case DISMISSED_MODE:mGridLayoutManager.setSpanCount(2);
             }
+            mWordRecyclerAdapter.resetDataSet(mUnfilteredDataset);
+            mWordRecyclerAdapter.getFilter().filter(datasetMode);
         }
     }
 
@@ -130,9 +132,15 @@ public class HomeActivity extends BaseActivity implements HomeView
 
     @Override
     public void showWordList(ArrayList<Word> wordArrayList){
-        mUnfilteredDataset = wordArrayList;
-        mWordRecyclerAdapter = new WordRecyclerAdapter(wordArrayList, this, this);
-        recyclerView.setAdapter(mWordRecyclerAdapter);
+        if(mWordRecyclerAdapter == null){
+            mUnfilteredDataset = wordArrayList;
+            mWordRecyclerAdapter = new WordRecyclerAdapter(wordArrayList, this, this);
+            mWordRecyclerAdapter.getFilter().filter(datasetMode);
+            recyclerView.setAdapter(mWordRecyclerAdapter);
+        }else{
+            mWordRecyclerAdapter.getFilter().filter(datasetMode);
+            recyclerView.setAdapter(mWordRecyclerAdapter);
+        }
     }
 
     @Override
@@ -141,7 +149,9 @@ public class HomeActivity extends BaseActivity implements HomeView
     }
 
     @Override
-    public void refreshWordList(){mWordRecyclerAdapter.notifyDataSetChanged();}
+    public void refreshWordList(){
+        mWordRecyclerAdapter.notifyDataSetChanged();
+    }
 
     //RecyclerView click listeners
     @Override
@@ -178,10 +188,12 @@ public class HomeActivity extends BaseActivity implements HomeView
     @Override
     public void onDialogClickDismiss(CardDialogFragment dialogFragment, String itemId){
         mHomePresenterImpl.onDismissOptionSelected(itemId);
+        mWordRecyclerAdapter.removeItem(itemId);
     }
 
     @Override
     public void onDialogClickFavorite(CardDialogFragment dialogFragment, String itemId){
         mHomePresenterImpl.onFavOptionSelected(itemId);
     }
+
 }

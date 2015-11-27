@@ -22,6 +22,7 @@ public interface Repository {
     String getLatestWordDate();
     ArrayList<Word> getWordsDataset();
     int getDatasetSize();
+    void removeWord(String itemId);
     void deleteWord(String itemId);
     void deleteWords();
     void deleteFavorites();

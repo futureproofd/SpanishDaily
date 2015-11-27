@@ -9,7 +9,7 @@ import android.net.NetworkInfo;
  */
 public class NetworkUtility {
 
-    public static boolean isWiFi(Context context){
+    public static boolean isWiFiEnabled(Context context){
         boolean connected = false;
         ConnectivityManager connMgr =
                 (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);

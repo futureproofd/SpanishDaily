@@ -48,6 +48,11 @@ public class WordStorage{
         saveWordsToJSON();
     }
 
+    public void hideWord(String itemId){
+        getWord(itemId).setVisibility(0);
+        saveWordsToJSON();
+    }
+
     public void deleteFavorites(){
         for(Word w : mWords){
             if(w.getFavorite() == 1)

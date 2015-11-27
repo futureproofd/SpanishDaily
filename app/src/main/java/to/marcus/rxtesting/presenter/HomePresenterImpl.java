@@ -1,5 +1,6 @@
 package to.marcus.rxtesting.presenter;
 
+import android.util.Log;
 import java.util.ArrayList;
 import javax.inject.Inject;
 import rx.functions.Action1;
@@ -17,6 +18,7 @@ import to.marcus.rxtesting.util.NetworkUtility;
  */
 public class HomePresenterImpl implements HomePresenter<HomeView>{
     private final WordInteractorImpl wordInteractor;
+    private static final String TAG = HomePresenterImpl.class.getSimpleName();
     private HomeView homeView;
     @Inject RepositoryImpl mRepository;
     @Inject public HomePresenterImpl(WordInteractorImpl interactor){
@@ -29,9 +31,7 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
     }
 
     @Override
-    public void onStart(){
-
-    }
+    public void onStart(){}
 
     @Override
     public void onStop(){mRepository.saveWords();}
@@ -46,30 +46,34 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
         }else{
             pullWordFromNetwork();
         }
-        showWordList();
     }
 
     public void selectDataset(String datasetMode){
         switch(datasetMode){
             case "unfiltered":
-                if(NetworkUtility.isWiFi(homeView.getContext()) && mRepository.getWirelessPref()){
+                if(NetworkUtility.isWiFiEnabled(homeView.getContext())&& mRepository.getWirelessPref()){
                     initWordDataSet();
                 }else if(!mRepository.getWirelessPref()){
                     initWordDataSet();
                 }else{
                     showWordList();
                 }break;
-            case "favorites":
-                showWordList();
+            case "favorites":showWordList();
+                break;
+            case "dismissed":showWordList();
                 break;
         }
     }
 
-
     @Override
     public void onDismissOptionSelected(String itemId){
-        mRepository.deleteWord(itemId);
-        homeView.showNotification("Word dismissed");
+        if(mRepository.getWord(itemId).getVisibility() == 0){
+            mRepository.deleteWord(itemId);
+            homeView.showNotification("Word permanently deleted");
+        }else{
+            mRepository.removeWord(itemId);
+            homeView.showNotification("Word dismissed");
+        }
         homeView.refreshWordList();
     }
 
@@ -80,26 +84,29 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
     }
 
     public void pullLatestWord(){
-        if(isWordStale())
+        if(isWordStale()){
             pullWordFromNetwork();
+        }else{
+            showWordList();
+        }
     }
 
     public void pullWordFromNetwork(){
         homeView.showLoading();
         wordInteractor.execute()
             .subscribe(
-                new Action1<ArrayList<String>>(){
-                    @Override
-                    public void call(ArrayList<String> elements){
-                        onWordElementsReceived(elements);
+                    new Action1<ArrayList<String>>() {
+                        @Override
+                        public void call(ArrayList<String> elements) {
+                            onWordElementsReceived(elements);
+                        }
+                    },
+                    new Action1<Throwable>() {
+                        @Override
+                        public void call(Throwable error) {
+                            homeView.showNotification("Error fetching Word from network");
+                        }
                     }
-                },
-                new Action1<Throwable>(){
-                    @Override
-                    public void call(Throwable error){
-                        homeView.showNotification("Error fetching Word from network");
-                    }
-                }
             );
     }
 
@@ -107,7 +114,7 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
         homeView.hideLoading();
         Word word = WordFactoryImpl.Word.newWordInstance(wordElements);
         mRepository.addWord(word);
-        homeView.refreshWordList();
+        showWordList();
     }
 
     public boolean isWordStale(){

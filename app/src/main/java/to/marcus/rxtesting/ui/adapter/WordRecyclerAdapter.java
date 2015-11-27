@@ -44,17 +44,17 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<WordRecyclerAdapte
         View cardView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.card_view_layout, parent, false);
         final WordViewHolder mViewHolder = new WordViewHolder(cardView);
-        cardView.setOnClickListener(new View.OnClickListener(){
-        //listen on presenter for click types
+        cardView.setOnClickListener(new View.OnClickListener() {
+            //listen on presenter for click types
             @Override
-            public void onClick(View view){
-                clickListener.onObjectClick(view, (String)mViewHolder.imageView.getTag());
+            public void onClick(View view) {
+                clickListener.onObjectClick(view, (String) mViewHolder.imageView.getTag());
             }
         });
-        mViewHolder.cardMenu.setOnClickListener(new View.OnClickListener(){
+        mViewHolder.cardMenu.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
-                menuClickListener.onObjectMenuClick(view, (String)mViewHolder.imageView.getTag());
+            public void onClick(View view) {
+                menuClickListener.onObjectMenuClick(view, (String) mViewHolder.imageView.getTag());
             }
         });
         return mViewHolder;
@@ -93,13 +93,22 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<WordRecyclerAdapte
         holder.wordView.setText(word.getWord());
         holder.dateView.setText(word.getDate());
         //Set TAG as a unique id, instead of position. This allows updates to the original object,
-        //not dependent on DataSet
+        //independent of DataSet
         holder.imageView.setTag(word.getImgUrl());
     }
 
     @Override
     public int getItemCount() {
         return mWordArrayList.size();
+    }
+
+    public void removeItem(String itemId){
+        for(Word word : mWordArrayList) {
+            if (word.getImgUrl().equals(itemId)) {
+                mWordArrayList.remove(word);
+                notifyItemRemoved(mWordArrayList.indexOf(word));
+            }
+        }
     }
 
     public void resetDataSet(ArrayList<Word> words){
@@ -168,7 +177,9 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<WordRecyclerAdapte
                         case "unfiltered":
                             for(int i = 0; i < mWordArrayList.size(); i++) {
                                 Word w = mWordArrayList.get(i);
-                                filteredArray.add(w);
+                                if(w.getVisibility() == 1){
+                                    filteredArray.add(w);
+                                }
                             }
                             results.count = filteredArray.size();
                             results.values = filteredArray;

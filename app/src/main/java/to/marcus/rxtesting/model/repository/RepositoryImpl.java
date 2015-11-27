@@ -37,8 +37,8 @@ public class RepositoryImpl implements Repository{
     }
 
     @Override
-    public Word getWord(String position){
-        return mWordStorage.getWord(position);
+    public Word getWord(String itemId){
+        return mWordStorage.getWord(itemId);
     }
 
 
@@ -63,7 +63,12 @@ public class RepositoryImpl implements Repository{
     }
 
     @Override
-    public void deleteWord(String itemId) {
+    public void removeWord(String itemId) {
+        mWordStorage.hideWord(itemId);
+    }
+
+    @Override
+    public void deleteWord(String itemId){
         mWordStorage.deleteWord(itemId);
     }
 
