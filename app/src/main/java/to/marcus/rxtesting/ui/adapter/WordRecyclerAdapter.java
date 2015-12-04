@@ -12,24 +12,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageView;
-import android.widget.TextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import to.marcus.rxtesting.R;
 import to.marcus.rxtesting.model.Word;
 
 /**
  * Created by marcus on 9/14/2015
+ * Custom RecyclerAdapter and ViewHolder to filter across multiple DataSets
+ * Custom Layout is determined via getItemViewType
  */
-public class WordRecyclerAdapter extends RecyclerView.Adapter<WordRecyclerAdapter.WordViewHolder>
+public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 implements Filterable{
+    private static final String TAG = WordRecyclerAdapter.class.getSimpleName();
     private ArrayList<Word> mWordArrayList;
     private final RecyclerViewItemClickListener clickListener;
     private final RecyclerViewMenuClickListener menuClickListener;
+    private String mDataSetMode;
+    private final int CARDVIEW = 0;
+    private final int SEARCHVIEW = 1;
 
     public WordRecyclerAdapter(ArrayList<Word> wordArrayList
             ,RecyclerViewItemClickListener listener
@@ -40,56 +42,112 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<WordRecyclerAdapte
     }
 
     @Override
-    public WordViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
-        View cardView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.card_view_layout, parent, false);
-        final WordViewHolder mViewHolder = new WordViewHolder(cardView);
-        cardView.setOnClickListener(new View.OnClickListener() {
-            //listen on presenter for click types
-            @Override
-            public void onClick(View view) {
-                clickListener.onObjectClick(view, (String) mViewHolder.imageView.getTag());
-            }
-        });
-        mViewHolder.cardMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                menuClickListener.onObjectMenuClick(view, (String) mViewHolder.imageView.getTag());
-            }
-        });
-        return mViewHolder;
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View searchView = inflater.inflate(R.layout.search_history_layout, parent, false);
+        final SearchViewHolder  searchViewHolder = new SearchViewHolder(searchView);
+        View cardView = inflater.inflate(R.layout.card_view_layout, parent, false);
+        final CardViewHolder cardViewHolder = new CardViewHolder(cardView);
+
+        int result = 0;
+        switch (viewType){
+            case SEARCHVIEW:
+                result = 1;
+                searchView.setOnClickListener(new View.OnClickListener() {
+                    //listen on presenter for click types
+                    @Override
+                    public void onClick(View view) {
+                        clickListener.onObjectClick(view, (String)searchViewHolder.imageView.getTag());
+                    }
+                });
+                break;
+            case CARDVIEW:
+                cardView.setOnClickListener(new View.OnClickListener() {
+                    //listen on presenter for click types
+                    @Override
+                    public void onClick(View view) {
+                        clickListener.onObjectClick(view, (String) cardViewHolder.imageView.getTag());
+                    }
+                });
+                cardViewHolder.cardMenu.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        menuClickListener.onObjectMenuClick(view, (String) cardViewHolder.imageView.getTag());
+                    }
+                });
+                break;
+        }
+        if(result == 1){
+            return searchViewHolder;
+        }else{
+            return cardViewHolder;
+        }
     }
 
     @Override
-    public void onBindViewHolder(final WordViewHolder holder, final int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+        switch (holder.getItemViewType()){
+            case SEARCHVIEW:
+                SearchViewHolder searchViewHolder = (SearchViewHolder) holder;
+                configureSearchViewHolder(searchViewHolder, position);
+                break;
+            case CARDVIEW:
+                CardViewHolder cardViewHolder = (CardViewHolder) holder;
+                configureCardViewHolder(cardViewHolder, position);
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position){
+        if(mWordArrayList.get(position).getSearched() == 1 && mDataSetMode == "search"){
+            return SEARCHVIEW;
+        }else{
+            return CARDVIEW;
+        }
+    }
+
+    private void configureSearchViewHolder(SearchViewHolder holder, int position){
         Word word = mWordArrayList.get(position);
         Uri uri = Uri.parse(word.getImgUrl());
         Context context = holder.imageView.getContext();
         Picasso.with(context)
-            .load(uri)
-            .into(holder.imageView, new Callback.EmptyCallback() {
-                @Override
-                public void onSuccess() {
-                    Bitmap bitmap = ((BitmapDrawable) holder.imageView.getDrawable()).getBitmap();
-                    Palette.from(bitmap)
-                        .generate(new Palette.PaletteAsyncListener() {
-                            @Override
-                            public void onGenerated(Palette palette) {
-                                if (palette != null) {
-                                    final Palette.Swatch swatch = getSwatch(palette);
-                                    holder.wordView.setBackgroundColor(swatch.getRgb());
-                                    holder.wordView.setTextColor(swatch.getBodyTextColor());
-                                    holder.dateView.setTextColor(swatch.getBodyTextColor());
-                                    holder.cardMenu.setColorFilter(palette.getMutedColor(0x000000), PorterDuff.Mode.MULTIPLY);
-                                }
-                            }
-                        });
-                }
-                @Override
-                public void onError() {
-                    holder.wordView.setBackgroundColor(0x000000);
-                }
-            });
+                .load(uri)
+                .into(holder.imageView);
+        //Set TAG as a unique id, instead of position. This allows updates to the original object,
+        //independent of DataSet
+        holder.imageView.setTag(word.getImgUrl());
+        holder.textView.setText(word.getWord());
+    }
+
+    private void configureCardViewHolder(final CardViewHolder holder, int position){
+        Word word = mWordArrayList.get(position);
+        Uri uri = Uri.parse(word.getImgUrl());
+        Context context = holder.imageView.getContext();
+        Picasso.with(context)
+                .load(uri)
+                .into(holder.imageView, new Callback.EmptyCallback() {
+                    @Override
+                    public void onSuccess() {
+                        Bitmap bitmap = ((BitmapDrawable) holder.imageView.getDrawable()).getBitmap();
+                        Palette.from(bitmap)
+                                .generate(new Palette.PaletteAsyncListener() {
+                                    @Override
+                                    public void onGenerated(Palette palette) {
+                                        if (palette != null) {
+                                            final Palette.Swatch swatch = getSwatch(palette);
+                                            holder.wordView.setBackgroundColor(swatch.getRgb());
+                                            holder.wordView.setTextColor(swatch.getBodyTextColor());
+                                            holder.dateView.setTextColor(swatch.getBodyTextColor());
+                                            holder.cardMenu.setColorFilter(palette.getMutedColor(0x000000), PorterDuff.Mode.MULTIPLY);
+                                        }
+                                    }
+                                });
+                    }
+                    @Override
+                    public void onError() {
+                        holder.wordView.setBackgroundColor(0x000000);
+                    }
+                });
         holder.wordView.setText(word.getWord());
         holder.dateView.setText(word.getDate());
         //Set TAG as a unique id, instead of position. This allows updates to the original object,
@@ -117,6 +175,10 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<WordRecyclerAdapte
         notifyDataSetChanged();
     }
 
+    public void setDataSetMode(String mode){
+        this.mDataSetMode = mode;
+    }
+
     private Palette.Swatch getSwatch(Palette palette){
         final Palette.Swatch darkVibrantSwatch = palette.getDarkVibrantSwatch();
         final Palette.Swatch darkMutedSwatch = palette.getDarkMutedSwatch();
@@ -135,7 +197,6 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<WordRecyclerAdapte
     @Override
     public Filter getFilter() {
         Filter filter = new Filter(){
-
             @SuppressWarnings("unchecked")
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
@@ -161,8 +222,6 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<WordRecyclerAdapte
                                     filteredArray.add(w);
                                 }
                             }
-                            results.count = filteredArray.size();
-                            results.values = filteredArray;
                             break;
                         case "dismissed":
                             for(int i = 0; i < mWordArrayList.size(); i++){
@@ -171,8 +230,6 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<WordRecyclerAdapte
                                     filteredArray.add(w);
                                 }
                             }
-                            results.count = filteredArray.size();
-                            results.values = filteredArray;
                             break;
                         case "unfiltered":
                             for(int i = 0; i < mWordArrayList.size(); i++) {
@@ -181,10 +238,18 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<WordRecyclerAdapte
                                     filteredArray.add(w);
                                 }
                             }
-                            results.count = filteredArray.size();
-                            results.values = filteredArray;
+                            break;
+                        case "search":
+                            for(int i = 0; i < mWordArrayList.size(); i++){
+                                Word w = mWordArrayList.get(i);
+                                if(w.getSearched() == 1){
+                                    filteredArray.add(w);
+                                }
+                            }
                             break;
                     }
+                    results.count = filteredArray.size();
+                    results.values = filteredArray;
                 }
                 return results;
             }
@@ -192,16 +257,4 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<WordRecyclerAdapte
         return filter;
     }
 
-    //ViewHolder Inner Class
-    public static class WordViewHolder extends RecyclerView.ViewHolder{
-        @Bind(R.id.imgWord) ImageView imageView;
-        @Bind(R.id.txtWord) TextView wordView;
-        @Bind(R.id.txtDate) TextView dateView;
-        @Bind(R.id.card_overflow_menu) ImageView cardMenu;
-
-        public WordViewHolder(View v) {
-            super(v);
-            ButterKnife.bind(this, v);
-        }
-    }
 }

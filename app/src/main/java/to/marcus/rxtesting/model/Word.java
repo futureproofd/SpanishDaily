@@ -19,6 +19,7 @@ public class Word implements Parcelable {
     private String exampleESP;
     private int favorite;
     private int visibility;
+    private int searched;
 
     //De-Serializer constructor
     public Word(JSONObject json) throws JSONException{
@@ -31,6 +32,7 @@ public class Word implements Parcelable {
         exampleESP = json.getString("exampleESP");
         favorite = json.getInt("favorite");
         visibility = json.getInt("visibility");
+        searched = json.getInt("searched");
     }
 
     //Factory constructor
@@ -38,7 +40,7 @@ public class Word implements Parcelable {
 
     //Parcel constructor
     public Word(String date, String imgUrl, String word, String soundRef, String translation
-            ,String exampleEN, String exampleESP, int favorite, int visibility){
+            ,String exampleEN, String exampleESP, int favorite, int visibility, int searched){
         this.date = date;
         this.imgUrl = imgUrl;
         this.word = word;
@@ -48,6 +50,7 @@ public class Word implements Parcelable {
         this.exampleESP = exampleESP;
         this.favorite = favorite;
         this.visibility = visibility;
+        this.searched = searched;
     }
 
     public String getDate(){return date;}
@@ -86,6 +89,10 @@ public class Word implements Parcelable {
 
     public void setVisibility(int visibility){this.visibility = visibility;}
 
+    public int getSearched(){return searched;}
+
+    public void setSearched(int searched){this.searched = searched;}
+
     /*
     * Parcelable Methods
      */
@@ -107,6 +114,7 @@ public class Word implements Parcelable {
             in.readString(),
             in.readString(),
             in.readInt(),
+            in.readInt(),
             in.readInt()
         );
     }
@@ -122,6 +130,7 @@ public class Word implements Parcelable {
         out.writeString(exampleESP);
         out.writeInt(favorite);
         out.writeInt(visibility);
+        out.writeInt(searched);
     }
 
     //generally unused

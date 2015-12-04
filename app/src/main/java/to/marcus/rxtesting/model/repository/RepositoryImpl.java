@@ -10,6 +10,7 @@ import to.marcus.rxtesting.model.WordStorage;
  * Created by marcus on 9/4/2015.
  * Inject our model (database, json list) - WordStorage
  * Inject preferences to access application-wide preferences
+ * Inject search history to access previous user search queries
  * use a repository interface (observable get methods)
  *      these will require an observable to obtain data from any source (database OR network pull)
 
@@ -21,9 +22,9 @@ public class RepositoryImpl implements Repository{
     private static final String TAG = RepositoryImpl.class.getSimpleName();
 
     @Inject
-    public RepositoryImpl(WordStorage wordStorage, AppPreferences appPreferences){
-        mWordStorage = wordStorage;
-        mAppPreferences = appPreferences;
+    public RepositoryImpl(WordStorage wordStrg, AppPreferences appPrefs){
+        mWordStorage = wordStrg;
+        mAppPreferences = appPrefs;
     }
 
     @Override

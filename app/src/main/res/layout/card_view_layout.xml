@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
+    android:tag="Card_Layout"
     card_view:cardCornerRadius="@dimen/cardview_default_radius"
     card_view:cardElevation="3dp">
 <FrameLayout

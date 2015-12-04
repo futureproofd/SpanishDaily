@@ -31,7 +31,7 @@ public class WordStorage{
     public boolean saveWordsToJSON(){
         try{
             Log.i(TAG, "saving words to JSON");
-            mSerializer.saveWords(mWords);
+            mSerializer.saveObjects(mWords);
             return true;
         }catch(Exception e){
             return false;

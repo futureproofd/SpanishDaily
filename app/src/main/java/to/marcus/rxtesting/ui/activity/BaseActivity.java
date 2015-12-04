@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import javax.inject.Inject;
@@ -58,7 +59,13 @@ public class BaseActivity extends AppCompatActivity implements BaseView{
         setupDrawerNav(mNavDrawer);
         initSharedPrefsListener();
         initNotificationService();
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        //todo get click response - access repo for searchHistoryList
+        getMenuInflater().inflate(R.menu.menu_home, menu);
+        return true;
     }
 
     private void initInjector(){
@@ -150,13 +157,16 @@ public class BaseActivity extends AppCompatActivity implements BaseView{
                         .commit();
                 break;
             case R.id.nav_favorites:
-                HomeActivity.instance.selectDataset("favorites");
+                HomeActivity.instance.selectDataSet("favorites");
                 break;
             case R.id.nav_home:
-                HomeActivity.instance.selectDataset("unfiltered");
+                HomeActivity.instance.selectDataSet("unfiltered");
                 break;
             case R.id.nav_history:
-                HomeActivity.instance.selectDataset("dismissed");
+                HomeActivity.instance.selectDataSet("dismissed");
+                break;
+            case R.id.nav_search:
+                HomeActivity.instance.selectDataSet("search");
             default:
                 fragmentClass = OptionsFragment.class;
         }

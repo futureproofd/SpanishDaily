@@ -20,10 +20,8 @@ public class WordFactoryImpl{
                 defaultWord.setExampleESP(wordElements.get(6));
                 defaultWord.setFavorite(0);
                 defaultWord.setVisibility(1);
+                defaultWord.setSearched(0);
                 return defaultWord;
-        }
-        public static to.marcus.rxtesting.model.Words newWordsInstance() {
-            return null;
         }
     }
 

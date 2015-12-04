@@ -40,12 +40,12 @@ public class HomeActivity extends BaseActivity implements HomeView
         ,RecyclerViewMenuClickListener
         ,CardDialogFragment.CardDialogListener {
     public final String TAG = HomeActivity.class.getSimpleName();
-    public String datasetMode = "unfiltered"; //default dataset
+    public String dataSetMode = "unfiltered"; //default dataset
     private final String UNFILTERED_MODE = Constants.MAIN_MODE;
     private final String DISMISSED_MODE = Constants.DISMISSED_MODE;
     private final String FAVORITES_MODE = Constants.FAVORITES_MODE;
     private final String SEARCH_MODE = Constants.SEARCH_MODE;
-    private ArrayList<Word> mUnfilteredDataset;
+    private ArrayList<Word> mUnfilteredDataSet;
     public static HomeActivity instance = null;
     private static final String WORD_OBJECT = "WORD_OBJECT";
     @Bind(R.id.recycler_view) RecyclerView recyclerView;
@@ -62,10 +62,10 @@ public class HomeActivity extends BaseActivity implements HomeView
         initRecyclerView();
         mHomePresenterImpl.initPresenter(this);
         if(savedInstanceState != null){
-            datasetMode = savedInstanceState.getString(Constants.MODE_KEY);
-            selectDataset(datasetMode);
+            dataSetMode = savedInstanceState.getString(Constants.MODE_KEY);
+            selectDataSet(dataSetMode);
         }else{
-            selectDataset(datasetMode);
+            selectDataSet(dataSetMode);
         }
     }
 
@@ -83,7 +83,7 @@ public class HomeActivity extends BaseActivity implements HomeView
 
     @Override
     public void onSaveInstanceState(Bundle outState){
-        outState.putString(Constants.MODE_KEY, datasetMode);
+        outState.putString(Constants.MODE_KEY, dataSetMode);
         super.onSaveInstanceState(outState);
     }
 
@@ -102,19 +102,23 @@ public class HomeActivity extends BaseActivity implements HomeView
         recyclerView.setLayoutManager(mGridLayoutManager);
     }
 
-    public void selectDataset(String datasetMode){
+    public void selectDataSet(String dataSetMode){
         if(mWordRecyclerAdapter == null){
-            mHomePresenterImpl.selectDataset(datasetMode);
+            mHomePresenterImpl.selectDataset(dataSetMode);
         }else{
-            switch (datasetMode){
-                case UNFILTERED_MODE:mGridLayoutManager.setSpanCount(1);
+            switch (dataSetMode){
+                case UNFILTERED_MODE:  mGridLayoutManager.setSpanCount(1);
                     break;
-                case FAVORITES_MODE:mGridLayoutManager.setSpanCount(2);
+                case FAVORITES_MODE:   mGridLayoutManager.setSpanCount(2);
                     break;
-                case DISMISSED_MODE:mGridLayoutManager.setSpanCount(2);
+                case DISMISSED_MODE:   mGridLayoutManager.setSpanCount(2);
+                    break;
+                case SEARCH_MODE:      mGridLayoutManager.setSpanCount(1);
+                    break;
             }
-            mWordRecyclerAdapter.resetDataSet(mUnfilteredDataset);
-            mWordRecyclerAdapter.getFilter().filter(datasetMode);
+            mWordRecyclerAdapter.resetDataSet(mUnfilteredDataSet);
+            mWordRecyclerAdapter.setDataSetMode(dataSetMode);
+            mWordRecyclerAdapter.getFilter().filter(dataSetMode);
         }
     }
 
@@ -133,12 +137,12 @@ public class HomeActivity extends BaseActivity implements HomeView
     @Override
     public void showWordList(ArrayList<Word> wordArrayList){
         if(mWordRecyclerAdapter == null){
-            mUnfilteredDataset = wordArrayList;
+            mUnfilteredDataSet = wordArrayList;
             mWordRecyclerAdapter = new WordRecyclerAdapter(wordArrayList, this, this);
-            mWordRecyclerAdapter.getFilter().filter(datasetMode);
+            mWordRecyclerAdapter.getFilter().filter(dataSetMode);
             recyclerView.setAdapter(mWordRecyclerAdapter);
         }else{
-            mWordRecyclerAdapter.getFilter().filter(datasetMode);
+            mWordRecyclerAdapter.getFilter().filter(dataSetMode);
             recyclerView.setAdapter(mWordRecyclerAdapter);
         }
     }
@@ -158,20 +162,25 @@ public class HomeActivity extends BaseActivity implements HomeView
     public void onObjectClick(View v, String itemId) {
         Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra(WORD_OBJECT, mHomePresenterImpl.onElementSelected(itemId));
-        intent.putExtra("IMAGE", ImageUtility.getImage((ImageView) v.findViewById(R.id.imgWord)).toByteArray());
+        String layoutType = (String)v.getTag();
+        if(layoutType.equals("Search_Layout")){
+            intent.putExtra("IMAGE", ImageUtility.getImage((ImageView) v.findViewById(R.id.search_history_image)).toByteArray());
+            this.startActivity(intent);
+        }else{
+            intent.putExtra("IMAGE", ImageUtility.getImage((ImageView) v.findViewById(R.id.imgWord)).toByteArray());
+            ImageView wordImage = (ImageView)v.findViewById(R.id.imgWord);
+            LinearLayout wordString = (LinearLayout)v.findViewById(R.id.wordNameHolder);
 
-        ImageView wordImage = (ImageView)v.findViewById(R.id.imgWord);
-        LinearLayout wordString = (LinearLayout)v.findViewById(R.id.wordNameHolder);
+            String transitionImgName = this.getString(R.string.transition_img);
+            String transitionWordName = this.getString(R.string.transition_word);
+            Pair<View, String> p1 = Pair.create((View) wordImage, transitionImgName);
+            Pair<View, String> p2 = Pair.create((View) wordString, transitionWordName);
 
-           String transitionImgName = this.getString(R.string.transition_img);
-           String transitionWordName = this.getString(R.string.transition_word);
-           Pair<View, String> p1 = Pair.create((View) wordImage, transitionImgName);
-           Pair<View, String> p2 = Pair.create((View) wordString, transitionWordName);
-
-        ActivityOptionsCompat options = ActivityOptionsCompat
-                .makeSceneTransitionAnimation(this, p1, p2);
-        ActivityCompat.startActivity(this, intent, options.toBundle());
-        this.startActivity(intent);
+            ActivityOptionsCompat options = ActivityOptionsCompat
+                    .makeSceneTransitionAnimation(this, p1, p2);
+            ActivityCompat.startActivity(this, intent, options.toBundle());
+           // this.startActivity(intent);
+        }
     }
 
     @Override

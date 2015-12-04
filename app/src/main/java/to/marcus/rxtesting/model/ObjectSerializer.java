@@ -34,16 +34,17 @@ public class ObjectSerializer{
     private static final String JSON_EXAMPLEESP = "exampleESP";
     private static final String JSON_FAVORITE = "favorite";
     private static final String JSON_VISIBILITY = "visibility";
+    private static final String JSON_SEARCHED = "searched";
 
     public ObjectSerializer(Context c, String filename){
         mAppContext = c;
         mFilename = filename;
     }
 
-    public void saveWords(ArrayList<Word> words) throws JSONException, IOException {
+    public <T> void saveObjects(ArrayList<? extends T> list) throws JSONException, IOException{
         JSONArray array = new JSONArray();
-        for(Word w : words)
-            array.put(convertToJSON(w));
+        for(T t: list)
+            array.put(convertToJSON(t));
         writeToJSON(mFilename,array);
     }
 
@@ -89,17 +90,22 @@ public class ObjectSerializer{
     /*
     JSON Read/Write Methods
     */
-    public JSONObject convertToJSON(Word word) throws JSONException{
+    public JSONObject convertToJSON(Object obj) throws JSONException{
         JSONObject json = new JSONObject();
-        json.put(JSON_WORD, word.getWord());
-        json.put(JSON_DATE, word.getDate());
-        json.put(JSON_URL, word.getImgUrl());
-        json.put(JSON_SOUNDREF, word.getSoundRef());
-        json.put(JSON_TRANSLATION, word.getTranslation());
-        json.put(JSON_EXAMPLEEN, word.getExampleEN());
-        json.put(JSON_EXAMPLEESP, word.getExampleESP());
-        json.put(JSON_FAVORITE, word.getFavorite());
-        json.put(JSON_VISIBILITY, word.getVisibility());
+        if(obj instanceof Word){
+            json.put(JSON_WORD, ((Word)obj).getWord());
+            json.put(JSON_DATE, ((Word)obj).getDate());
+            json.put(JSON_URL, ((Word)obj).getImgUrl());
+            json.put(JSON_SOUNDREF, ((Word)obj).getSoundRef());
+            json.put(JSON_TRANSLATION, ((Word)obj).getTranslation());
+            json.put(JSON_EXAMPLEEN, ((Word)obj).getExampleEN());
+            json.put(JSON_EXAMPLEESP, ((Word)obj).getExampleESP());
+            json.put(JSON_FAVORITE,((Word)obj).getFavorite());
+            json.put(JSON_VISIBILITY, ((Word)obj).getVisibility());
+            json.put(JSON_SEARCHED, ((Word)obj).getSearched());
+        }else if (obj instanceof String){
+            json.put(JSON_WORD,obj);
+        }
         return json;
     }
 

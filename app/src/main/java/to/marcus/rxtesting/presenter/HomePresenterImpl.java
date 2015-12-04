@@ -1,6 +1,5 @@
 package to.marcus.rxtesting.presenter;
 
-import android.util.Log;
 import java.util.ArrayList;
 import javax.inject.Inject;
 import rx.functions.Action1;
@@ -37,7 +36,7 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
     public void onStop(){mRepository.saveWords();}
 
     @Override
-    public Word onElementSelected(String position){return mRepository.getWord(position);}
+    public Word onElementSelected(String itemId){return mRepository.getWord(itemId);}
 
     @Override
     public void initWordDataSet(){
@@ -127,4 +126,5 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
     private void showWordList(){
         homeView.showWordList(mRepository.getWordsDataset());
     }
+
 }

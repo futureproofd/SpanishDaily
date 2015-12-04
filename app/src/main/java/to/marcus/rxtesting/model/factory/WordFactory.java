@@ -10,7 +10,5 @@ import to.marcus.rxtesting.model.Words;
  *  2. add some repository data to that word
  */
 public interface WordFactory{
-
     public Word newWordInstance();
-    public Words newWordsInstance();
 }
