@@ -98,6 +98,11 @@ public class RepositoryImpl implements Repository{
         mWordStorage.setHidden(position);
     }
 
+    @Override
+    public void setSearched(String itemId){
+        mWordStorage.setSearched(itemId);
+    }
+
     /*
     Preferences
     */

@@ -45,7 +45,7 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View searchView = inflater.inflate(R.layout.search_history_layout, parent, false);
-        final SearchViewHolder  searchViewHolder = new SearchViewHolder(searchView);
+        final SearchHistoryViewHolder searchHistoryViewHolder = new SearchHistoryViewHolder(searchView);
         View cardView = inflater.inflate(R.layout.card_view_layout, parent, false);
         final CardViewHolder cardViewHolder = new CardViewHolder(cardView);
 
@@ -54,16 +54,16 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             case SEARCHVIEW:
                 result = 1;
                 searchView.setOnClickListener(new View.OnClickListener() {
-                    //listen on presenter for click types
+                    //listen on activity for clicks
                     @Override
                     public void onClick(View view) {
-                        clickListener.onObjectClick(view, (String)searchViewHolder.imageView.getTag());
+                        clickListener.onObjectClick(view, (String) searchHistoryViewHolder.imageView.getTag());
                     }
                 });
                 break;
             case CARDVIEW:
                 cardView.setOnClickListener(new View.OnClickListener() {
-                    //listen on presenter for click types
+                    //listen on activity for clicks
                     @Override
                     public void onClick(View view) {
                         clickListener.onObjectClick(view, (String) cardViewHolder.imageView.getTag());
@@ -78,7 +78,7 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 break;
         }
         if(result == 1){
-            return searchViewHolder;
+            return searchHistoryViewHolder;
         }else{
             return cardViewHolder;
         }
@@ -88,8 +88,8 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         switch (holder.getItemViewType()){
             case SEARCHVIEW:
-                SearchViewHolder searchViewHolder = (SearchViewHolder) holder;
-                configureSearchViewHolder(searchViewHolder, position);
+                SearchHistoryViewHolder searchHistoryViewHolder = (SearchHistoryViewHolder) holder;
+                configureSearchViewHolder(searchHistoryViewHolder, position);
                 break;
             case CARDVIEW:
                 CardViewHolder cardViewHolder = (CardViewHolder) holder;
@@ -106,7 +106,7 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    private void configureSearchViewHolder(SearchViewHolder holder, int position){
+    private void configureSearchViewHolder(SearchHistoryViewHolder holder, int position){
         Word word = mWordArrayList.get(position);
         Uri uri = Uri.parse(word.getImgUrl());
         Context context = holder.imageView.getContext();
@@ -115,7 +115,7 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 .into(holder.imageView);
         //Set TAG as a unique id, instead of position. This allows updates to the original object,
         //independent of DataSet
-        holder.imageView.setTag(word.getImgUrl());
+        holder.textView.setTag(word.getImgUrl());
         holder.textView.setText(word.getWord());
     }
 

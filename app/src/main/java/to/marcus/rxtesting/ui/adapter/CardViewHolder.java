@@ -14,10 +14,8 @@ import to.marcus.rxtesting.R;
 
 //ViewHolder Inner Class
 public class CardViewHolder extends RecyclerView.ViewHolder{
-    @Bind(R.id.imgWord)
-    ImageView imageView;
-    @Bind(R.id.txtWord)
-    TextView wordView;
+    @Bind(R.id.imgWord) ImageView imageView;
+    @Bind(R.id.txtWord) TextView wordView;
     @Bind(R.id.txtDate) TextView dateView;
     @Bind(R.id.card_overflow_menu) ImageView cardMenu;
 
@@ -26,7 +24,4 @@ public class CardViewHolder extends RecyclerView.ViewHolder{
         ButterKnife.bind(this, v);
     }
 
-    public ImageView getImageView(){
-        return imageView;
-    }
 }

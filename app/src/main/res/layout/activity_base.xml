@@ -23,13 +23,49 @@
             android:background="@color/primary_material_light"
             android:elevation="4dp"
             android:theme="@style/Base.ThemeOverlay.AppCompat.Light"
-            />
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_below="@id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingTop="4dp"/>
+            >
+            <AutoCompleteTextView
+                android:id="@+id/search_box"
+                android:singleLine="true"
+                android:gravity="center_vertical|left"
+                android:layout_width="300dp"
+                android:popupBackground="#ffff"
+                android:layout_height="wrap_content"
+                android:dropDownWidth="wrap_content"
+                android:background="@android:color/transparent"
+                android:visibility="gone"
+                android:hint="Español o Inglés"
+                android:completionThreshold="3"
+                />
+            <ImageView
+                android:id="@+id/search_query_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:paddingLeft="16dp"
+                android:paddingRight="4dp"
+                android:src="@drawable/ic_magnify_grey600_24dp"
+                />
+            <ImageView
+                android:id="@+id/search_clear_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:visibility="invisible"
+                android:src="@drawable/ic_close_grey600_36dp"
+                />
+
+        </android.support.v7.widget.Toolbar>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_below="@id/toolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="4dp"/>
+
         <!--Nav Fragments container-->
         <FrameLayout
             android:id="@+id/fragment_container"
@@ -37,7 +73,6 @@
             android:layout_height="match_parent"
             android:layout_below="@id/toolbar"/>
     </RelativeLayout>
-
     <!--Drawer Nav UI-->
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_drawer"
@@ -48,4 +83,5 @@
         android:background="@android:color/white"
         app:menu="@menu/drawer_view"
         app:headerLayout="@layout/nav_header"/>
+
 </android.support.v4.widget.DrawerLayout>

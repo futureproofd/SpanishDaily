@@ -166,7 +166,7 @@ public class HomeActivity extends BaseActivity implements HomeView
         if(layoutType.equals("Search_Layout")){
             intent.putExtra("IMAGE", ImageUtility.getImage((ImageView) v.findViewById(R.id.search_history_image)).toByteArray());
             this.startActivity(intent);
-        }else{
+        }else if (layoutType.equals("Card_Layout")){
             intent.putExtra("IMAGE", ImageUtility.getImage((ImageView) v.findViewById(R.id.imgWord)).toByteArray());
             ImageView wordImage = (ImageView)v.findViewById(R.id.imgWord);
             LinearLayout wordString = (LinearLayout)v.findViewById(R.id.wordNameHolder);
@@ -179,7 +179,10 @@ public class HomeActivity extends BaseActivity implements HomeView
             ActivityOptionsCompat options = ActivityOptionsCompat
                     .makeSceneTransitionAnimation(this, p1, p2);
             ActivityCompat.startActivity(this, intent, options.toBundle());
-           // this.startActivity(intent);
+        }else{
+            //Obtained from SearchFilterAdapter click
+            intent.putExtra("IMAGE", ImageUtility.getImage((ImageView) v.findViewById(R.id.search_row_image)).toByteArray());
+            this.startActivity(intent);
         }
     }
 

@@ -83,6 +83,10 @@ public class WordStorage{
         saveWordsToJSON();
     }
 
+    public void setSearched(String itemId){
+        getWord(itemId).setSearched(1);
+    }
+
     public Word getWord(String itemId){
         Word matchedWord = new Word();
         for(Word word : mWords) {

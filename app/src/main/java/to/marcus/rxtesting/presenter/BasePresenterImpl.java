@@ -1,7 +1,10 @@
 package to.marcus.rxtesting.presenter;
 
+import java.util.ArrayList;
+
 import javax.inject.Inject;
 import to.marcus.rxtesting.data.interactor.WordInteractorImpl;
+import to.marcus.rxtesting.model.Word;
 import to.marcus.rxtesting.model.repository.RepositoryImpl;
 import to.marcus.rxtesting.presenter.view.BaseView;
 
@@ -16,7 +19,7 @@ public class BasePresenterImpl implements BasePresenter<BaseView> {
     private static final String KEY_DEL_WORDS = "key_delete_words";
     private static final String KEY_DEL_FAVS = "key_delete_favs";
     private BaseView baseView;
-    private final WordInteractorImpl wordInteractor; //// TODO: 24/10/15 need another type of interactor?search
+    private final WordInteractorImpl wordInteractor;
     @Inject RepositoryImpl mRepository;
 
     @Inject public BasePresenterImpl(WordInteractorImpl interactor){
@@ -52,5 +55,14 @@ public class BasePresenterImpl implements BasePresenter<BaseView> {
     @Override
     public boolean isNotification(){
         return mRepository.getNotifyPref();
+    }
+
+    @Override
+    public ArrayList<Word> getWordList(){
+        return mRepository.getWordsDataset();
+    }
+
+    public void setSearched(String itemId){
+        mRepository.setSearched(itemId);
     }
 }

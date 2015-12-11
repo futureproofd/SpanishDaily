@@ -14,9 +14,13 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
 import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -29,19 +33,27 @@ import to.marcus.rxtesting.presenter.BasePresenterImpl;
 import to.marcus.rxtesting.presenter.view.BaseView;
 import to.marcus.rxtesting.service.ServiceController;
 import to.marcus.rxtesting.service.WordNotificationService;
+import to.marcus.rxtesting.ui.adapter.RecyclerViewItemClickListener;
+import to.marcus.rxtesting.ui.adapter.SearchAdapterClickListener;
+import to.marcus.rxtesting.ui.adapter.SearchFilterAdapter;
 import to.marcus.rxtesting.ui.fragment.OptionsFragment;
 
 /**
  * Created by marcus on 10/19/2015.
  * BaseActivity to setup navigation framework
  */
-public class BaseActivity extends AppCompatActivity implements BaseView{
+public class BaseActivity extends AppCompatActivity implements BaseView, TextWatcher, SearchAdapterClickListener{
     private final static String TAG = BaseActivity.class.getSimpleName();
     private final static int REQ_CODE = 1337;
+    private boolean mKeyboardStatus;
     private final static String ALARM_ACTION = "ALARM_ACTION";
     private static SharedPreferences.OnSharedPreferenceChangeListener mListener;
     private static SharedPreferences sharedPrefs;
+    private SearchFilterAdapter mSearchFilterAdapter;
     @Bind(R.id.toolbar)         Toolbar mToolbar;
+    @Bind(R.id.search_query_btn)ImageView mSearchBtn;
+    @Bind(R.id.search_clear_btn)ImageView mSearchClrBtn;
+    @Bind(R.id.search_box)      AutoCompleteTextView mSearchBox;
     @Bind(R.id.drawer_layout)   DrawerLayout mDrawerLayout;
     @Bind(R.id.nav_drawer)      NavigationView mNavDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -55,17 +67,11 @@ public class BaseActivity extends AppCompatActivity implements BaseView{
         initInjector();
         mBasePresenterImpl.initPresenter(this);
         initToolbar();
+        initSearchBox();
         setupDrawer();
         setupDrawerNav(mNavDrawer);
         initSharedPrefsListener();
         initNotificationService();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        //todo get click response - access repo for searchHistoryList
-        getMenuInflater().inflate(R.menu.menu_home, menu);
-        return true;
     }
 
     private void initInjector(){
@@ -96,6 +102,11 @@ public class BaseActivity extends AppCompatActivity implements BaseView{
         } else {
             getFragmentManager().popBackStack();
         }
+        if (!isKeyboardActive()){
+            showKeyboard();
+        }else{
+            dismissKeyboard();
+        }
     }
 
     @Override
@@ -114,17 +125,74 @@ public class BaseActivity extends AppCompatActivity implements BaseView{
         }
     }
 
+    private void initSearchBox(){
+        if(mSearchFilterAdapter == null){
+            mSearchFilterAdapter = new SearchFilterAdapter(this, R.layout.activity_base,
+                    R.id.search_row_text, mBasePresenterImpl.getWordList(),this);
+            mSearchBox.setAdapter(mSearchFilterAdapter);
+            mSearchBox.addTextChangedListener(this);
+        }
+        mSearchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                HomeActivity.instance.selectDataSet("search");
+                getSupportActionBar().setTitle("");
+                mSearchBtn.setVisibility(View.GONE);
+                mSearchClrBtn.setVisibility(View.VISIBLE);
+                mSearchBox.setVisibility(View.VISIBLE);
+                mSearchBox.requestFocus();
+            }
+        });
+        mSearchClrBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSearchClrBtn.setVisibility(View.GONE);
+                mSearchBtn.setVisibility(View.VISIBLE);
+                mSearchBox.setVisibility(View.GONE);
+            }
+        });
+        mSearchBox.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!isKeyboardActive()) {
+                    showKeyboard();
+                }else{
+                    dismissKeyboard();
+                    mSearchBox.clearFocus();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count){
+        if(!s.toString().equals("")){
+            mSearchFilterAdapter.getFilter().filter(s.toString());
+        }else if(start == 0 && before > 0 && count == 0){
+            mSearchFilterAdapter.notifyDataSetInvalidated();
+        }
+    }
+
+    @Override
+    public void afterTextChanged(Editable s){}
+
+    //SearchAdapter result click listener
+    @Override
+    public void onSearchResultClick(View v, String itemId){
+        mBasePresenterImpl.setSearched(itemId);
+        HomeActivity.instance.onObjectClick(v, itemId);
+    }
+
     private void setupDrawer(){
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 R.string.drawer_open, R.string.drawer_close){
             @Override
-            public void onDrawerOpened(View drawerView){
-
-            }
+            public void onDrawerOpened(View drawerView){}
             @Override
-            public void onDrawerClosed(View view){
-
-            }
+            public void onDrawerClosed(View view){}
         };
     }
 
@@ -224,6 +292,22 @@ public class BaseActivity extends AppCompatActivity implements BaseView{
                 ,new Intent(appContext, WordNotificationService.class).setAction(ALARM_ACTION)
                 ,PendingIntent.FLAG_UPDATE_CURRENT)
                 .cancel();
+    }
+
+    //todo maybe put these in a utility class
+    public void dismissKeyboard(){
+        InputMethodManager imm =(InputMethodManager)this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mSearchBox.getWindowToken(), 0);
+    }
+
+    public void showKeyboard(){
+        InputMethodManager imm =(InputMethodManager)this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+        mKeyboardStatus = true;
+    }
+
+    private boolean isKeyboardActive(){
+        return mKeyboardStatus;
     }
 
 }
