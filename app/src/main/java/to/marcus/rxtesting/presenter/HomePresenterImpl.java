@@ -36,6 +36,13 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
     public void onStop(){mRepository.saveWords();}
 
     @Override
+    public void onRefresh(){
+        pullLatestWord();
+        if(homeView.isSwipeRefreshing())
+            homeView.hideSwipeRefreshWidget();
+    }
+
+    @Override
     public Word onElementSelected(String itemId){return mRepository.getWord(itemId);}
 
     @Override
@@ -126,5 +133,4 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
     private void showWordList(){
         homeView.showWordList(mRepository.getWordsDataset());
     }
-
 }

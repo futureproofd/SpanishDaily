@@ -1,6 +1,8 @@
 package to.marcus.rxtesting.model;
 
 import android.content.Context;
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,6 +37,8 @@ public class ObjectSerializer{
     private static final String JSON_FAVORITE = "favorite";
     private static final String JSON_VISIBILITY = "visibility";
     private static final String JSON_SEARCHED = "searched";
+
+    private static final String TAG = ObjectSerializer.class.getSimpleName();
 
     public ObjectSerializer(Context c, String filename){
         mAppContext = c;

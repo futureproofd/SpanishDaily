@@ -12,6 +12,9 @@ public interface HomeView {
     void hideLoading();
     void showWordList(ArrayList<Word> words);
     void refreshWordList();
+    void showSwipeRefreshWidget();
+    void hideSwipeRefreshWidget();
+    boolean isSwipeRefreshing();
     void showNotification(String notification);
     Context getContext();
 }

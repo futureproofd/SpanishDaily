@@ -33,7 +33,6 @@ import to.marcus.rxtesting.presenter.BasePresenterImpl;
 import to.marcus.rxtesting.presenter.view.BaseView;
 import to.marcus.rxtesting.service.ServiceController;
 import to.marcus.rxtesting.service.WordNotificationService;
-import to.marcus.rxtesting.ui.adapter.RecyclerViewItemClickListener;
 import to.marcus.rxtesting.ui.adapter.SearchAdapterClickListener;
 import to.marcus.rxtesting.ui.adapter.SearchFilterAdapter;
 import to.marcus.rxtesting.ui.fragment.OptionsFragment;
@@ -42,7 +41,8 @@ import to.marcus.rxtesting.ui.fragment.OptionsFragment;
  * Created by marcus on 10/19/2015.
  * BaseActivity to setup navigation framework
  */
-public class BaseActivity extends AppCompatActivity implements BaseView, TextWatcher, SearchAdapterClickListener{
+public class BaseActivity extends AppCompatActivity implements BaseView, TextWatcher
+        ,SearchAdapterClickListener{
     private final static String TAG = BaseActivity.class.getSimpleName();
     private final static int REQ_CODE = 1337;
     private boolean mKeyboardStatus;
@@ -102,11 +102,8 @@ public class BaseActivity extends AppCompatActivity implements BaseView, TextWat
         } else {
             getFragmentManager().popBackStack();
         }
-        if (!isKeyboardActive()){
-            showKeyboard();
-        }else{
+        if (isKeyboardActive())
             dismissKeyboard();
-        }
     }
 
     @Override
@@ -119,7 +116,7 @@ public class BaseActivity extends AppCompatActivity implements BaseView, TextWat
         setSupportActionBar(mToolbar);
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle("Spanish WOTD");
+            actionBar.setTitle(R.string.title_home);
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeButtonEnabled(true);
         }
@@ -141,6 +138,7 @@ public class BaseActivity extends AppCompatActivity implements BaseView, TextWat
                 mSearchClrBtn.setVisibility(View.VISIBLE);
                 mSearchBox.setVisibility(View.VISIBLE);
                 mSearchBox.requestFocus();
+                showKeyboard();
             }
         });
         mSearchClrBtn.setOnClickListener(new View.OnClickListener() {
@@ -149,6 +147,8 @@ public class BaseActivity extends AppCompatActivity implements BaseView, TextWat
                 mSearchClrBtn.setVisibility(View.GONE);
                 mSearchBtn.setVisibility(View.VISIBLE);
                 mSearchBox.setVisibility(View.GONE);
+                getSupportActionBar().setTitle(R.string.title_search);
+                dismissKeyboard();
             }
         });
         mSearchBox.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -156,14 +156,14 @@ public class BaseActivity extends AppCompatActivity implements BaseView, TextWat
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!isKeyboardActive()) {
                     showKeyboard();
-                }else{
+                } else {
                     dismissKeyboard();
-                    mSearchBox.clearFocus();
                 }
             }
         });
     }
 
+    //textWatcher implementation
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
@@ -184,6 +184,7 @@ public class BaseActivity extends AppCompatActivity implements BaseView, TextWat
     public void onSearchResultClick(View v, String itemId){
         mBasePresenterImpl.setSearched(itemId);
         HomeActivity.instance.onObjectClick(v, itemId);
+        dismissKeyboard();
     }
 
     private void setupDrawer(){
@@ -220,23 +221,25 @@ public class BaseActivity extends AppCompatActivity implements BaseView, TextWat
                 }
                 // Insert the fragment by replacing any existing fragment
                 getFragmentManager().beginTransaction()
-                        .add(R.id.fragment_container, fragment)
+                        .replace(R.id.fragment_container, fragment)
                         .addToBackStack(null)
                         .commit();
                 break;
             case R.id.nav_favorites:
-                HomeActivity.instance.selectDataSet("favorites");
+                getFragmentManager().popBackStackImmediate();
+                HomeActivity.instance.selectDataSet(getString(R.string.dataset_favorite));
                 break;
             case R.id.nav_home:
-                HomeActivity.instance.selectDataSet("unfiltered");
+                getFragmentManager().popBackStackImmediate();
+                HomeActivity.instance.selectDataSet(getString(R.string.dataset_unfiltered));
                 break;
             case R.id.nav_history:
-                HomeActivity.instance.selectDataSet("dismissed");
+                getFragmentManager().popBackStackImmediate();
+                HomeActivity.instance.selectDataSet(getString(R.string.dataset_dismissed));
                 break;
             case R.id.nav_search:
-                HomeActivity.instance.selectDataSet("search");
-            default:
-                fragmentClass = OptionsFragment.class;
+                getFragmentManager().popBackStackImmediate();
+                HomeActivity.instance.selectDataSet(getString(R.string.dataset_search));
         }
         // Highlight the selected item, update the title, and close the drawer
         menuItem.setChecked(true);
@@ -309,5 +312,4 @@ public class BaseActivity extends AppCompatActivity implements BaseView, TextWat
     private boolean isKeyboardActive(){
         return mKeyboardStatus;
     }
-
 }

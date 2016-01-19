@@ -115,7 +115,7 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 .into(holder.imageView);
         //Set TAG as a unique id, instead of position. This allows updates to the original object,
         //independent of DataSet
-        holder.textView.setTag(word.getImgUrl());
+        holder.imageView.setTag(word.getImgUrl());
         holder.textView.setText(word.getWord());
     }
 

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -49,6 +50,7 @@ public class HomeActivity extends BaseActivity implements HomeView
     public static HomeActivity instance = null;
     private static final String WORD_OBJECT = "WORD_OBJECT";
     @Bind(R.id.recycler_view) RecyclerView recyclerView;
+    @Bind(R.id.swipe_refresh_main) SwipeRefreshLayout mSwipeRefresher;
     private WordRecyclerAdapter mWordRecyclerAdapter;
     private StaggeredGridLayoutManager mGridLayoutManager;
     @Inject HomePresenterImpl mHomePresenterImpl;
@@ -59,6 +61,7 @@ public class HomeActivity extends BaseActivity implements HomeView
         instance = this;
         ButterKnife.bind(this);
         initInjector();
+        initSwipeRefreshView();
         initRecyclerView();
         mHomePresenterImpl.initPresenter(this);
         if(savedInstanceState != null){
@@ -102,6 +105,16 @@ public class HomeActivity extends BaseActivity implements HomeView
         recyclerView.setLayoutManager(mGridLayoutManager);
     }
 
+    public void initSwipeRefreshView(){
+        mSwipeRefresher.setColorSchemeColors(R.color.primary);
+        mSwipeRefresher.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mHomePresenterImpl.onRefresh();
+            }
+        });
+    }
+
     public void selectDataSet(String dataSetMode){
         if(mWordRecyclerAdapter == null){
             mHomePresenterImpl.selectDataset(dataSetMode);
@@ -135,6 +148,17 @@ public class HomeActivity extends BaseActivity implements HomeView
     }
 
     @Override
+    public void showSwipeRefreshWidget(){mSwipeRefresher.setRefreshing(true);}
+
+    @Override
+    public void hideSwipeRefreshWidget(){
+        mSwipeRefresher.setRefreshing(false);
+    }
+
+    @Override
+    public boolean isSwipeRefreshing(){return mSwipeRefresher.isRefreshing();}
+
+    @Override
     public void showWordList(ArrayList<Word> wordArrayList){
         if(mWordRecyclerAdapter == null){
             mUnfilteredDataSet = wordArrayList;
@@ -143,7 +167,7 @@ public class HomeActivity extends BaseActivity implements HomeView
             recyclerView.setAdapter(mWordRecyclerAdapter);
         }else{
             mWordRecyclerAdapter.getFilter().filter(dataSetMode);
-            recyclerView.setAdapter(mWordRecyclerAdapter);
+            //mWordRecyclerAdapter.resetDataSet(wordArrayList);
         }
     }
 
@@ -163,10 +187,10 @@ public class HomeActivity extends BaseActivity implements HomeView
         Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra(WORD_OBJECT, mHomePresenterImpl.onElementSelected(itemId));
         String layoutType = (String)v.getTag();
-        if(layoutType.equals("Search_Layout")){
+        if(layoutType.equals(getString(R.string.layoutType_search))){
             intent.putExtra("IMAGE", ImageUtility.getImage((ImageView) v.findViewById(R.id.search_history_image)).toByteArray());
             this.startActivity(intent);
-        }else if (layoutType.equals("Card_Layout")){
+        }else if (layoutType.equals(getString(R.string.layoutType_card))){
             intent.putExtra("IMAGE", ImageUtility.getImage((ImageView) v.findViewById(R.id.imgWord)).toByteArray());
             ImageView wordImage = (ImageView)v.findViewById(R.id.imgWord);
             LinearLayout wordString = (LinearLayout)v.findViewById(R.id.wordNameHolder);

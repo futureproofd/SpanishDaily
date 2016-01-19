@@ -21,7 +21,8 @@ public class OptionsFragment extends PreferenceFragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view = super.onCreateView(inflater, container, savedInstanceState);
-        view.setBackgroundColor(getResources().getColor(android.R.color.white));
+        if(view != null)
+            view.setBackgroundColor(getResources().getColor(android.R.color.white));
         return view;
     }
 }

@@ -11,9 +11,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 import to.marcus.rxtesting.R;
 import to.marcus.rxtesting.model.Word;
@@ -65,13 +63,12 @@ public class SearchFilterAdapter extends ArrayAdapter<Word> implements Filterabl
                     .load(uri)
                     .into(holder.imgWord);
                 holder.imgWord.setTag(w.getImgUrl());
-               // holder.txtWordEN.setTag(w.getImgUrl());
                 holder.txtWord.setText(w.getWord());
                 holder.txtWordEN.setText(": " + w.getTranslation());
                 holder.imgWord.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.i(TAG, "Clicked " + holder.txtWord.getTag());
+                        Log.i(TAG, "Clicked " + holder.imgWord.getTag());
                         clickListener.onSearchResultClick(v, (String) holder.imgWord.getTag());
                     }
                 });
@@ -95,12 +92,16 @@ public class SearchFilterAdapter extends ArrayAdapter<Word> implements Filterabl
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults results = new FilterResults();
                 ArrayList<Word> values = new ArrayList<>();
-                for (Word w : mWordArrayList)
-                    if (w.getWord().startsWith(constraint.toString().toLowerCase())){
-                        values.add(w);
-                    }else if(w.getTranslation().startsWith(constraint.toString().toLowerCase())){
-                        values.add(w);
-                    }
+                try{
+                    for (Word w : mWordArrayList)
+                        if (w.getWord().startsWith(constraint.toString().toLowerCase())){
+                            values.add(w);
+                        }else if(w.getTranslation().startsWith(constraint.toString().toLowerCase())){
+                            values.add(w);
+                        }
+                }catch (NullPointerException n){
+                    Log.i(TAG, "no word found");
+                }
                 results.values = values;
                 results.count = values.size();
                 return results;
@@ -109,8 +110,12 @@ public class SearchFilterAdapter extends ArrayAdapter<Word> implements Filterabl
             @SuppressWarnings("unchecked")
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results){
-                mSearchResults = (ArrayList<Word>)results.values;
-                notifyDataSetChanged();
+                if(results.count == 0){
+                    notifyDataSetInvalidated();
+                }else{
+                    mSearchResults = (ArrayList<Word>)results.values;
+                    notifyDataSetChanged();
+                }
             }
         };
     }

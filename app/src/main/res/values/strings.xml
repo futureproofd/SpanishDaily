@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">RxTesting</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="app_name">Spanish WOTD</string>
+    <string name="title_home">Spanish WOTD</string>
+    <string name="title_search">Buscar</string>
     <string name="action_search">Search</string>
     <string name="DETAIL_WORD">word detail</string>
     <string name="transition_word">word transition</string>
@@ -12,6 +13,13 @@
         <item>Add to favorites</item>
         <item>Dismiss Card</item>
     </string-array>
+    <!--Selection filters-->
+    <string name="dataset_favorite">favorites</string>
+    <string name="dataset_unfiltered">unfiltered</string>
+    <string name="dataset_dismissed">dismissed</string>
+    <string name="dataset_search">search</string>
+    <string name="layoutType_search">Search_Layout</string>
+    <string name="layoutType_card">Card_Layout</string>
     <!--Preferences for OptionsFragment-->
     <string name="pref_key_wireless">key_wireless</string>
     <string name="pref_key_pull">key_pull</string>
@@ -31,4 +39,10 @@
     <string name="pref_title_del_favs">Remove Favorites</string>
     <!--Notification Identifiers -->
     <string name="notification_title">Word of the day</string>
+    <string name="notification_removed">Removed from Favorites</string>
+    <string name="notification_added">Added to Favorites</string>
+    <string name="playback_toast">play sound</string>
+    <!--filename params -->
+    <string name="temp_filename">temp</string>
+    <string name="filetype_mp3">mp3</string>
 </resources>

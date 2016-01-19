@@ -27,6 +27,7 @@ public interface Repository {
     void deleteWords();
     void deleteFavorites();
     void setSearched(String itemId);
+    int getSearched(String itemId);
     //Preference values
     void saveWirelessPref(String key, boolean value);
     void saveNotifyPref(String key, boolean value);

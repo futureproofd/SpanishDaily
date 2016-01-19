@@ -75,7 +75,7 @@ public class DetailActivity extends AppCompatActivity implements DetailView,
         btnNarration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(DetailActivity.this, "play sound", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetailActivity.this, R.string.playback_toast, Toast.LENGTH_SHORT).show();
                 mDetailPresenterImpl.onElementSelected(txtSoundRef);
             }
         });
@@ -114,14 +114,14 @@ public class DetailActivity extends AppCompatActivity implements DetailView,
                     int id = item.getItemId();
                     switch(id){
                         case R.id.action_favorite:
-                            if (mWord.getFavorite() == 1) {
+                            if (mWord.getFavorite() == 1){
                                 actionFavorite.setIcon(R.drawable.ic_star_outline_white_24dp);
-                                showNotification("Removed from Favorites");
+                                showNotification(getString(R.string.notification_removed));
                                 mWord.setFavorite(0);
                                 mDetailPresenterImpl.onFavoriteToggled(mWord);
-                            } else {
+                            }else{
                                 actionFavorite.setIcon(R.drawable.ic_star_white_24dp);
-                                showNotification("Added to Favorites");
+                                showNotification(getString(R.string.notification_added));
                                 mWord.setFavorite(1);
                                 mDetailPresenterImpl.onFavoriteToggled(mWord);
                             }
@@ -163,7 +163,7 @@ public class DetailActivity extends AppCompatActivity implements DetailView,
     @Override
     public void onClickPlayback(byte[] soundByte) {
         try{
-            File tempMp3 = File.createTempFile("temp","mp3");
+            File tempMp3 = File.createTempFile(getString(R.string.temp_filename),getString(R.string.filetype_mp3));
             tempMp3.deleteOnExit();
             FileOutputStream fos = new FileOutputStream(tempMp3);
             fos.write(soundByte);

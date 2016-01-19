@@ -63,6 +63,7 @@ public class BasePresenterImpl implements BasePresenter<BaseView> {
     }
 
     public void setSearched(String itemId){
-        mRepository.setSearched(itemId);
+        if(mRepository.getSearched(itemId) == 0)
+            mRepository.setSearched(itemId);
     }
 }

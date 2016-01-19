@@ -87,6 +87,10 @@ public class WordStorage{
         getWord(itemId).setSearched(1);
     }
 
+    public int getSearched(String itemId){
+        return getWord(itemId).getSearched();
+    }
+
     public Word getWord(String itemId){
         Word matchedWord = new Word();
         for(Word word : mWords) {
@@ -102,7 +106,11 @@ public class WordStorage{
     }
 
     public String getLatestDate(){
-        return mWords.get(mWords.size() -1).getDate();
+        if(wordCount() > 0){
+            return mWords.get(mWords.size() -1).getDate();
+        }else{
+            return "January 1, 1970";
+        }
     }
 
     public Word getLatestWord(){

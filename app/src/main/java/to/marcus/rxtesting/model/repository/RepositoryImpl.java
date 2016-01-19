@@ -103,6 +103,11 @@ public class RepositoryImpl implements Repository{
         mWordStorage.setSearched(itemId);
     }
 
+    @Override
+    public int getSearched(String itemId){
+        return mWordStorage.getSearched(itemId);
+    }
+
     /*
     Preferences
     */
