@@ -5,11 +5,15 @@ import android.os.Parcelable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
+
+import to.marcus.rxtesting.util.DateUtility;
+
 /**
  * Created by marcus on 9/4/2015
  */
 
-public class Word implements Parcelable {
+public class Word implements Parcelable, Comparable {
     private String date;
     private String imgUrl;
     private String word;
@@ -133,7 +137,16 @@ public class Word implements Parcelable {
         out.writeInt(searched);
     }
 
+    //Compare dates
+    @Override
+    public int compareTo(Object wordToCompare) {
+        Date dtCompareDate = DateUtility.formatDateString(((Word)wordToCompare).getDate());
+        Date dtOriginalDate = DateUtility.formatDateString(this.getDate());
+        return dtOriginalDate.compareTo(dtCompareDate);
+    }
+
     //generally unused
     @Override
     public int describeContents(){return 0;}
+
 }

@@ -6,7 +6,6 @@ import android.os.Build;
 import android.view.Window;
 import android.view.WindowManager;
 
-
 /**
  * Created by marcus on 10/16/2015
  */

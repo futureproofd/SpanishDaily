@@ -86,12 +86,12 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-        switch (holder.getItemViewType()){
-            case SEARCHVIEW:
+       switch (this.getItemViewType(position)){
+           case SEARCHVIEW:
                 SearchHistoryViewHolder searchHistoryViewHolder = (SearchHistoryViewHolder) holder;
                 configureSearchViewHolder(searchHistoryViewHolder, position);
                 break;
-            case CARDVIEW:
+           case CARDVIEW:
                 CardViewHolder cardViewHolder = (CardViewHolder) holder;
                 configureCardViewHolder(cardViewHolder, position);
         }
@@ -256,5 +256,4 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         };
         return filter;
     }
-
 }

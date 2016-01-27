@@ -7,14 +7,16 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -30,7 +32,9 @@ import to.marcus.rxtesting.presenter.view.HomeView;
 import to.marcus.rxtesting.ui.CardDialogFragment;
 import to.marcus.rxtesting.ui.adapter.RecyclerViewItemClickListener;
 import to.marcus.rxtesting.ui.adapter.RecyclerViewMenuClickListener;
+import to.marcus.rxtesting.ui.adapter.SectionedGridRecyclerViewAdapter;
 import to.marcus.rxtesting.ui.adapter.WordRecyclerAdapter;
+import to.marcus.rxtesting.util.DateUtility;
 import to.marcus.rxtesting.util.ImageUtility;
 
 /*
@@ -52,11 +56,14 @@ public class HomeActivity extends BaseActivity implements HomeView
     @Bind(R.id.recycler_view) RecyclerView recyclerView;
     @Bind(R.id.swipe_refresh_main) SwipeRefreshLayout mSwipeRefresher;
     private WordRecyclerAdapter mWordRecyclerAdapter;
-    private StaggeredGridLayoutManager mGridLayoutManager;
+    private SectionedGridRecyclerViewAdapter mSectionedAdapter;
+    private SectionedGridRecyclerViewAdapter.Section[] mSectionArray;
+    private List<SectionedGridRecyclerViewAdapter.Section> mSectionList;
+    private GridLayoutManager mGridLayoutManager;
     @Inject HomePresenterImpl mHomePresenterImpl;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         instance = this;
         ButterKnife.bind(this);
@@ -100,7 +107,8 @@ public class HomeActivity extends BaseActivity implements HomeView
     }
 
     public void initRecyclerView(){
-        mGridLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
+        //temp changed this from staggered
+        mGridLayoutManager = new GridLayoutManager(this, 1);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(mGridLayoutManager);
     }
@@ -115,20 +123,26 @@ public class HomeActivity extends BaseActivity implements HomeView
         });
     }
 
+    //NavDrawer selection
     public void selectDataSet(String dataSetMode){
         if(mWordRecyclerAdapter == null){
             mHomePresenterImpl.selectDataset(dataSetMode);
         }else{
             switch (dataSetMode){
                 case UNFILTERED_MODE:  mGridLayoutManager.setSpanCount(1);
+                    mSectionedAdapter.setSections(DateUtility.getSectionList().toArray(mSectionArray));
                     break;
                 case FAVORITES_MODE:   mGridLayoutManager.setSpanCount(2);
+                    mSectionedAdapter.removeSections();
                     break;
                 case DISMISSED_MODE:   mGridLayoutManager.setSpanCount(2);
+                    mSectionedAdapter.removeSections();
                     break;
                 case SEARCH_MODE:      mGridLayoutManager.setSpanCount(1);
+                    mSectionedAdapter.removeSections();
                     break;
             }
+            this.dataSetMode = dataSetMode;
             mWordRecyclerAdapter.resetDataSet(mUnfilteredDataSet);
             mWordRecyclerAdapter.setDataSetMode(dataSetMode);
             mWordRecyclerAdapter.getFilter().filter(dataSetMode);
@@ -160,15 +174,24 @@ public class HomeActivity extends BaseActivity implements HomeView
 
     @Override
     public void showWordList(ArrayList<Word> wordArrayList){
+        mUnfilteredDataSet = wordArrayList;
         if(mWordRecyclerAdapter == null){
-            mUnfilteredDataSet = wordArrayList;
-            mWordRecyclerAdapter = new WordRecyclerAdapter(wordArrayList, this, this);
+            Collections.sort(mUnfilteredDataSet);
+            mWordRecyclerAdapter = new WordRecyclerAdapter(mUnfilteredDataSet, this, this);
             mWordRecyclerAdapter.getFilter().filter(dataSetMode);
-            recyclerView.setAdapter(mWordRecyclerAdapter);
+            initSectionAdapter();
+            recyclerView.setAdapter(mSectionedAdapter);
         }else{
             mWordRecyclerAdapter.getFilter().filter(dataSetMode);
-            //mWordRecyclerAdapter.resetDataSet(wordArrayList);
+            mWordRecyclerAdapter.resetDataSet(mUnfilteredDataSet);
         }
+    }
+
+    private void initSectionAdapter(){
+        mSectionList = DateUtility.sortWordsByMonth(mUnfilteredDataSet);
+        mSectionArray = new SectionedGridRecyclerViewAdapter.Section[mSectionList.size()];
+        mSectionedAdapter = new SectionedGridRecyclerViewAdapter(this,R.layout.section,R.id.section_text,recyclerView,mWordRecyclerAdapter);
+        mSectionedAdapter.setSections(mSectionList.toArray(mSectionArray));
     }
 
     @Override
