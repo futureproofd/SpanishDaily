@@ -75,6 +75,8 @@ public class DateUtility {
         }
     }
 
+
+
     //Build Sections, sorted by month
     public static List<SectionedGridRecyclerViewAdapter.Section> sortWordsByMonth(ArrayList<Word> words){
         //reset list
@@ -124,50 +126,62 @@ public class DateUtility {
                     if(entry.getValue() == 0 && !getStartMonth(mWords).equals(JANUARY)){
                         monthHashMap.remove(JANUARY);
                     }
+                    break;
                 case FEBRUARY:
                     if(entry.getValue() == 0 && !getStartMonth(mWords).equals(FEBRUARY)){
                         monthHashMap.remove(FEBRUARY);
                     }
+                    break;
                 case MARCH:
                     if(entry.getValue() == 0 && !getStartMonth(mWords).equals(MARCH)){
                         monthHashMap.remove(MARCH);
                     }
+                    break;
                 case APRIL:
                     if(entry.getValue() == 0 && !getStartMonth(mWords).equals(APRIL)){
                         monthHashMap.remove(APRIL);
                     }
+                    break;
                 case MAY:
                     if(entry.getValue() == 0 && !getStartMonth(mWords).equals(MAY)){
                         monthHashMap.remove(MAY);
                     }
+                    break;
                 case JUNE:
                     if(entry.getValue() == 0 && !getStartMonth(mWords).equals(JUNE)){
                         monthHashMap.remove(JUNE);
                     }
+                    break;
                 case JULY:
                     if(entry.getValue() == 0 && !getStartMonth(mWords).equals(JULY)){
                         monthHashMap.remove(JULY);
                     }
+                    break;
                 case AUGUST:
                     if(entry.getValue() == 0 && !getStartMonth(mWords).equals(AUGUST)){
                         monthHashMap.remove(AUGUST);
                     }
+                    break;
                 case SEPTEMBER:
                     if(entry.getValue() == 0 && !getStartMonth(mWords).equals(SEPTEMBER)){
                         monthHashMap.remove(SEPTEMBER);
                     }
+                    break;
                 case OCTOBER:
                     if(entry.getValue() == 0 && !getStartMonth(mWords).equals(OCTOBER)){
                         monthHashMap.remove(OCTOBER);
                     }
+                    break;
                 case NOVEMBER:
                     if(entry.getValue() == 0 && !getStartMonth(mWords).equals(NOVEMBER)){
                         monthHashMap.remove(NOVEMBER);
                     }
+                    break;
                 case DECEMBER:
                     if(entry.getValue() == 0 && !getStartMonth(mWords).equals(DECEMBER)){
                         monthHashMap.remove(DECEMBER);
                     }
+                    break;
             }
         }
         for(Map.Entry<String, Integer> entry : monthHashMap.entrySet()){

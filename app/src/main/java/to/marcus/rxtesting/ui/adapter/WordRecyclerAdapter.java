@@ -125,6 +125,8 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         Context context = holder.imageView.getContext();
         Picasso.with(context)
                 .load(uri)
+                //todo use a spinner or something here
+                .placeholder(R.drawable.ic_history_grey600_18dp)
                 .into(holder.imageView, new Callback.EmptyCallback() {
                     @Override
                     public void onSuccess() {

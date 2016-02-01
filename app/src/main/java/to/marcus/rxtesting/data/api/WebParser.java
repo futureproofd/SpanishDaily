@@ -25,6 +25,7 @@ public class WebParser {
     private final String TAG = WebParser.class.getSimpleName();
     //EndPoints
     private static final String WEBROOT ="http://www.spanishcentral.com";
+    private static final String IMGROOT = "http://assets.merriam-webster.com/sc/word_of_the_day";
     private static final String ENDPOINT = "http://www.spanishcentral.com/word-of-the-day";
     private static final String SOUNDBYTE_ENDPOINT = "http://media.merriam-webster.com/audio/prons/es/me/mp3/";
     //Elements
@@ -74,7 +75,7 @@ public class WebParser {
                     elementHolder = elementDiv.first().text();
                     elementArray.add(2, elementHolder);
                     elementDiv = doc.select(PHOTO_ELEMENT);
-                    elementHolder = WEBROOT + elementDiv.select("img").first().attr("src");
+                    elementHolder = elementDiv.select("img").first().attr("src");
                     elementArray.add(3, elementHolder);
                     elementDiv = doc.select(TRANSLATION_ELEMENT);
                     elementHolder = elementDiv.select("p").first().text();

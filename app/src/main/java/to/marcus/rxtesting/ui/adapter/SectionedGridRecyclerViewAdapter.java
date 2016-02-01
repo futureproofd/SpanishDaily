@@ -92,7 +92,6 @@ public class SectionedGridRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
             final View view = LayoutInflater.from(mContext).inflate(mSectionResourceId, parent, false);
             return new SectionViewHolder(view,mTextResourceId);
         }else{
-            //todo look into the typeview int (should reflect either searchview or cardview
             return mWordRecyclerAdapter.onCreateViewHolder(parent, typeView -1);
         }
     }
@@ -151,7 +150,7 @@ public class SectionedGridRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
         notifyDataSetChanged();
     }
 
-    // MP - Added method to toggle sections between NavDrawer selections
+    // Marcus.P - Added method to toggle sections between NavDrawer selections
     public void removeSections(){
         mSections.clear();
         notifyDataSetChanged();
