@@ -10,4 +10,5 @@ public class Constants {
     public static final String FAVORITES_MODE = "favorites";
     public static final String DISMISSED_MODE = "dismissed";
     public static final String SEARCH_MODE = "search";
+    public static final String GRID_COLUMN_COUNT = "grid_column_count";
 }

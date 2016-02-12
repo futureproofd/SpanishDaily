@@ -10,12 +10,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Filter;
 import android.widget.Filterable;
 import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import to.marcus.rxtesting.R;
+import to.marcus.rxtesting.data.cache.PicassoCache;
 import to.marcus.rxtesting.model.Word;
 
 /**
@@ -29,16 +36,19 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private ArrayList<Word> mWordArrayList;
     private final RecyclerViewItemClickListener clickListener;
     private final RecyclerViewMenuClickListener menuClickListener;
+    private Context mContext;
     private String mDataSetMode;
     private final int CARDVIEW = 0;
     private final int SEARCHVIEW = 1;
 
     public WordRecyclerAdapter(ArrayList<Word> wordArrayList
             ,RecyclerViewItemClickListener listener
-            ,RecyclerViewMenuClickListener menuListener){
+            ,RecyclerViewMenuClickListener menuListener
+            ,Context context){
         this.mWordArrayList = wordArrayList;
         this.clickListener = listener;
         this.menuClickListener = menuListener;
+        this.mContext = context;
     }
 
     @Override
@@ -110,51 +120,50 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         Word word = mWordArrayList.get(position);
         Uri uri = Uri.parse(word.getImgUrl());
         Context context = holder.imageView.getContext();
-        Picasso.with(context)
-                .load(uri)
-                .into(holder.imageView);
+        PicassoCache.getPicassoInstance(context)
+            .load(uri)
+            .into(holder.imageView);
         //Set TAG as a unique id, instead of position. This allows updates to the original object,
         //independent of DataSet
         holder.imageView.setTag(word.getImgUrl());
         holder.textView.setText(word.getWord());
     }
 
-    private void configureCardViewHolder(final CardViewHolder holder, int position){
+    private void configureCardViewHolder(final CardViewHolder holder, final int position){
         Word word = mWordArrayList.get(position);
         Uri uri = Uri.parse(word.getImgUrl());
         Context context = holder.imageView.getContext();
-        Picasso.with(context)
-                .load(uri)
-                //todo use a spinner or something here
-                .placeholder(R.drawable.ic_history_grey600_18dp)
-                .into(holder.imageView, new Callback.EmptyCallback() {
-                    @Override
-                    public void onSuccess() {
-                        Bitmap bitmap = ((BitmapDrawable) holder.imageView.getDrawable()).getBitmap();
-                        Palette.from(bitmap)
-                                .generate(new Palette.PaletteAsyncListener() {
-                                    @Override
-                                    public void onGenerated(Palette palette) {
-                                        if (palette != null) {
-                                            final Palette.Swatch swatch = getSwatch(palette);
-                                            holder.wordView.setBackgroundColor(swatch.getRgb());
-                                            holder.wordView.setTextColor(swatch.getBodyTextColor());
-                                            holder.dateView.setTextColor(swatch.getBodyTextColor());
-                                            holder.cardMenu.setColorFilter(palette.getMutedColor(0x000000), PorterDuff.Mode.MULTIPLY);
-                                        }
+        PicassoCache.getPicassoInstance(context)
+            .load(uri)
+            .into(holder.imageView, new Callback.EmptyCallback() {
+                @Override
+                public void onSuccess() {
+                    Bitmap bitmap = ((BitmapDrawable) holder.imageView.getDrawable()).getBitmap();
+                    Palette.from(bitmap)
+                            .generate(new Palette.PaletteAsyncListener() {
+                                @Override
+                                public void onGenerated(Palette palette) {
+                                    if (palette != null) {
+                                        final Palette.Swatch swatch = getSwatch(palette);
+                                        holder.wordView.setBackgroundColor(swatch.getRgb());
+                                        holder.wordView.setTextColor(swatch.getBodyTextColor());
+                                        holder.dateView.setTextColor(swatch.getBodyTextColor());
+                                        holder.cardMenu.setColorFilter(palette.getMutedColor(0x000000), PorterDuff.Mode.MULTIPLY);
                                     }
-                                });
-                    }
-                    @Override
-                    public void onError() {
-                        holder.wordView.setBackgroundColor(0x000000);
-                    }
-                });
+                                }
+                            });
+                }
+                @Override
+                public void onError() {
+                    holder.wordView.setBackgroundColor(0x000000);
+                }
+            });
         holder.wordView.setText(word.getWord());
         holder.dateView.setText(word.getDate());
         //Set TAG as a unique id, instead of position. This allows updates to the original object,
         //independent of DataSet
         holder.imageView.setTag(word.getImgUrl());
+        setAnimation(holder.itemView, position);
     }
 
     @Override
@@ -162,10 +171,13 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return mWordArrayList.size();
     }
 
+    //Using iterator to avoid ConcurrentModificationException while using a for loop
     public void removeItem(String itemId){
-        for(Word word : mWordArrayList) {
-            if (word.getImgUrl().equals(itemId)) {
-                mWordArrayList.remove(word);
+        List<Word> toBeRemoved = new ArrayList<Word>();
+        for(Iterator<Word> wordIterator = mWordArrayList.iterator(); wordIterator.hasNext();){
+            Word word = wordIterator.next();
+            if(word.getImgUrl().equals(itemId)){
+                wordIterator.remove();
                 notifyItemRemoved(mWordArrayList.indexOf(word));
             }
         }
@@ -257,5 +269,15 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
         };
         return filter;
+    }
+
+    private void setAnimation(View viewToAnimate, int position){
+        int lastPosition = -1;
+        if(position>lastPosition){
+            Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.push_left_in);
+            viewToAnimate.startAnimation(animation);
+            lastPosition=position;
+        }
+
     }
 }

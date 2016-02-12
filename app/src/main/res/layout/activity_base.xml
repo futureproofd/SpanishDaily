@@ -47,6 +47,15 @@
                 android:src="@drawable/ic_magnify_grey600_24dp"
                 />
             <ImageView
+                android:id="@+id/grid_toggle_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:paddingLeft="16dp"
+                android:paddingRight="4dp"
+                android:src="@drawable/ic_view_grid_grey600_24dp"
+                />
+            <ImageView
                 android:id="@+id/search_clear_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

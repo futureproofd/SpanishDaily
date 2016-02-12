@@ -53,9 +53,7 @@ public class BasePresenterImpl implements BasePresenter<BaseView> {
     }
 
     @Override
-    public boolean isNotification(){
-        return mRepository.getNotifyPref();
-    }
+    public boolean isNotification(){return mRepository.getNotifyPref();}
 
     @Override
     public ArrayList<Word> getWordList(){

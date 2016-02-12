@@ -25,6 +25,7 @@ public class DateUtility {
     //Defaults for word Sorting methods
     private static List<SectionedGridRecyclerViewAdapter.Section> sectionList = new ArrayList<>();
     private static String month = "";
+    private static String previousMonth = "";
     private static String startMonth = "";
     private static Map<String, Integer> monthHashMap = new LinkedHashMap<>();
     private static ArrayList<Word> mWords = new ArrayList<>();
@@ -75,8 +76,6 @@ public class DateUtility {
         }
     }
 
-
-
     //Build Sections, sorted by month
     public static List<SectionedGridRecyclerViewAdapter.Section> sortWordsByMonth(ArrayList<Word> words){
         //reset list
@@ -91,31 +90,47 @@ public class DateUtility {
         while(i < mWords.size()){
             month = mWords.get(i).getDate();
             month = month.substring(0, month.indexOf(" "));
-            switch (month){
-                case JANUARY:   buildMonthMappings(JANUARY, i);
-                    break;
-                case FEBRUARY:  buildMonthMappings(FEBRUARY,i);
-                    break;
-                case MARCH:     buildMonthMappings(MARCH, i);
-                    break;
-                case APRIL:     buildMonthMappings(APRIL,i);
-                    break;
-                case MAY:       buildMonthMappings(MAY,i);
-                    break;
-                case JUNE:      buildMonthMappings(JUNE,i);
-                    break;
-                case JULY:      buildMonthMappings(JULY,i);
-                    break;
-                case AUGUST:    buildMonthMappings(AUGUST,i);
-                    break;
-                case SEPTEMBER: buildMonthMappings(SEPTEMBER,i);
-                    break;
-                case OCTOBER:   buildMonthMappings(OCTOBER,i);
-                    break;
-                case NOVEMBER:  buildMonthMappings(NOVEMBER,i);
-                    break;
-                case DECEMBER:  buildMonthMappings(DECEMBER,i);
-                    break;
+            if(!previousMonth.equals(month)) {
+                switch (month) {
+                    case JANUARY:
+                        buildMonthMappings(JANUARY, i);
+                        previousMonth = month;
+                        break;
+                    case FEBRUARY:
+                        buildMonthMappings(FEBRUARY, i);
+                        previousMonth = month;
+                        break;
+                    case MARCH:
+                        buildMonthMappings(MARCH, i);
+                        break;
+                    case APRIL:
+                        buildMonthMappings(APRIL, i);
+                        break;
+                    case MAY:
+                        buildMonthMappings(MAY, i);
+                        break;
+                    case JUNE:
+                        buildMonthMappings(JUNE, i);
+                        break;
+                    case JULY:
+                        buildMonthMappings(JULY, i);
+                        break;
+                    case AUGUST:
+                        buildMonthMappings(AUGUST, i);
+                        break;
+                    case SEPTEMBER:
+                        buildMonthMappings(SEPTEMBER, i);
+                        break;
+                    case OCTOBER:
+                        buildMonthMappings(OCTOBER, i);
+                        break;
+                    case NOVEMBER:
+                        buildMonthMappings(NOVEMBER, i);
+                        break;
+                    case DECEMBER:
+                        buildMonthMappings(DECEMBER, i);
+                        break;
+                }
             }
             i++;
         }

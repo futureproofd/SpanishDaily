@@ -53,6 +53,7 @@ public class BaseActivity extends AppCompatActivity implements BaseView, TextWat
     @Bind(R.id.toolbar)         Toolbar mToolbar;
     @Bind(R.id.search_query_btn)ImageView mSearchBtn;
     @Bind(R.id.search_clear_btn)ImageView mSearchClrBtn;
+    @Bind(R.id.grid_toggle_btn) ImageView mGridToggle;
     @Bind(R.id.search_box)      AutoCompleteTextView mSearchBox;
     @Bind(R.id.drawer_layout)   DrawerLayout mDrawerLayout;
     @Bind(R.id.nav_drawer)      NavigationView mNavDrawer;
@@ -68,6 +69,7 @@ public class BaseActivity extends AppCompatActivity implements BaseView, TextWat
         mBasePresenterImpl.initPresenter(this);
         initToolbar();
         initSearchBox();
+        initGridToggle();
         setupDrawer();
         setupDrawerNav(mNavDrawer);
         initSharedPrefsListener();
@@ -135,6 +137,7 @@ public class BaseActivity extends AppCompatActivity implements BaseView, TextWat
                 HomeActivity.instance.selectDataSet("search");
                 getSupportActionBar().setTitle("");
                 mSearchBtn.setVisibility(View.GONE);
+                mGridToggle.setVisibility(View.GONE);
                 mSearchClrBtn.setVisibility(View.VISIBLE);
                 mSearchBox.setVisibility(View.VISIBLE);
                 mSearchBox.requestFocus();
@@ -159,6 +162,16 @@ public class BaseActivity extends AppCompatActivity implements BaseView, TextWat
                 } else {
                     dismissKeyboard();
                 }
+            }
+        });
+    }
+
+    private void initGridToggle(){
+        mGridToggle.setVisibility(View.VISIBLE);
+        mGridToggle.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                HomeActivity.instance.setGridColumnCount();
             }
         });
     }

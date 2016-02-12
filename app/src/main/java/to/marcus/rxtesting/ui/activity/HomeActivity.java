@@ -7,6 +7,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -46,6 +47,7 @@ public class HomeActivity extends BaseActivity implements HomeView
         ,CardDialogFragment.CardDialogListener {
     public final String TAG = HomeActivity.class.getSimpleName();
     public String dataSetMode = "unfiltered"; //default dataset
+    private int columnCount = 1;
     private final String UNFILTERED_MODE = Constants.MAIN_MODE;
     private final String DISMISSED_MODE = Constants.DISMISSED_MODE;
     private final String FAVORITES_MODE = Constants.FAVORITES_MODE;
@@ -73,6 +75,7 @@ public class HomeActivity extends BaseActivity implements HomeView
         mHomePresenterImpl.initPresenter(this);
         if(savedInstanceState != null){
             dataSetMode = savedInstanceState.getString(Constants.MODE_KEY);
+            columnCount = savedInstanceState.getInt(Constants.GRID_COLUMN_COUNT);
             selectDataSet(dataSetMode);
         }else{
             selectDataSet(dataSetMode);
@@ -93,8 +96,9 @@ public class HomeActivity extends BaseActivity implements HomeView
 
     @Override
     public void onSaveInstanceState(Bundle outState){
-        outState.putString(Constants.MODE_KEY, dataSetMode);
         super.onSaveInstanceState(outState);
+        outState.putString(Constants.MODE_KEY, dataSetMode);
+        outState.putInt(Constants.GRID_COLUMN_COUNT, columnCount);
     }
 
     private void initInjector(){
@@ -109,6 +113,7 @@ public class HomeActivity extends BaseActivity implements HomeView
     public void initRecyclerView(){
         //temp changed this from staggered
         mGridLayoutManager = new GridLayoutManager(this, 1);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(mGridLayoutManager);
     }
@@ -176,8 +181,9 @@ public class HomeActivity extends BaseActivity implements HomeView
     public void showWordList(ArrayList<Word> wordArrayList){
         mUnfilteredDataSet = wordArrayList;
         if(mWordRecyclerAdapter == null){
+            //todo is this really needed? sorting is done in utility class
             Collections.sort(mUnfilteredDataSet);
-            mWordRecyclerAdapter = new WordRecyclerAdapter(mUnfilteredDataSet, this, this);
+            mWordRecyclerAdapter = new WordRecyclerAdapter(mUnfilteredDataSet, this, this, this);
             mWordRecyclerAdapter.getFilter().filter(dataSetMode);
             initSectionAdapter();
             recyclerView.setAdapter(mSectionedAdapter);
@@ -246,13 +252,28 @@ public class HomeActivity extends BaseActivity implements HomeView
     //CardView dialog listeners
     @Override
     public void onDialogClickDismiss(CardDialogFragment dialogFragment, String itemId){
-        mHomePresenterImpl.onDismissOptionSelected(itemId);
         mWordRecyclerAdapter.removeItem(itemId);
+        mHomePresenterImpl.onDismissOptionSelected(itemId);
     }
 
     @Override
     public void onDialogClickFavorite(CardDialogFragment dialogFragment, String itemId){
         mHomePresenterImpl.onFavOptionSelected(itemId);
+    }
+
+    public void setGridColumnCount(){
+        if(columnCount == 1){
+            showNotification("Grid View");
+            mGridLayoutManager.setSpanCount(2);
+            columnCount = 2;
+        }else{
+            showNotification("List View");
+            mGridLayoutManager.setSpanCount(1);
+            columnCount = 1;
+        }
+        mWordRecyclerAdapter.resetDataSet(mUnfilteredDataSet);
+        mWordRecyclerAdapter.setDataSetMode(dataSetMode);
+        mWordRecyclerAdapter.getFilter().filter(dataSetMode);
     }
 
 }
