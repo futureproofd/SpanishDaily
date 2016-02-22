@@ -26,6 +26,7 @@ public interface Repository {
     void deleteWord(String itemId);
     void deleteWords();
     void deleteFavorites();
+    void deleteRecycled();
     void setSearched(String itemId);
     int getSearched(String itemId);
     //Preference values

@@ -68,7 +68,6 @@ public class SearchFilterAdapter extends ArrayAdapter<Word> implements Filterabl
                 holder.imgWord.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.i(TAG, "Clicked " + holder.imgWord.getTag());
                         clickListener.onSearchResultClick(v, (String) holder.imgWord.getTag());
                     }
                 });

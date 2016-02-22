@@ -24,6 +24,13 @@
             android:defaultValue="false"
             android:summary="Delete all favorites"
              />
+        <to.marcus.rxtesting.ui.widgets.DeleteRecyclePref
+            android:key="@string/pref_key_del_bin"
+            android:title="@string/pref_title_del_bin"
+            android:dialogTitle="dialog title"
+            android:defaultValue="false"
+            android:summary="Delete all dismissed words"
+            />
 
     </PreferenceCategory>
 
@@ -37,7 +44,7 @@
         <CheckBoxPreference
             android:key="@string/pref_key_notify"
             android:title="@string/pref_title_notify"
-            android:summary="Notify me when new word is available"
+            android:summary="Notify me when a new word is available"
             android:defaultValue="true"/>
         <CheckBoxPreference
             android:key="@string/pref_key_pull"

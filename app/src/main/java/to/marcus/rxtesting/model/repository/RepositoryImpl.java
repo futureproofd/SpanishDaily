@@ -84,6 +84,11 @@ public class RepositoryImpl implements Repository{
     }
 
     @Override
+    public void deleteRecycled(){
+        mWordStorage.deleteRecycled();
+    }
+
+    @Override
     public void addFavorite(String itemId){
         mWordStorage.addFavorite(itemId);
     }

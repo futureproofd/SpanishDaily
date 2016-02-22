@@ -2,6 +2,8 @@
     <string name="app_name">Spanish WOTD</string>
     <string name="title_home">Spanish WOTD</string>
     <string name="title_search">Buscar</string>
+    <string name="title_history">Historia</string>
+    <string name="title_favorites">Favoritos</string>
     <string name="action_search">Search</string>
     <string name="DETAIL_WORD">word detail</string>
     <string name="transition_word">word transition</string>
@@ -33,10 +35,12 @@
     <string name="pref_title_rate">Rate/Send Feedback</string>
     <string name="pref_key_del_words">key_delete_words</string>
     <string name="pref_key_del_favs">key_delete_favs</string>
+    <string name="pref_key_del_bin">key_delete_bin</string>
     <string name="pref_title_words">Remove words</string>
     <string name="pref_msg_del_words">This action is irreversible. Are you sure?</string>
     <string name="pref_title_del_words">Remove all words</string>
     <string name="pref_title_del_favs">Remove Favorites</string>
+    <string name="pref_title_del_bin">Empty Recycle Bin</string>
     <!--Notification Identifiers -->
     <string name="notification_title">Word of the day</string>
     <string name="notification_removed">Removed from Favorites</string>

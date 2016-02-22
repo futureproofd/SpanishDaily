@@ -60,6 +60,14 @@ public class WordStorage{
         }
     }
 
+    public void deleteRecycled(){
+        for(Word w: mWords){
+            if(w.getVisibility() == 0)
+                mWords.remove(w);
+        }
+        saveWordsToJSON();
+    }
+
     public void addFavorite(String itemId){
         getWord(itemId).setFavorite(1);
         saveWordsToJSON();

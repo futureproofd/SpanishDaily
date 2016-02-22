@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import java.util.List;
 import to.marcus.rxtesting.R;
 import to.marcus.rxtesting.data.cache.PicassoCache;
 import to.marcus.rxtesting.model.Word;
+import to.marcus.rxtesting.ui.activity.BaseActivity;
 
 /**
  * Created by marcus on 9/14/2015
@@ -38,6 +40,7 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private final RecyclerViewMenuClickListener menuClickListener;
     private Context mContext;
     private String mDataSetMode;
+    private Filter mFilter;
     private final int CARDVIEW = 0;
     private final int SEARCHVIEW = 1;
 
@@ -103,13 +106,15 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 break;
            case CARDVIEW:
                 CardViewHolder cardViewHolder = (CardViewHolder) holder;
+                setAnimation(cardViewHolder.itemView, position);
                 configureCardViewHolder(cardViewHolder, position);
+                break;
         }
     }
 
     @Override
     public int getItemViewType(int position){
-        if(mWordArrayList.get(position).getSearched() == 1 && mDataSetMode == "search"){
+        if(mDataSetMode == mContext.getString(R.string.dataset_search)){
             return SEARCHVIEW;
         }else{
             return CARDVIEW;
@@ -163,7 +168,6 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         //Set TAG as a unique id, instead of position. This allows updates to the original object,
         //independent of DataSet
         holder.imageView.setTag(word.getImgUrl());
-        setAnimation(holder.itemView, position);
     }
 
     @Override
@@ -183,10 +187,13 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    public void resetDataSet(ArrayList<Word> words){
-        mWordArrayList.clear();
-        mWordArrayList.addAll(words);
-        notifyDataSetChanged();
+    //To always (re)filter on the full dataSet
+    public void resetFilterParams(ArrayList<Word> words){
+        if(mWordArrayList.size() != 0){
+            mWordArrayList.clear();
+            notifyDataSetChanged();
+            mWordArrayList = words;
+        }
     }
 
     public void setDataSetMode(String mode){
@@ -207,10 +214,15 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return wordElementColor;
     }
 
-    //Filter implementation: Switch between dataSet types
     @Override
-    public Filter getFilter() {
-        Filter filter = new Filter(){
+    public Filter getFilter(){
+        if(mFilter == null){
+            mFilter = new WordDataSetFilter();
+        }
+        return mFilter;
+    }
+
+    private class WordDataSetFilter extends Filter{
             @SuppressWarnings("unchecked")
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
@@ -222,7 +234,6 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults results = new FilterResults(); // holds the results
                 ArrayList<Word> filteredArray = new ArrayList<>();
-
                 if(constraint == null || constraint.length() == 0){
                     results.count = mWordArrayList.size();
                     results.values = mWordArrayList;
@@ -267,17 +278,22 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
                 return results;
             }
-        };
-        return filter;
-    }
+        }
+
+
 
     private void setAnimation(View viewToAnimate, int position){
-        int lastPosition = -1;
+        int lastPosition= position -1;
         if(position>lastPosition){
             Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.push_left_in);
             viewToAnimate.startAnimation(animation);
-            lastPosition=position;
         }
-
     }
+
+    @Override
+    public void onViewDetachedFromWindow(final RecyclerView.ViewHolder holder){
+        super.onViewDetachedFromWindow(holder);
+        ((CardViewHolder)holder).itemView.clearAnimation();
+    }
+
 }

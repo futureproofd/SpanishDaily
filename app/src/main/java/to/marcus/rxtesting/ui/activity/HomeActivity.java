@@ -148,9 +148,10 @@ public class HomeActivity extends BaseActivity implements HomeView
                     break;
             }
             this.dataSetMode = dataSetMode;
-            mWordRecyclerAdapter.resetDataSet(mUnfilteredDataSet);
+            mWordRecyclerAdapter.resetFilterParams(mUnfilteredDataSet);
             mWordRecyclerAdapter.setDataSetMode(dataSetMode);
             mWordRecyclerAdapter.getFilter().filter(dataSetMode);
+            //mWordRecyclerAdapter.notifyDataSetChanged();
         }
     }
 
@@ -188,8 +189,8 @@ public class HomeActivity extends BaseActivity implements HomeView
             initSectionAdapter();
             recyclerView.setAdapter(mSectionedAdapter);
         }else{
+            mWordRecyclerAdapter.resetFilterParams(mUnfilteredDataSet);
             mWordRecyclerAdapter.getFilter().filter(dataSetMode);
-            mWordRecyclerAdapter.resetDataSet(mUnfilteredDataSet);
         }
     }
 
@@ -271,9 +272,7 @@ public class HomeActivity extends BaseActivity implements HomeView
             mGridLayoutManager.setSpanCount(1);
             columnCount = 1;
         }
-        mWordRecyclerAdapter.resetDataSet(mUnfilteredDataSet);
         mWordRecyclerAdapter.setDataSetMode(dataSetMode);
         mWordRecyclerAdapter.getFilter().filter(dataSetMode);
     }
-
 }

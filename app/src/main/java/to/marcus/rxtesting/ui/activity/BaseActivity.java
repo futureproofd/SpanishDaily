@@ -134,24 +134,14 @@ public class BaseActivity extends AppCompatActivity implements BaseView, TextWat
         mSearchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                HomeActivity.instance.selectDataSet("search");
-                getSupportActionBar().setTitle("");
-                mSearchBtn.setVisibility(View.GONE);
-                mGridToggle.setVisibility(View.GONE);
-                mSearchClrBtn.setVisibility(View.VISIBLE);
-                mSearchBox.setVisibility(View.VISIBLE);
-                mSearchBox.requestFocus();
-                showKeyboard();
+                HomeActivity.instance.selectDataSet(getString(R.string.dataset_search));
+                toggleSearchComponents();
             }
         });
         mSearchClrBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mSearchClrBtn.setVisibility(View.GONE);
-                mSearchBtn.setVisibility(View.VISIBLE);
-                mSearchBox.setVisibility(View.GONE);
-                getSupportActionBar().setTitle(R.string.title_search);
-                dismissKeyboard();
+                toggleNavComponents(getString(R.string.title_search));
             }
         });
         mSearchBox.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -176,7 +166,7 @@ public class BaseActivity extends AppCompatActivity implements BaseView, TextWat
         });
     }
 
-    //textWatcher implementation
+    //textWatcher implementation for SearchBox
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
@@ -241,18 +231,23 @@ public class BaseActivity extends AppCompatActivity implements BaseView, TextWat
             case R.id.nav_favorites:
                 getFragmentManager().popBackStackImmediate();
                 HomeActivity.instance.selectDataSet(getString(R.string.dataset_favorite));
+                toggleNavComponents(getString(R.string.title_favorites));
                 break;
             case R.id.nav_home:
                 getFragmentManager().popBackStackImmediate();
                 HomeActivity.instance.selectDataSet(getString(R.string.dataset_unfiltered));
+                toggleNavComponents(getString(R.string.title_home));
                 break;
             case R.id.nav_history:
                 getFragmentManager().popBackStackImmediate();
                 HomeActivity.instance.selectDataSet(getString(R.string.dataset_dismissed));
+                toggleNavComponents(getString(R.string.title_history));
                 break;
             case R.id.nav_search:
                 getFragmentManager().popBackStackImmediate();
                 HomeActivity.instance.selectDataSet(getString(R.string.dataset_search));
+                toggleSearchComponents();
+                break;
         }
         // Highlight the selected item, update the title, and close the drawer
         menuItem.setChecked(true);
@@ -320,6 +315,26 @@ public class BaseActivity extends AppCompatActivity implements BaseView, TextWat
         InputMethodManager imm =(InputMethodManager)this.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
         mKeyboardStatus = true;
+    }
+
+    private void toggleSearchComponents(){
+        getSupportActionBar().setTitle("");
+        mSearchBtn.setVisibility(View.GONE);
+        mGridToggle.setVisibility(View.GONE);
+        mSearchClrBtn.setVisibility(View.VISIBLE);
+        mSearchBox.setVisibility(View.VISIBLE);
+        mSearchBox.requestFocus();
+        showKeyboard();
+    }
+
+    private void toggleNavComponents(String navArea){
+        getSupportActionBar().setTitle((navArea));
+        mSearchBtn.setVisibility(View.VISIBLE);
+        mGridToggle.setVisibility(View.VISIBLE);
+        mSearchClrBtn.setVisibility(View.GONE);
+        mSearchBox.setVisibility(View.GONE);
+        mSearchBox.clearFocus();
+        dismissKeyboard();
     }
 
     private boolean isKeyboardActive(){

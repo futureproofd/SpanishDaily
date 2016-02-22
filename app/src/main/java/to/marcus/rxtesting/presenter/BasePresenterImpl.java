@@ -18,6 +18,7 @@ public class BasePresenterImpl implements BasePresenter<BaseView> {
     private static final String KEY_NOTIFY = "key_notify";
     private static final String KEY_DEL_WORDS = "key_delete_words";
     private static final String KEY_DEL_FAVS = "key_delete_favs";
+    private static final String KEY_DEL_BIN = "key_delete_bin";
     private BaseView baseView;
     private final WordInteractorImpl wordInteractor;
     @Inject RepositoryImpl mRepository;
@@ -48,6 +49,9 @@ public class BasePresenterImpl implements BasePresenter<BaseView> {
                 break;
             case KEY_DEL_FAVS:
                 mRepository.deleteFavorites();
+                break;
+            case KEY_DEL_BIN:
+                mRepository.deleteRecycled();
                 break;
         }
     }
