@@ -133,4 +133,34 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
     private void showWordList(){
         homeView.showWordList(mRepository.getWordsDataset());
     }
+
+    public boolean getGridCount(String dataSet){
+        boolean isMultiGrid = false;
+        switch (dataSet){
+            case "unfiltered":
+                isMultiGrid = mRepository.getGridCntHomePref();
+                break;
+            case "favorites":
+                isMultiGrid = mRepository.getGridCntFavPref();
+                break;
+            case "dismissed":
+                isMultiGrid = mRepository.getGridCntRecyclePref();
+                break;
+        }
+        return isMultiGrid;
+    }
+
+    public void saveGridCountPref(String dataSet, boolean columnSetting){
+        switch(dataSet){
+            case "unfiltered":
+                mRepository.saveGridCntHomePref(columnSetting);
+                break;
+            case "favorites":
+                mRepository.saveGridCntFavPref(columnSetting);
+                break;
+            case "dismissed":
+                mRepository.saveGridCntRecyclePref(columnSetting);
+                break;
+        }
+    }
 }

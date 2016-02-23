@@ -37,6 +37,7 @@ import to.marcus.rxtesting.ui.adapter.SectionedGridRecyclerViewAdapter;
 import to.marcus.rxtesting.ui.adapter.WordRecyclerAdapter;
 import to.marcus.rxtesting.util.DateUtility;
 import to.marcus.rxtesting.util.ImageUtility;
+import to.marcus.rxtesting.util.UIUtility;
 
 /*
 * Main, list (card) view
@@ -47,7 +48,6 @@ public class HomeActivity extends BaseActivity implements HomeView
         ,CardDialogFragment.CardDialogListener {
     public final String TAG = HomeActivity.class.getSimpleName();
     public String dataSetMode = "unfiltered"; //default dataset
-    private int columnCount = 1;
     private final String UNFILTERED_MODE = Constants.MAIN_MODE;
     private final String DISMISSED_MODE = Constants.DISMISSED_MODE;
     private final String FAVORITES_MODE = Constants.FAVORITES_MODE;
@@ -75,7 +75,6 @@ public class HomeActivity extends BaseActivity implements HomeView
         mHomePresenterImpl.initPresenter(this);
         if(savedInstanceState != null){
             dataSetMode = savedInstanceState.getString(Constants.MODE_KEY);
-            columnCount = savedInstanceState.getInt(Constants.GRID_COLUMN_COUNT);
             selectDataSet(dataSetMode);
         }else{
             selectDataSet(dataSetMode);
@@ -98,7 +97,6 @@ public class HomeActivity extends BaseActivity implements HomeView
     public void onSaveInstanceState(Bundle outState){
         super.onSaveInstanceState(outState);
         outState.putString(Constants.MODE_KEY, dataSetMode);
-        outState.putInt(Constants.GRID_COLUMN_COUNT, columnCount);
     }
 
     private void initInjector(){
@@ -111,8 +109,7 @@ public class HomeActivity extends BaseActivity implements HomeView
     }
 
     public void initRecyclerView(){
-        //temp changed this from staggered
-        mGridLayoutManager = new GridLayoutManager(this, 1);
+        mGridLayoutManager = new GridLayoutManager(this, UIUtility.convertBoolean(mHomePresenterImpl.getGridCount(UNFILTERED_MODE)));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(mGridLayoutManager);
@@ -134,16 +131,19 @@ public class HomeActivity extends BaseActivity implements HomeView
             mHomePresenterImpl.selectDataset(dataSetMode);
         }else{
             switch (dataSetMode){
-                case UNFILTERED_MODE:  mGridLayoutManager.setSpanCount(1);
+                case UNFILTERED_MODE:
                     mSectionedAdapter.setSections(DateUtility.getSectionList().toArray(mSectionArray));
+                    mGridLayoutManager.setSpanCount(UIUtility.convertBoolean(mHomePresenterImpl.getGridCount(UNFILTERED_MODE)));
                     break;
-                case FAVORITES_MODE:   mGridLayoutManager.setSpanCount(2);
+                case FAVORITES_MODE:
                     mSectionedAdapter.removeSections();
+                    mGridLayoutManager.setSpanCount(UIUtility.convertBoolean(mHomePresenterImpl.getGridCount(FAVORITES_MODE)));
                     break;
-                case DISMISSED_MODE:   mGridLayoutManager.setSpanCount(2);
+                case DISMISSED_MODE:
                     mSectionedAdapter.removeSections();
+                    mGridLayoutManager.setSpanCount(UIUtility.convertBoolean(mHomePresenterImpl.getGridCount(DISMISSED_MODE)));
                     break;
-                case SEARCH_MODE:      mGridLayoutManager.setSpanCount(1);
+                case SEARCH_MODE:
                     mSectionedAdapter.removeSections();
                     break;
             }
@@ -151,7 +151,6 @@ public class HomeActivity extends BaseActivity implements HomeView
             mWordRecyclerAdapter.resetFilterParams(mUnfilteredDataSet);
             mWordRecyclerAdapter.setDataSetMode(dataSetMode);
             mWordRecyclerAdapter.getFilter().filter(dataSetMode);
-            //mWordRecyclerAdapter.notifyDataSetChanged();
         }
     }
 
@@ -263,14 +262,40 @@ public class HomeActivity extends BaseActivity implements HomeView
     }
 
     public void setGridColumnCount(){
-        if(columnCount == 1){
-            showNotification("Grid View");
-            mGridLayoutManager.setSpanCount(2);
-            columnCount = 2;
-        }else{
-            showNotification("List View");
-            mGridLayoutManager.setSpanCount(1);
-            columnCount = 1;
+        switch(dataSetMode){
+            case UNFILTERED_MODE:
+                if(mHomePresenterImpl.getGridCount(UNFILTERED_MODE)){
+                    showNotification(getString(R.string.dialog_list_view));
+                    mGridLayoutManager.setSpanCount(1);
+                    mHomePresenterImpl.saveGridCountPref(UNFILTERED_MODE,false);
+                }else{
+                    showNotification(getString(R.string.dialog_grid_view));
+                    mGridLayoutManager.setSpanCount(2);
+                    mHomePresenterImpl.saveGridCountPref(UNFILTERED_MODE,true);
+                }
+                break;
+            case FAVORITES_MODE:
+                if(mHomePresenterImpl.getGridCount(FAVORITES_MODE)){
+                    showNotification(getString(R.string.dialog_list_view));
+                    mGridLayoutManager.setSpanCount(1);
+                    mHomePresenterImpl.saveGridCountPref(FAVORITES_MODE,false);
+                }else{
+                    showNotification(getString(R.string.dialog_grid_view));
+                    mGridLayoutManager.setSpanCount(2);
+                    mHomePresenterImpl.saveGridCountPref(FAVORITES_MODE,true);
+                }
+                break;
+            case DISMISSED_MODE:
+                if(mHomePresenterImpl.getGridCount(DISMISSED_MODE)){
+                    showNotification(getString(R.string.dialog_list_view));
+                    mGridLayoutManager.setSpanCount(1);
+                    mHomePresenterImpl.saveGridCountPref(DISMISSED_MODE,false);
+                }else{
+                    showNotification(getString(R.string.dialog_grid_view));
+                    mGridLayoutManager.setSpanCount(2);
+                    mHomePresenterImpl.saveGridCountPref(DISMISSED_MODE,true);
+                }
+                break;
         }
         mWordRecyclerAdapter.setDataSetMode(dataSetMode);
         mWordRecyclerAdapter.getFilter().filter(dataSetMode);

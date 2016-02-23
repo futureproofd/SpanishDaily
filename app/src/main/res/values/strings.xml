@@ -49,4 +49,6 @@
     <!--filename params -->
     <string name="temp_filename">temp</string>
     <string name="filetype_mp3">mp3</string>
+    <string name="dialog_list_view">List View</string>
+    <string name="dialog_grid_view">Grid View</string>
 </resources>

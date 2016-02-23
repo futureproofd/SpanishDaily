@@ -33,9 +33,15 @@ public interface Repository {
     void saveWirelessPref(String key, boolean value);
     void saveNotifyPref(String key, boolean value);
     void savePullPref(String key, boolean value);
+    void saveGridCntHomePref(boolean value);
+    void saveGridCntFavPref(boolean value);
+    void saveGridCntRecyclePref(boolean value);
     boolean getWirelessPref();
     boolean getNotifyPref();
     boolean getPullPref();
+    boolean getGridCntFavPref();
+    boolean getGridCntHomePref();
+    boolean getGridCntRecyclePref();
     Word getLatestWord();
 
 }

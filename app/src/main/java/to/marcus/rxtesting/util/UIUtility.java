@@ -22,4 +22,7 @@ public class UIUtility {
                 WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
     }
 
+    public static int convertBoolean(boolean b){
+        return (b) ? 2 : 1;
+    }
 }

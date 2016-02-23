@@ -132,6 +132,21 @@ public class RepositoryImpl implements Repository{
     }
 
     @Override
+    public void saveGridCntHomePref(boolean value){
+        mAppPreferences.setGridCntHome(value);
+    }
+
+    @Override
+    public void saveGridCntFavPref(boolean value){
+        mAppPreferences.setGridCntFav(value);
+    }
+
+    @Override
+    public void saveGridCntRecyclePref(boolean value){
+        mAppPreferences.setGridCntRecycle(value);
+    }
+
+    @Override
     public boolean getNotifyPref(){return mAppPreferences.getNotifyPref();}
 
     @Override
@@ -139,4 +154,19 @@ public class RepositoryImpl implements Repository{
 
     @Override
     public boolean getWirelessPref(){return mAppPreferences.getWirelessPref();}
+
+    @Override
+    public boolean getGridCntHomePref(){
+        return mAppPreferences.getGridCntHome();
+    }
+
+    @Override
+    public boolean getGridCntFavPref(){
+        return mAppPreferences.getGridCntFav();
+    }
+
+    @Override
+    public boolean getGridCntRecyclePref(){
+        return mAppPreferences.getGridCntRecycle();
+    }
 }
