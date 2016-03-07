@@ -46,9 +46,17 @@
     <string name="notification_removed">Removed from Favorites</string>
     <string name="notification_added">Added to Favorites</string>
     <string name="playback_toast">play sound</string>
+    <string name="notify_new_word">New Word added</string>
+    <string name="notify_favorite_added">Favorite added</string>
+    <string name="notify_word_deleted">Word permanently deleted</string>
+    <string name="notify_word_dismissed">Word dismissed</string>
+    <string name="notify_network_error">Error fetching Word from network</string>
     <!--filename params -->
     <string name="temp_filename">temp</string>
     <string name="filetype_mp3">mp3</string>
     <string name="dialog_list_view">List View</string>
     <string name="dialog_grid_view">Grid View</string>
+    <!--Detail Activity -->
+    <string name="detail_translation_lbl">Traducción</string>
+    <string name="detail_ejemplo_lbl">Ejemplo(s)</string>
 </resources>

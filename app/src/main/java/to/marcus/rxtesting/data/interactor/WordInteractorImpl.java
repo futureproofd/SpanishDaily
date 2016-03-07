@@ -21,7 +21,4 @@ public class WordInteractorImpl implements Interactor<ArrayList<String>> {
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
     }
-
-
-
 }

@@ -3,6 +3,8 @@ package to.marcus.rxtesting.presenter;
 import java.util.ArrayList;
 import javax.inject.Inject;
 import rx.functions.Action1;
+import to.marcus.rxtesting.Constants;
+import to.marcus.rxtesting.R;
 import to.marcus.rxtesting.data.interactor.WordInteractorImpl;
 import to.marcus.rxtesting.model.Word;
 import to.marcus.rxtesting.model.factory.WordFactoryImpl;
@@ -17,7 +19,9 @@ import to.marcus.rxtesting.util.NetworkUtility;
  */
 public class HomePresenterImpl implements HomePresenter<HomeView>{
     private final WordInteractorImpl wordInteractor;
-    private static final String TAG = HomePresenterImpl.class.getSimpleName();
+    private final String UNFILTERED_MODE = Constants.MAIN_MODE;
+    private final String DISMISSED_MODE = Constants.DISMISSED_MODE;
+    private final String FAVORITES_MODE = Constants.FAVORITES_MODE;
     private HomeView homeView;
     @Inject RepositoryImpl mRepository;
     @Inject public HomePresenterImpl(WordInteractorImpl interactor){
@@ -33,7 +37,9 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
     public void onStart(){}
 
     @Override
-    public void onStop(){mRepository.saveWords();}
+    public void onStop(){
+        mRepository.saveWords();
+    }
 
     @Override
     public void onRefresh(){
@@ -56,7 +62,7 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
 
     public void selectDataset(String datasetMode){
         switch(datasetMode){
-            case "unfiltered":
+            case UNFILTERED_MODE:
                 if(NetworkUtility.isWiFiEnabled(homeView.getContext())&& mRepository.getWirelessPref()){
                     initWordDataSet();
                 }else if(!mRepository.getWirelessPref()){
@@ -64,9 +70,9 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
                 }else{
                     showWordList();
                 }break;
-            case "favorites":showWordList();
+            case FAVORITES_MODE:showWordList();
                 break;
-            case "dismissed":showWordList();
+            case DISMISSED_MODE:showWordList();
                 break;
         }
     }
@@ -75,22 +81,23 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
     public void onDismissOptionSelected(String itemId){
         if(mRepository.getWord(itemId).getVisibility() == 0){
             mRepository.deleteWord(itemId);
-            homeView.showNotification("Word permanently deleted");
+            homeView.showNotification(homeView.getContext().getString(R.string.notify_word_deleted));
         }else{
             mRepository.removeWord(itemId);
-            homeView.showNotification("Word dismissed");
+            homeView.showNotification(homeView.getContext().getString(R.string.notify_word_dismissed));
         }
         homeView.refreshWordList();
     }
 
     @Override
     public void onFavOptionSelected(String itemId){
-        homeView.showNotification("Favorite added");
+        homeView.showNotification(homeView.getContext().getString(R.string.notify_favorite_added));
         mRepository.addFavorite(itemId);
     }
 
     public void pullLatestWord(){
         if(isWordStale()){
+            homeView.showNotification(homeView.getContext().getString(R.string.notify_new_word));
             pullWordFromNetwork();
         }else{
             showWordList();
@@ -110,7 +117,7 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
                     new Action1<Throwable>() {
                         @Override
                         public void call(Throwable error) {
-                            homeView.showNotification("Error fetching Word from network");
+                            homeView.showNotification(homeView.getContext().getString(R.string.notify_network_error));
                         }
                     }
             );
@@ -137,13 +144,13 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
     public boolean getGridCount(String dataSet){
         boolean isMultiGrid = false;
         switch (dataSet){
-            case "unfiltered":
+            case UNFILTERED_MODE:
                 isMultiGrid = mRepository.getGridCntHomePref();
                 break;
-            case "favorites":
+            case FAVORITES_MODE:
                 isMultiGrid = mRepository.getGridCntFavPref();
                 break;
-            case "dismissed":
+            case DISMISSED_MODE:
                 isMultiGrid = mRepository.getGridCntRecyclePref();
                 break;
         }
@@ -152,13 +159,13 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
 
     public void saveGridCountPref(String dataSet, boolean columnSetting){
         switch(dataSet){
-            case "unfiltered":
+            case UNFILTERED_MODE:
                 mRepository.saveGridCntHomePref(columnSetting);
                 break;
-            case "favorites":
+            case FAVORITES_MODE:
                 mRepository.saveGridCntFavPref(columnSetting);
                 break;
-            case "dismissed":
+            case DISMISSED_MODE:
                 mRepository.saveGridCntRecyclePref(columnSetting);
                 break;
         }

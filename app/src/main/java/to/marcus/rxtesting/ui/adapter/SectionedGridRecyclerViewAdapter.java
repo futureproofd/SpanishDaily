@@ -1,8 +1,10 @@
 package to.marcus.rxtesting.ui.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,7 @@ import to.marcus.rxtesting.ui.activity.HomeActivity;
  */
 public class SectionedGridRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private static final String TAG = SectionedGridRecyclerViewAdapter.class.getSimpleName();
     private final Context mContext;
     private static final int SECTION_TYPE = 0;
 
@@ -27,7 +30,7 @@ public class SectionedGridRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
     private int mTextResourceId;
     private LayoutInflater mLayoutInflater;
     private RecyclerView.Adapter mWordRecyclerAdapter;
-    private SparseArray<Section> mSections = new SparseArray<Section>();
+    private SparseArray<Section> mSections = new SparseArray<>();
     private RecyclerView mRecyclerView;
 
 
@@ -196,5 +199,22 @@ public class SectionedGridRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
     @Override
     public int getItemCount() {
         return (mValid ? mWordRecyclerAdapter.getItemCount() + mSections.size() : 0);
+    }
+
+    /*
+    Marcus.P - Added to trigger WordRecyclerAdapter.onViewDetachedFromWindow
+     */
+    @Override
+    public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder){
+        super.onViewDetachedFromWindow(holder);
+        if(getItemViewType(holder.getLayoutPosition()) == 1){
+            if(!isSectionHeaderPosition(holder.getLayoutPosition())){
+                try{
+                    mWordRecyclerAdapter.onViewDetachedFromWindow(holder);
+                }catch (ClassCastException e){
+                    Log.i(TAG, "wrong type");
+                }
+            }
+        }
     }
 }

@@ -43,11 +43,10 @@ import to.marcus.rxtesting.ui.fragment.OptionsFragment;
  */
 public class BaseActivity extends AppCompatActivity implements BaseView, TextWatcher
         ,SearchAdapterClickListener{
-    private final static String TAG = BaseActivity.class.getSimpleName();
     private final static int REQ_CODE = 1337;
     private boolean mKeyboardStatus;
     private final static String ALARM_ACTION = "ALARM_ACTION";
-    private static SharedPreferences.OnSharedPreferenceChangeListener mListener;
+    private SharedPreferences.OnSharedPreferenceChangeListener mListener;
     private static SharedPreferences sharedPrefs;
     private SearchFilterAdapter mSearchFilterAdapter;
     @Bind(R.id.toolbar)         Toolbar mToolbar;

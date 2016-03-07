@@ -16,16 +16,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.Filter;
 import android.widget.Filterable;
 import com.squareup.picasso.Callback;
-import com.squareup.picasso.NetworkPolicy;
-import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-
 import to.marcus.rxtesting.R;
 import to.marcus.rxtesting.data.cache.PicassoCache;
 import to.marcus.rxtesting.model.Word;
-import to.marcus.rxtesting.ui.activity.BaseActivity;
 
 /**
  * Created by marcus on 9/14/2015
@@ -34,7 +29,7 @@ import to.marcus.rxtesting.ui.activity.BaseActivity;
  */
 public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 implements Filterable{
-    private static final String TAG = WordRecyclerAdapter.class.getSimpleName();
+    private final static String TAG = WordRecyclerAdapter.class.getSimpleName();
     private ArrayList<Word> mWordArrayList;
     private final RecyclerViewItemClickListener clickListener;
     private final RecyclerViewMenuClickListener menuClickListener;
@@ -57,7 +52,7 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View searchView = inflater.inflate(R.layout.search_history_layout, parent, false);
+        final View searchView = inflater.inflate(R.layout.search_history_layout, parent, false);
         final SearchHistoryViewHolder searchHistoryViewHolder = new SearchHistoryViewHolder(searchView);
         View cardView = inflater.inflate(R.layout.card_view_layout, parent, false);
         final CardViewHolder cardViewHolder = new CardViewHolder(cardView);
@@ -137,9 +132,10 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private void configureCardViewHolder(final CardViewHolder holder, final int position){
         Word word = mWordArrayList.get(position);
         Uri uri = Uri.parse(word.getImgUrl());
-        Context context = holder.imageView.getContext();
+        final Context context = holder.imageView.getContext();
         PicassoCache.getPicassoInstance(context)
             .load(uri)
+            .tag(context)
             .into(holder.imageView, new Callback.EmptyCallback() {
                 @Override
                 public void onSuccess() {
@@ -148,11 +144,20 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             .generate(new Palette.PaletteAsyncListener() {
                                 @Override
                                 public void onGenerated(Palette palette) {
-                                    if (palette != null) {
-                                        final Palette.Swatch swatch = getSwatch(palette);
-                                        holder.wordView.setBackgroundColor(swatch.getRgb());
-                                        holder.wordView.setTextColor(swatch.getBodyTextColor());
-                                        holder.dateView.setTextColor(swatch.getBodyTextColor());
+                                    if(palette != null){
+                                        try{
+                                            final Palette.Swatch swatch = getSwatch(palette);
+                                            holder.wordView.setBackgroundColor(swatch.getRgb());
+                                            holder.wordView.setTextColor(swatch.getBodyTextColor());
+                                            holder.dateView.setTextColor(swatch.getBodyTextColor());
+                                            holder.cardMenu.setColorFilter(palette.getMutedColor(0x000000), PorterDuff.Mode.MULTIPLY);
+                                        }catch (NullPointerException e){
+                                            Log.i(TAG, "unable to retrieve swatch");
+                                        }
+                                    }else{
+                                        holder.wordView.setBackgroundColor(0x000000);
+                                        holder.wordView.setTextColor(0xfff);
+                                        holder.dateView.setTextColor(0xfff);
                                         holder.cardMenu.setColorFilter(palette.getMutedColor(0x000000), PorterDuff.Mode.MULTIPLY);
                                     }
                                 }
@@ -177,7 +182,7 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     //Using iterator to avoid ConcurrentModificationException while using a for loop
     public void removeItem(String itemId){
-        List<Word> toBeRemoved = new ArrayList<Word>();
+       // List<Word> toBeRemoved = new ArrayList<Word>();
         for(Iterator<Word> wordIterator = mWordArrayList.iterator(); wordIterator.hasNext();){
             Word word = wordIterator.next();
             if(word.getImgUrl().equals(itemId)){
@@ -280,8 +285,6 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
         }
 
-
-
     private void setAnimation(View viewToAnimate, int position){
         int lastPosition= position -1;
         if(position>lastPosition){
@@ -291,9 +294,11 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     @Override
-    public void onViewDetachedFromWindow(final RecyclerView.ViewHolder holder){
+    public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder){
         super.onViewDetachedFromWindow(holder);
         ((CardViewHolder)holder).itemView.clearAnimation();
+        //todo kill listeners on detach
+        //((CardViewHolder)holder).imageView.setOnClickListener(null);
+        //((CardViewHolder)holder).cardMenu.setOnClickListener(null);
     }
-
 }

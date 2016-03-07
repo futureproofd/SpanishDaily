@@ -1,6 +1,7 @@
 package to.marcus.rxtesting.ui.activity;
 
 import android.annotation.TargetApi;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
@@ -8,6 +9,7 @@ import android.graphics.PorterDuffColorFilter;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
@@ -18,6 +20,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.leakcanary.RefWatcher;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -53,7 +58,7 @@ public class DetailActivity extends AppCompatActivity implements DetailView,
     @Bind(R.id.txtTranslation)  TextView strTranslation;
     @Bind(R.id.txtExampleEn)    TextView strExampleEN;
     @Bind(R.id.txtExampleESP)   TextView strExampleESP;
-    @Bind(R.id.btn_narration)   to.marcus.rxtesting.ui.widgets.FloatingActionButton btnNarration;
+    @Bind(R.id.btn_narration)   FloatingActionButton btnNarration;
     @Bind(R.id.trans_img)       ImageView imgTrans;
     @Bind(R.id.example_img)     ImageView imgExample;
     private String txtSoundRef;
@@ -72,6 +77,7 @@ public class DetailActivity extends AppCompatActivity implements DetailView,
         showWordDetails();
         initToolbar();
 
+
         btnNarration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,6 +85,17 @@ public class DetailActivity extends AppCompatActivity implements DetailView,
                 mDetailPresenterImpl.onElementSelected(txtSoundRef);
             }
         });
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        /*
+        RefWatcher refWatcher = BaseApplication.getRefWatcher(this);
+        refWatcher.watch(txtSoundRef);
+        refWatcher.watch(imgWord);
+        refWatcher.watch(this);
+        */
     }
 
     private void initInjector(){
@@ -155,8 +172,8 @@ public class DetailActivity extends AppCompatActivity implements DetailView,
         imgWord.setImageBitmap(detailBitmap);
         strWord.setText(mWord.getWord());
         strTranslation.setText(mWord.getTranslation());
-        strExampleEN.setText(mWord.getExampleEN());
-        strExampleESP.setText(mWord.getExampleESP());
+        strExampleEN.setText(UIUtility.formatStringByExample(mWord.getExampleEN()));
+        strExampleESP.setText(UIUtility.formatStringByExample(mWord.getExampleESP()));
     }
 
     //todo cache mp3?
@@ -218,7 +235,7 @@ public class DetailActivity extends AppCompatActivity implements DetailView,
 
     private void setBtnColorElement(Palette.Swatch swatch){
         if(swatch != null){
-            btnNarration.setBackgroundColor(swatch.getRgb());
+            btnNarration.setBackgroundTintList(ColorStateList.valueOf(swatch.getRgb()));
         }
     }
 

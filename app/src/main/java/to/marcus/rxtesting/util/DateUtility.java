@@ -23,11 +23,11 @@ public class DateUtility {
     private static Date newDate;
     private static DateTime today = new DateTime();
     //Defaults for word Sorting methods
-    private static List<SectionedGridRecyclerViewAdapter.Section> sectionList = new ArrayList<>();
+    private static List<SectionedGridRecyclerViewAdapter.Section> sectionList;
     private static String month = "";
     private static String previousMonth = "";
     private static String startMonth = "";
-    private static Map<String, Integer> monthHashMap = new LinkedHashMap<>();
+    private static Map<String, Integer> monthHashMap;
     private static ArrayList<Word> mWords = new ArrayList<>();
     private static final String JANUARY = "January";
     private static final String FEBRUARY = "February";
@@ -54,7 +54,6 @@ public class DateUtility {
     public static boolean isWordStale(Date wordDate){
         DateTime word = new DateTime(wordDate);
         int diff = Days.daysBetween(today, word).getDays();
-        word = null;
         return diff < 0;
     }
 
@@ -70,69 +69,32 @@ public class DateUtility {
     //add to hashMap
     private static void buildMonthMappings(String month, int position){
         if(!getStartMonth(mWords).equals(month)){
-            monthHashMap.put(month, position);
+            monthHashMap.put(month, (position -2));
         }else{
             monthHashMap.put(month, 0);
         }
     }
 
-    //Build Sections, sorted by month
+    //1.) Build Sections, sorted by month
     public static List<SectionedGridRecyclerViewAdapter.Section> sortWordsByMonth(ArrayList<Word> words){
         //reset list
-        if(sectionList.size() > 0)
-            sectionList.clear();
+        if(sectionList == null)
+            sectionList = new ArrayList<>();
+        //reset mappings
+        if(monthHashMap == null)
+            monthHashMap = new LinkedHashMap<>();
 
-        int i = 0;
         //Sort array by Month
         mWords = words;
         Collections.sort(mWords);
 
-        while(i < mWords.size()){
+        for(int i = 0; i < mWords.size(); i++){
             month = mWords.get(i).getDate();
             month = month.substring(0, month.indexOf(" "));
-            if(!previousMonth.equals(month)) {
-                switch (month) {
-                    case JANUARY:
-                        buildMonthMappings(JANUARY, i);
-                        previousMonth = month;
-                        break;
-                    case FEBRUARY:
-                        buildMonthMappings(FEBRUARY, i);
-                        previousMonth = month;
-                        break;
-                    case MARCH:
-                        buildMonthMappings(MARCH, i);
-                        break;
-                    case APRIL:
-                        buildMonthMappings(APRIL, i);
-                        break;
-                    case MAY:
-                        buildMonthMappings(MAY, i);
-                        break;
-                    case JUNE:
-                        buildMonthMappings(JUNE, i);
-                        break;
-                    case JULY:
-                        buildMonthMappings(JULY, i);
-                        break;
-                    case AUGUST:
-                        buildMonthMappings(AUGUST, i);
-                        break;
-                    case SEPTEMBER:
-                        buildMonthMappings(SEPTEMBER, i);
-                        break;
-                    case OCTOBER:
-                        buildMonthMappings(OCTOBER, i);
-                        break;
-                    case NOVEMBER:
-                        buildMonthMappings(NOVEMBER, i);
-                        break;
-                    case DECEMBER:
-                        buildMonthMappings(DECEMBER, i);
-                        break;
-                }
+            if(!previousMonth.equals(month)){
+                buildMonthMappings(month, i);
+                previousMonth = month;
             }
-            i++;
         }
 
         for(Map.Entry<String, Integer> entry : monthHashMap.entrySet()){
@@ -202,11 +164,18 @@ public class DateUtility {
         for(Map.Entry<String, Integer> entry : monthHashMap.entrySet()){
             sectionList.add(new SectionedGridRecyclerViewAdapter.Section(entry.getValue(),entry.getKey()));
         }
+        mWords = null;
         return sectionList;
     }
 
     public static List<SectionedGridRecyclerViewAdapter.Section> getSectionList(){
         return sectionList;
+    }
+
+
+    public static void removeSectionReferences(){
+        sectionList = null;
+        monthHashMap = null;
     }
 
 }

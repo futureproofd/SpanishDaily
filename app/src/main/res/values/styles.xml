@@ -5,17 +5,11 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
-       <!-- <item name="android:displayOptions">disableHome</item> -->
-
-    <!--For animation
-        <item name="windowContentTransitions">true</item>
-        <item name="windowAllowEnterTransitionOverlap">true</item>
-        <item name="windowAllowReturnTransitionOverlap">true</item>
-        <item name="windowSharedElementEnterTransition">@transition/changebounds</item>
-        <item name="windowSharedElementExitTransition">@transition/changebounds</item>
-     -->
     </style>
 
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+    </style>
 
     <style name="CardDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:windowAnimationStyle">@style/MyAnimation.Window</item>

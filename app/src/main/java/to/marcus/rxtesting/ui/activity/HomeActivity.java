@@ -3,6 +3,7 @@ package to.marcus.rxtesting.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Contacts;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
@@ -15,8 +16,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import com.squareup.leakcanary.RefWatcher;
+
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
 import butterknife.Bind;
@@ -24,6 +27,7 @@ import butterknife.ButterKnife;
 import to.marcus.rxtesting.BaseApplication;
 import to.marcus.rxtesting.Constants;
 import to.marcus.rxtesting.R;
+import to.marcus.rxtesting.data.cache.PicassoCache;
 import to.marcus.rxtesting.injection.component.DaggerWordInteractorComponent;
 import to.marcus.rxtesting.injection.module.ActivityModule;
 import to.marcus.rxtesting.injection.module.WordInteractorModule;
@@ -47,11 +51,11 @@ public class HomeActivity extends BaseActivity implements HomeView
         ,RecyclerViewMenuClickListener
         ,CardDialogFragment.CardDialogListener {
     public final String TAG = HomeActivity.class.getSimpleName();
-    public String dataSetMode = "unfiltered"; //default dataset
     private final String UNFILTERED_MODE = Constants.MAIN_MODE;
     private final String DISMISSED_MODE = Constants.DISMISSED_MODE;
     private final String FAVORITES_MODE = Constants.FAVORITES_MODE;
     private final String SEARCH_MODE = Constants.SEARCH_MODE;
+    public String dataSetMode = UNFILTERED_MODE; //default dataset
     private ArrayList<Word> mUnfilteredDataSet;
     public static HomeActivity instance = null;
     private static final String WORD_OBJECT = "WORD_OBJECT";
@@ -94,6 +98,18 @@ public class HomeActivity extends BaseActivity implements HomeView
     }
 
     @Override
+    public void onDestroy(){
+        super.onDestroy();
+        //RefWatcher refWatcher = BaseApplication.getRefWatcher(this);
+       // refWatcher.watch(instance);
+        DateUtility.removeSectionReferences();
+        this.instance = null;
+       // refWatcher.watch(mHomePresenterImpl);
+        //refWatcher.watch(mUnfilteredDataSet);
+      //  refWatcher.watch(mWordRecyclerAdapter);
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState){
         super.onSaveInstanceState(outState);
         outState.putString(Constants.MODE_KEY, dataSetMode);
@@ -125,7 +141,7 @@ public class HomeActivity extends BaseActivity implements HomeView
         });
     }
 
-    //NavDrawer selection
+    //Initial Selection & NavDrawer selection
     public void selectDataSet(String dataSetMode){
         if(mWordRecyclerAdapter == null){
             mHomePresenterImpl.selectDataset(dataSetMode);
@@ -181,8 +197,6 @@ public class HomeActivity extends BaseActivity implements HomeView
     public void showWordList(ArrayList<Word> wordArrayList){
         mUnfilteredDataSet = wordArrayList;
         if(mWordRecyclerAdapter == null){
-            //todo is this really needed? sorting is done in utility class
-            Collections.sort(mUnfilteredDataSet);
             mWordRecyclerAdapter = new WordRecyclerAdapter(mUnfilteredDataSet, this, this, this);
             mWordRecyclerAdapter.getFilter().filter(dataSetMode);
             initSectionAdapter();

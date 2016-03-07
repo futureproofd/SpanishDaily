@@ -28,26 +28,21 @@
             android:textColor="@android:color/white"
             android:transitionName="@string/transition_word"
             />
-    <to.marcus.rxtesting.ui.widgets.FloatingActionButton
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/btn_narration"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignBottom="@id/imgDetailWord"
         android:layout_alignRight="@id/imgDetailWord"
         android:layout_marginBottom="-32dp"
         android:layout_marginRight="12dp"
         android:clickable="true"
         android:alpha="0"
-        android:background="@drawable/btn_background"
-        android:elevation="6dp">
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_play_white_24dp"
-            android:layout_gravity="center"
-            android:duplicateParentState="true"/>
-        />
-    </to.marcus.rxtesting.ui.widgets.FloatingActionButton>
+        app:borderWidth="0dp"
+        android:src="@drawable/ic_play_white_24dp"
+        android:elevation="@dimen/floating_button_size">
+    </android.support.design.widget.FloatingActionButton>
+
 <LinearLayout
     android:id="@+id/body_container"
     android:layout_width="match_parent"
@@ -55,7 +50,8 @@
     android:layout_height="match_parent"
     android:layout_below="@id/txtDetailWord"
     android:orientation="vertical"
-    android:background="@color/accent">
+    android:background="@color/accent"
+    android:scaleType="fitXY">
     <TableRow
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -71,7 +67,7 @@
             android:id="@+id/txtTranslationLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Traducción"
+            android:text="@string/detail_translation_lbl"
             android:textSize="22dp"
             android:textStyle="bold"
             android:layout_marginTop="2dp"
@@ -104,7 +100,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/txtTranslation"
-            android:text="Ejemplo"
+            android:text="@string/detail_ejemplo_lbl"
             android:gravity="center_vertical"
             android:textStyle="bold"
             android:textSize="22dp"
@@ -122,8 +118,12 @@
             android:text="ExampleEN"
             android:textSize="14dp"
             android:textStyle="bold"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="6dp"
             android:layout_marginLeft="42dp"/>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="#3e3e3e"/>
         <TextView
             android:id="@+id/txtExampleESP"
             android:layout_width="wrap_content"
@@ -132,7 +132,7 @@
             android:text="ExampleESP"
             android:textSize="14dp"
             android:textStyle="italic"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="6dp"
             android:layout_marginLeft="42dp"/>
 </LinearLayout>
     <android.support.v7.widget.Toolbar

@@ -19,7 +19,6 @@ public class RepositoryImpl implements Repository{
 
     private final WordStorage mWordStorage;
     private final AppPreferences mAppPreferences;
-    private static final String TAG = RepositoryImpl.class.getSimpleName();
 
     @Inject
     public RepositoryImpl(WordStorage wordStrg, AppPreferences appPrefs){

@@ -1,7 +1,6 @@
 package to.marcus.rxtesting.model;
 
 import android.content.Context;
-import android.util.Log;
 import java.util.ArrayList;
 
 /**
@@ -9,7 +8,6 @@ import java.util.ArrayList;
  * Back-end For Caching
  */
 public class WordStorage{
-    private static final String TAG = WordStorage.class.getSimpleName();
     private ArrayList<Word> mWords;
     private ObjectSerializer mSerializer;
     private static final String WORDS_DATASET = "words.json";
@@ -24,13 +22,11 @@ public class WordStorage{
     }
 
     public void saveWord(Word word){
-        Log.i(TAG, "saving word to array");
         mWords.add(word);
     }
 
     public boolean saveWordsToJSON(){
         try{
-            Log.i(TAG, "saving words to JSON");
             mSerializer.saveObjects(mWords);
             return true;
         }catch(Exception e){

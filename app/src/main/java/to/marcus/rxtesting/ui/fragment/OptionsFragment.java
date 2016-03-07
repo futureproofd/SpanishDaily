@@ -5,6 +5,10 @@ import android.preference.PreferenceFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.squareup.leakcanary.RefWatcher;
+
+import to.marcus.rxtesting.BaseApplication;
 import to.marcus.rxtesting.R;
 
 /**
@@ -16,6 +20,13 @@ public class OptionsFragment extends PreferenceFragment{
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.pref_options);
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        RefWatcher refWatcher = BaseApplication.getRefWatcher(getActivity());
+        refWatcher.watch(this);
     }
 
     @Override

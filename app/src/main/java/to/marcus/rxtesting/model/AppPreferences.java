@@ -78,18 +78,23 @@ public class AppPreferences{
         savePrefsToJSON();
     }
 
+    //todo need a default value here to avoid NPE
+    //maybe in the form of a run once default initializer?
     public boolean getGridCntHome(){
         return mPreferences.get(KEY_GRIDCOLUMNCNT_HOME);
     }
 
+    //todo need default value here too
     public boolean getGridCntFav(){
-        return mPreferences.get(KEY_GRIDCOLUMNCNT_FAV);
+        return true;//mPreferences.get(KEY_GRIDCOLUMNCNT_FAV);
     }
 
+    //todo need default value here too
     public boolean getGridCntRecycle(){
         return mPreferences.get(KEY_GRIDCOLUMNCNT_RECYCLE);
     }
 
+    //todo need default value here too
     public boolean getPullPref(){
         return mPreferences.get(KEY_PULL);
     }
