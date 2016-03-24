@@ -27,6 +27,7 @@ public class BaseApplication extends Application{
         initInjector();
         initInstallDefaults();
         refWatcher = LeakCanary.install(this);
+      //  refWatcher.watch(this);
     }
 
     private void initInjector(){

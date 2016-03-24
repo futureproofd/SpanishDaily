@@ -53,7 +53,7 @@ public class DetailPresenterImpl implements DetailPresenter<DetailView> {
                 new Action1<Throwable>(){
                     @Override
                     public void call(Throwable error){
-                        detailView.showNotification("Error fetching Word from network");
+                        detailView.showNotification("Error fetching speech from network");
                     }
                 }
             );

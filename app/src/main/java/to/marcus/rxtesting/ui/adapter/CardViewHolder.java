@@ -16,12 +16,10 @@ import to.marcus.rxtesting.R;
 public class CardViewHolder extends RecyclerView.ViewHolder{
     @Bind(R.id.imgWord) ImageView imageView;
     @Bind(R.id.txtWord) TextView wordView;
-    @Bind(R.id.txtDate) TextView dateView;
     @Bind(R.id.card_overflow_menu) ImageView cardMenu;
 
     public CardViewHolder(View v) {
         super(v);
         ButterKnife.bind(this, v);
     }
-
 }

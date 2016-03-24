@@ -19,7 +19,7 @@ public class PicassoCache{
         Picasso.Builder builder = new Picasso.Builder(context);
         builder.downloader(downloader);
         sInstance = builder.build();
-        sInstance.setIndicatorsEnabled(true);
+        //sInstance.setIndicatorsEnabled(true);
     }
 
     public static Picasso getPicassoInstance(Context context){

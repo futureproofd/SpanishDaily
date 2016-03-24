@@ -3,7 +3,6 @@ package to.marcus.rxtesting.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Contacts;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
@@ -16,10 +15,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
-import com.squareup.leakcanary.RefWatcher;
-
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
 import butterknife.Bind;
@@ -27,7 +24,6 @@ import butterknife.ButterKnife;
 import to.marcus.rxtesting.BaseApplication;
 import to.marcus.rxtesting.Constants;
 import to.marcus.rxtesting.R;
-import to.marcus.rxtesting.data.cache.PicassoCache;
 import to.marcus.rxtesting.injection.component.DaggerWordInteractorComponent;
 import to.marcus.rxtesting.injection.module.ActivityModule;
 import to.marcus.rxtesting.injection.module.WordInteractorModule;
@@ -100,10 +96,10 @@ public class HomeActivity extends BaseActivity implements HomeView
     @Override
     public void onDestroy(){
         super.onDestroy();
+        this.instance = null;
+        DateUtility.removeSectionReferences();
         //RefWatcher refWatcher = BaseApplication.getRefWatcher(this);
        // refWatcher.watch(instance);
-        DateUtility.removeSectionReferences();
-        this.instance = null;
        // refWatcher.watch(mHomePresenterImpl);
         //refWatcher.watch(mUnfilteredDataSet);
       //  refWatcher.watch(mWordRecyclerAdapter);
@@ -196,6 +192,9 @@ public class HomeActivity extends BaseActivity implements HomeView
     @Override
     public void showWordList(ArrayList<Word> wordArrayList){
         mUnfilteredDataSet = wordArrayList;
+        //Sort each word by date, for month Sections
+        Collections.sort(mUnfilteredDataSet);
+
         if(mWordRecyclerAdapter == null){
             mWordRecyclerAdapter = new WordRecyclerAdapter(mUnfilteredDataSet, this, this, this);
             mWordRecyclerAdapter.getFilter().filter(dataSetMode);
@@ -208,9 +207,11 @@ public class HomeActivity extends BaseActivity implements HomeView
     }
 
     private void initSectionAdapter(){
-        mSectionList = DateUtility.sortWordsByMonth(mUnfilteredDataSet);
+        mSectionList = DateUtility.getSections(mUnfilteredDataSet);
         mSectionArray = new SectionedGridRecyclerViewAdapter.Section[mSectionList.size()];
-        mSectionedAdapter = new SectionedGridRecyclerViewAdapter(this,R.layout.section,R.id.section_text,recyclerView,mWordRecyclerAdapter);
+        if(mSectionedAdapter == null){
+            mSectionedAdapter = new SectionedGridRecyclerViewAdapter(this,R.layout.section,R.id.section_text,recyclerView,mWordRecyclerAdapter);
+        }
         mSectionedAdapter.setSections(mSectionList.toArray(mSectionArray));
     }
 
@@ -222,6 +223,8 @@ public class HomeActivity extends BaseActivity implements HomeView
     @Override
     public void refreshWordList(){
         mWordRecyclerAdapter.notifyDataSetChanged();
+        DateUtility.removeSectionReferences();
+        initSectionAdapter();
     }
 
     //RecyclerView click listeners
@@ -253,6 +256,7 @@ public class HomeActivity extends BaseActivity implements HomeView
         }
     }
 
+    //todo determine dialog type (fav or mainview) to present different options - also remove from favs if in favs (within presenter)
     @Override
     public void onObjectMenuClick(View v, String itemId){
         //launch dialog fragment
@@ -268,6 +272,8 @@ public class HomeActivity extends BaseActivity implements HomeView
     public void onDialogClickDismiss(CardDialogFragment dialogFragment, String itemId){
         mWordRecyclerAdapter.removeItem(itemId);
         mHomePresenterImpl.onDismissOptionSelected(itemId);
+        //todo: Sections need redefining after deletion of word
+        //initSectionAdapter();
     }
 
     @Override

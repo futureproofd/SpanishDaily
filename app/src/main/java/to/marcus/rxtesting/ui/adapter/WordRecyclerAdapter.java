@@ -2,6 +2,7 @@ package to.marcus.rxtesting.ui.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -135,7 +136,6 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         final Context context = holder.imageView.getContext();
         PicassoCache.getPicassoInstance(context)
             .load(uri)
-            .tag(context)
             .into(holder.imageView, new Callback.EmptyCallback() {
                 @Override
                 public void onSuccess() {
@@ -149,15 +149,13 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                                             final Palette.Swatch swatch = getSwatch(palette);
                                             holder.wordView.setBackgroundColor(swatch.getRgb());
                                             holder.wordView.setTextColor(swatch.getBodyTextColor());
-                                            holder.dateView.setTextColor(swatch.getBodyTextColor());
                                             holder.cardMenu.setColorFilter(palette.getMutedColor(0x000000), PorterDuff.Mode.MULTIPLY);
                                         }catch (NullPointerException e){
-                                            Log.i(TAG, "unable to retrieve swatch");
+                                            Log.d(TAG, "unable to retrieve swatch");
                                         }
                                     }else{
-                                        holder.wordView.setBackgroundColor(0x000000);
-                                        holder.wordView.setTextColor(0xfff);
-                                        holder.dateView.setTextColor(0xfff);
+                                        holder.wordView.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                                        holder.wordView.setTextColor(Color.parseColor("#000000"));
                                         holder.cardMenu.setColorFilter(palette.getMutedColor(0x000000), PorterDuff.Mode.MULTIPLY);
                                     }
                                 }
@@ -165,11 +163,11 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
                 @Override
                 public void onError() {
-                    holder.wordView.setBackgroundColor(0x000000);
+                    holder.wordView.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                    holder.wordView.setTextColor(Color.parseColor("#000000"));
                 }
             });
         holder.wordView.setText(word.getWord());
-        holder.dateView.setText(word.getDate());
         //Set TAG as a unique id, instead of position. This allows updates to the original object,
         //independent of DataSet
         holder.imageView.setTag(word.getImgUrl());
@@ -228,67 +226,76 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     private class WordDataSetFilter extends Filter{
-            @SuppressWarnings("unchecked")
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                mWordArrayList = (ArrayList<Word>)results.values;
-                notifyDataSetChanged();
-            }
-
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                FilterResults results = new FilterResults(); // holds the results
-                ArrayList<Word> filteredArray = new ArrayList<>();
-                if(constraint == null || constraint.length() == 0){
-                    results.count = mWordArrayList.size();
-                    results.values = mWordArrayList;
-                }else{
-                    String option = constraint.toString();
-                    switch(option){
-                        case "favorites":
-                            for(int i = 0; i < mWordArrayList.size(); i++){
-                                Word w = mWordArrayList.get(i);
-                                if(w.getFavorite() == 1){
-                                    filteredArray.add(w);
-                                }
-                            }
-                            break;
-                        case "dismissed":
-                            for(int i = 0; i < mWordArrayList.size(); i++){
-                                Word w = mWordArrayList.get(i);
-                                if(w.getVisibility() == 0){
-                                    filteredArray.add(w);
-                                }
-                            }
-                            break;
-                        case "unfiltered":
-                            for(int i = 0; i < mWordArrayList.size(); i++) {
-                                Word w = mWordArrayList.get(i);
-                                if(w.getVisibility() == 1){
-                                    filteredArray.add(w);
-                                }
-                            }
-                            break;
-                        case "search":
-                            for(int i = 0; i < mWordArrayList.size(); i++){
-                                Word w = mWordArrayList.get(i);
-                                if(w.getSearched() == 1){
-                                    filteredArray.add(w);
-                                }
-                            }
-                            break;
-                    }
-                    results.count = filteredArray.size();
-                    results.values = filteredArray;
-                }
-                return results;
-            }
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            mWordArrayList = (ArrayList<Word>) results.values;
+            notifyDataSetChanged();
         }
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            FilterResults results = new FilterResults(); // holds the results
+            ArrayList<Word> filteredArray = new ArrayList<>();
+            if(constraint == null || constraint.length() == 0){
+                results.count = mWordArrayList.size();
+                results.values = mWordArrayList;
+            }else{
+                String option = constraint.toString();
+                switch(option){
+                    case "favorites":
+                        for(int i = 0; i < mWordArrayList.size(); i++){
+                            Word w = mWordArrayList.get(i);
+                            if(w.getFavorite() == 1){
+                                filteredArray.add(w);
+                            }
+                        }
+                        break;
+                    case "dismissed":
+                        for(int i = 0; i < mWordArrayList.size(); i++){
+                            Word w = mWordArrayList.get(i);
+                            if(w.getVisibility() == 0){
+                                filteredArray.add(w);
+                            }
+                        }
+                        break;
+                    case "unfiltered":
+                        for(int i = 0; i < mWordArrayList.size(); i++) {
+                            Word w = mWordArrayList.get(i);
+                            if(w.getVisibility() == 1){
+                                filteredArray.add(w);
+                            }
+                        }
+                        break;
+                    case "search":
+                        for(int i = 0; i < mWordArrayList.size(); i++){
+                            Word w = mWordArrayList.get(i);
+                            if(w.getSearched() == 1){
+                                filteredArray.add(w);
+                            }
+                        }
+                        break;
+                }
+                if(filteredArray.size() == 0){
+                    Word w = new Word();
+                    w.setDate("March 21, 2016");
+                    w.setWord(option + " go here");
+                    w.setExampleEN("blah");
+                    w.setImgUrl("test");
+                    filteredArray = new ArrayList<>();
+                    filteredArray.add(w);
+                }
+                results.count = filteredArray.size();
+                results.values = filteredArray;
+            }
+            return results;
+        }
+    }
 
     private void setAnimation(View viewToAnimate, int position){
         int lastPosition= position -1;
         if(position>lastPosition){
-            Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.push_left_in);
+            Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.fade_in);
             viewToAnimate.startAnimation(animation);
         }
     }
@@ -297,8 +304,5 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder){
         super.onViewDetachedFromWindow(holder);
         ((CardViewHolder)holder).itemView.clearAnimation();
-        //todo kill listeners on detach
-        //((CardViewHolder)holder).imageView.setOnClickListener(null);
-        //((CardViewHolder)holder).cardMenu.setOnClickListener(null);
     }
 }

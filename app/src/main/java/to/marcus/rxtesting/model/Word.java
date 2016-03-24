@@ -4,9 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.Date;
-
 import to.marcus.rxtesting.util.DateUtility;
 
 /**
@@ -138,10 +136,14 @@ public class Word implements Parcelable, Comparable {
     }
 
     //Compare dates
+    /*
+    0 if the argument Date is equal to this Date; a value less than 0 if this Date is
+    before the Date argument; and a value greater than 0 if this Date is after the Date argument.
+     */
     @Override
     public int compareTo(Object wordToCompare) {
-        Date dtCompareDate = DateUtility.formatDateString(((Word)wordToCompare).getDate());
-        Date dtOriginalDate = DateUtility.formatDateString(this.getDate());
+        Date dtCompareDate = DateUtility.formatDateStringNoYear(((Word)wordToCompare).getDate());
+        Date dtOriginalDate = DateUtility.formatDateStringNoYear(this.getDate());
         return dtOriginalDate.compareTo(dtCompareDate);
     }
 

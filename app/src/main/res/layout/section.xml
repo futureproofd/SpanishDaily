@@ -6,7 +6,6 @@
     android:paddingLeft="16dp"
     android:singleLine="true"
     android:textAllCaps="true"
-    android:background="@color/material_grey_100"
     android:textSize="26sp"
     android:textAppearance="?android:attr/textAppearanceLarge"
     android:fontFamily="sans-serif-condensed-light"

@@ -1,7 +1,6 @@
 package to.marcus.rxtesting.util;
 
 import org.joda.time.DateTime;
-import org.joda.time.Days;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,7 +18,8 @@ import to.marcus.rxtesting.ui.adapter.SectionedGridRecyclerViewAdapter;
  * Created by marcus on 9/11/2015
  */
 public class DateUtility {
-    private static final DateFormat formatted = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
+    private static final DateFormat formatted = new SimpleDateFormat("MMMM d", Locale.ENGLISH);
+    private static final DateFormat formattedYr = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
     private static Date newDate;
     private static DateTime today = new DateTime();
     //Defaults for word Sorting methods
@@ -42,7 +42,8 @@ public class DateUtility {
     private static final String NOVEMBER = "November";
     private static final String DECEMBER = "December";
 
-    public static Date formatDateString(String date){
+    //For word DataSet, initial sorting
+    public static Date formatDateStringNoYear(String date){
         try{
             newDate = formatted.parse(date);
         }catch (ParseException p){
@@ -51,10 +52,26 @@ public class DateUtility {
         return newDate;
     }
 
-    public static boolean isWordStale(Date wordDate){
-        DateTime word = new DateTime(wordDate);
-        int diff = Days.daysBetween(today, word).getDays();
-        return diff < 0;
+    private static Date formatDateStringWithYear(String date){
+        try{
+            newDate = formattedYr.parse(date);
+        }catch (ParseException p){
+            p.printStackTrace();
+        }
+        return newDate;
+    }
+
+    //Compare dats between most recent word and today
+    public static boolean isWordStale(String wordDate){
+       boolean isStale;
+       DateTime word = new DateTime(formatDateStringWithYear(wordDate));
+
+        if(word.getYear() == today.getYear()) {
+            isStale = word.getMonthOfYear() != today.getMonthOfYear() || word.getDayOfMonth() != today.getDayOfMonth();
+        }else{
+            isStale = true;
+        }
+        return isStale;
     }
 
     /*
@@ -66,17 +83,16 @@ public class DateUtility {
         return startMonth.substring(0, startMonth.indexOf(" "));
     }
 
-    //add to hashMap
+    //build hashMap of Sections
     private static void buildMonthMappings(String month, int position){
-        if(!getStartMonth(mWords).equals(month)){
-            monthHashMap.put(month, (position -2));
+        if(!getStartMonth(mWords).equals(month) || previousMonth != month){
+            monthHashMap.put(month, (position));
         }else{
             monthHashMap.put(month, 0);
         }
     }
 
-    //1.) Build Sections, sorted by month
-    public static List<SectionedGridRecyclerViewAdapter.Section> sortWordsByMonth(ArrayList<Word> words){
+    public static List<SectionedGridRecyclerViewAdapter.Section> getSections(ArrayList<Word> words){
         //reset list
         if(sectionList == null)
             sectionList = new ArrayList<>();
@@ -84,19 +100,49 @@ public class DateUtility {
         if(monthHashMap == null)
             monthHashMap = new LinkedHashMap<>();
 
-        //Sort array by Month
-        mWords = words;
-        Collections.sort(mWords);
+        //determine routing
+        if(words.size() == 0){
+            monthHashMap.put("No Words Avaliable", 0);
+        }else{
+            mWords = new ArrayList<>();
+            Collections.sort(words);
+            for(int i = 0; i < words.size(); i++) {
+                Word w = words.get(i);
+                if(w.getVisibility() == 1){
+                    mWords.add(w);
+                }
+            }
+            if(mWords.size() == 0){
+                sectionList = getDefaultSections();
+            }else{
+                sectionList = getSectionsByMonth(mWords);
+            }
+        }
+        mWords = null;
+        return sectionList;
+    }
 
+    //default section if no words are visible
+    private static List<SectionedGridRecyclerViewAdapter.Section> getDefaultSections(){
+        monthHashMap.put("No Words Avaliable", 0);
+        for(Map.Entry<String, Integer> entry : monthHashMap.entrySet()){
+            sectionList.add(new SectionedGridRecyclerViewAdapter.Section(entry.getValue(),entry.getKey()));
+        }
+        return sectionList;
+    }
+
+    //Build Sections, sorted by month
+    private static List<SectionedGridRecyclerViewAdapter.Section> getSectionsByMonth(ArrayList<Word> words){
+        //Build hashMap
         for(int i = 0; i < mWords.size(); i++){
             month = mWords.get(i).getDate();
             month = month.substring(0, month.indexOf(" "));
-            if(!previousMonth.equals(month)){
+            if(!previousMonth.equals(month) || i == 0){
                 buildMonthMappings(month, i);
                 previousMonth = month;
             }
         }
-
+        //Remove existing hashMap sections
         for(Map.Entry<String, Integer> entry : monthHashMap.entrySet()){
             switch (entry.getKey()){
                 case JANUARY:
@@ -164,7 +210,6 @@ public class DateUtility {
         for(Map.Entry<String, Integer> entry : monthHashMap.entrySet()){
             sectionList.add(new SectionedGridRecyclerViewAdapter.Section(entry.getValue(),entry.getKey()));
         }
-        mWords = null;
         return sectionList;
     }
 
@@ -172,7 +217,7 @@ public class DateUtility {
         return sectionList;
     }
 
-
+    //reset existing static references
     public static void removeSectionReferences(){
         sectionList = null;
         monthHashMap = null;

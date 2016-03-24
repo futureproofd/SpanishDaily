@@ -2,6 +2,7 @@ package to.marcus.rxtesting.model;
 
 import android.content.Context;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by marcus on 9/8/2015
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 public class WordStorage{
     private ArrayList<Word> mWords;
     private ObjectSerializer mSerializer;
-    private static final String WORDS_DATASET = "words.json";
+    private final String WORDS_DATASET = "words.json";
 
     public WordStorage(Context appContext){
         mSerializer = new ObjectSerializer(appContext, WORDS_DATASET);

@@ -2,6 +2,7 @@ package to.marcus.rxtesting.util;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Instrumentation;
 import android.os.Build;
 import android.view.Window;
 import android.view.WindowManager;

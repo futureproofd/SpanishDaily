@@ -10,8 +10,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".HomeActivity"
-        android:background="@color/material_grey_100">
+        tools:context=".HomeActivity">
         <android.support.v7.widget.Toolbar
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/toolbar"
@@ -95,7 +94,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:divider="@android:color/transparent"
-        android:background="@android:color/white"
         app:menu="@menu/drawer_view"
         app:headerLayout="@layout/nav_header"/>
 

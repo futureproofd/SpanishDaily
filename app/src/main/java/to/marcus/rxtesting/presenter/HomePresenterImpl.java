@@ -53,11 +53,11 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
 
     @Override
     public void initWordDataSet(){
-        if(mRepository.getDatasetSize()!=0){
+       if(mRepository.getDatasetSize()!=0){
             pullLatestWord();
-        }else{
+       }else{
             pullWordFromNetwork();
-        }
+       }
     }
 
     public void selectDataset(String datasetMode){
@@ -97,7 +97,6 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
 
     public void pullLatestWord(){
         if(isWordStale()){
-            homeView.showNotification(homeView.getContext().getString(R.string.notify_new_word));
             pullWordFromNetwork();
         }else{
             showWordList();
@@ -125,20 +124,21 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
 
     private void onWordElementsReceived(ArrayList<String> wordElements){
         homeView.hideLoading();
+        homeView.showNotification(homeView.getContext().getString(R.string.notify_new_word));
         Word word = WordFactoryImpl.Word.newWordInstance(wordElements);
         mRepository.addWord(word);
         showWordList();
     }
 
-    public boolean isWordStale(){
-        boolean isStale = false;
-        if(DateUtility.isWordStale(DateUtility.formatDateString(mRepository.getLatestWordDate())))
-            isStale=true;
-        return isStale;
-    }
-
     private void showWordList(){
         homeView.showWordList(mRepository.getWordsDataset());
+    }
+
+    public boolean isWordStale(){
+        boolean isStale = false;
+        if(DateUtility.isWordStale(mRepository.getLatestWordDate()))
+            isStale=true;
+        return isStale;
     }
 
     public boolean getGridCount(String dataSet){

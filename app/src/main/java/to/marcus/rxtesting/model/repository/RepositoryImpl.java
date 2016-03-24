@@ -168,4 +168,5 @@ public class RepositoryImpl implements Repository{
     public boolean getGridCntRecyclePref(){
         return mAppPreferences.getGridCntRecycle();
     }
+
 }
