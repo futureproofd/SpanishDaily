@@ -1,6 +1,7 @@
 package to.marcus.rxtesting.util;
 
 import org.joda.time.DateTime;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,6 +12,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
 import to.marcus.rxtesting.model.Word;
 import to.marcus.rxtesting.ui.adapter.SectionedGridRecyclerViewAdapter;
 
@@ -21,7 +23,7 @@ public class DateUtility {
     private static final DateFormat formatted = new SimpleDateFormat("MMMM d", Locale.ENGLISH);
     private static final DateFormat formattedYr = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
     private static Date newDate;
-    private static DateTime today = new DateTime();
+    private static final DateTime today = new DateTime();
     //Defaults for word Sorting methods
     private static List<SectionedGridRecyclerViewAdapter.Section> sectionList;
     private static String month = "";
@@ -85,7 +87,7 @@ public class DateUtility {
 
     //build hashMap of Sections
     private static void buildMonthMappings(String month, int position){
-        if(!getStartMonth(mWords).equals(month) || previousMonth != month){
+        if(!getStartMonth(mWords).equals(month) || !previousMonth.equals(month)){
             monthHashMap.put(month, (position));
         }else{
             monthHashMap.put(month, 0);
@@ -115,7 +117,7 @@ public class DateUtility {
             if(mWords.size() == 0){
                 sectionList = getDefaultSections();
             }else{
-                sectionList = getSectionsByMonth(mWords);
+                sectionList = getSectionsByMonth();
             }
         }
         mWords = null;
@@ -132,7 +134,7 @@ public class DateUtility {
     }
 
     //Build Sections, sorted by month
-    private static List<SectionedGridRecyclerViewAdapter.Section> getSectionsByMonth(ArrayList<Word> words){
+    private static List<SectionedGridRecyclerViewAdapter.Section> getSectionsByMonth(){
         //Build hashMap
         for(int i = 0; i < mWords.size(); i++){
             month = mWords.get(i).getDate();

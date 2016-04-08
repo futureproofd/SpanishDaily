@@ -1,7 +1,9 @@
 package to.marcus.rxtesting.presenter;
 
 import java.util.ArrayList;
+
 import javax.inject.Inject;
+
 import rx.functions.Action1;
 import to.marcus.rxtesting.Constants;
 import to.marcus.rxtesting.R;
@@ -78,24 +80,42 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
     }
 
     @Override
-    public void onDismissOptionSelected(String itemId){
-        if(mRepository.getWord(itemId).getVisibility() == 0){
-            mRepository.deleteWord(itemId);
-            homeView.showNotification(homeView.getContext().getString(R.string.notify_word_deleted));
-        }else{
-            mRepository.removeWord(itemId);
-            homeView.showNotification(homeView.getContext().getString(R.string.notify_word_dismissed));
+    public void onDismissOptionSelected(String itemId, String dataSetMode) {
+        switch (dataSetMode) {
+            case "unfiltered":
+                mRepository.toggleHidden(itemId);
+                homeView.showNotification(homeView.getContext().getString(R.string.notify_word_dismissed));
+                break;
+            case "favorites":
+                mRepository.removeFavorite(itemId);
+                homeView.showNotification(homeView.getContext().getString(R.string.notify_favorite_removed));
+                break;
+            case "dismissed":
+                if (mRepository.getWord(itemId).getVisibility() == 0) {
+                    mRepository.deleteWord(itemId);
+                    homeView.showNotification(homeView.getContext().getString(R.string.notify_word_deleted));
+                }
+                break;
         }
         homeView.refreshWordList();
     }
 
     @Override
-    public void onFavOptionSelected(String itemId){
-        homeView.showNotification(homeView.getContext().getString(R.string.notify_favorite_added));
-        mRepository.addFavorite(itemId);
+    public void onModifyPropertySelected(String itemId, String dataSetMode){
+        switch (dataSetMode){
+            case "unfiltered":
+                homeView.showNotification(homeView.getContext().getString(R.string.notify_favorite_added));
+                mRepository.addFavorite(itemId);
+                break;
+            case "dismissed":
+                mRepository.toggleHidden(itemId);
+                homeView.refreshWordList();
+                homeView.showNotification(homeView.getContext().getString(R.string.notify_word_restored));
+                break;
+        }
     }
 
-    public void pullLatestWord(){
+    private void pullLatestWord(){
         if(isWordStale()){
             pullWordFromNetwork();
         }else{
@@ -103,8 +123,7 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
         }
     }
 
-    public void pullWordFromNetwork(){
-        homeView.showLoading();
+    private void pullWordFromNetwork(){
         wordInteractor.execute()
             .subscribe(
                     new Action1<ArrayList<String>>() {
@@ -123,7 +142,6 @@ public class HomePresenterImpl implements HomePresenter<HomeView>{
     }
 
     private void onWordElementsReceived(ArrayList<String> wordElements){
-        homeView.hideLoading();
         homeView.showNotification(homeView.getContext().getString(R.string.notify_new_word));
         Word word = WordFactoryImpl.Word.newWordInstance(wordElements);
         mRepository.addWord(word);

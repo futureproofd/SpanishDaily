@@ -8,7 +8,6 @@ import java.util.ArrayList;
 public class WordFactoryImpl{
 
     public static final class Word{
-
         public static to.marcus.rxtesting.model.Word newWordInstance(ArrayList<String> wordElements){
             final to.marcus.rxtesting.model.Word defaultWord = new to.marcus.rxtesting.model.Word();
                 defaultWord.setWord(wordElements.get(0));
@@ -24,9 +23,4 @@ public class WordFactoryImpl{
                 return defaultWord;
         }
     }
-
-
-
-
-
 }

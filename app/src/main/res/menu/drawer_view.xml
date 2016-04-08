@@ -4,29 +4,29 @@
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_home"
-            android:title="Home" />
+            android:title="@string/title_home" />
         <item
             android:id="@+id/nav_favorites"
             android:icon="@drawable/ic_star_grey600_24dp"
-            android:title="Favoritos" />
+            android:title="@string/title_favorites" />
         <item
             android:id="@+id/nav_search"
             android:icon="@drawable/ic_magnify_grey600_24dp"
-            android:title="Buscar" />
+            android:title="@string/title_search" />
         <item
             android:id="@+id/nav_history"
             android:icon="@drawable/ic_history_grey600_24dp"
-            android:title="Basura" />
+            android:title="@string/title_basura" />
         <item
             android:id="@+id/nav_options"
             android:icon="@drawable/ic_settings_grey600_24dp"
-            android:title="Opciones" />
-        <item android:title="About">
+            android:title="@string/title_options" />
+        <item android:title="@string/title_about">
             <menu>
                 <item
                     android:id="@+id/nav_about"
                     android:icon="@drawable/ic_information_grey600_24dp"
-                    android:title="Créditos"
+                    android:title="@string/title_creditos"
                 />
             </menu>
         </item>

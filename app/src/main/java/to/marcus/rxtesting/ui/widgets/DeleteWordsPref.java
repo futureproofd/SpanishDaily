@@ -1,5 +1,6 @@
 package to.marcus.rxtesting.ui.widgets;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -40,6 +41,7 @@ public class DeleteWordsPref extends DialogPreference {
         alertDialog.show();
     }
 
+    @SuppressLint("CommitPrefEdits")
     private void putPrefValue(String key, boolean value){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = prefs.edit();

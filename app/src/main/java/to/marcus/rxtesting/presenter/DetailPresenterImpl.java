@@ -1,6 +1,7 @@
 package to.marcus.rxtesting.presenter;
 
 import javax.inject.Inject;
+
 import rx.functions.Action1;
 import to.marcus.rxtesting.data.interactor.SoundByteInteractorImpl;
 import to.marcus.rxtesting.model.Word;
@@ -25,18 +26,8 @@ public class DetailPresenterImpl implements DetailPresenter<DetailView> {
     }
 
     @Override
-    public void onStart() {
-
-    }
-
-    @Override
-    public void onStop() {
-
-    }
-
-    @Override
     public void onElementSelected(String soundRef){
-        //pull from cache or :
+        //todo check if sound exists in cache, else:
         pullSoundByteFromNetwork(soundRef);
     }
 

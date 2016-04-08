@@ -7,8 +7,8 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
         android:id="@+id/imgDetailWord"
+        android:scaleType="centerCrop"
         android:transitionName="@string/transition_img"
         tools:targetApi="lollipop"
         tools:ignore="ContentDescription" />
@@ -61,6 +61,7 @@
     android:orientation="vertical"
     android:background="@color/accent"
     android:scaleType="fitXY">
+
     <TableRow
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -141,7 +142,8 @@
             android:layout_marginStart="42dp"
             tools:ignore="RtlCompat"/>
 </LinearLayout>
-</ScrollView>
+    </ScrollView>
+
     <android.support.v7.widget.Toolbar
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/detail_toolbar"

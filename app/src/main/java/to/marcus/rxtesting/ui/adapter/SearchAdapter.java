@@ -8,7 +8,9 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+
 import java.util.ArrayList;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import to.marcus.rxtesting.R;
@@ -19,10 +21,10 @@ import to.marcus.rxtesting.model.Word;
  *
  */
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchViewHolder> implements Filterable{
-    private ArrayList<Word> mWordArrayList;
+    private final ArrayList<Word> mWordArrayList;
     private ArrayList<Word> mSearchResults;
     private final RecyclerViewItemClickListener clickListener;
-    private int layout;
+    private final int layout;
     private static final String TAG = SearchAdapter.class.getSimpleName();
 
     public SearchAdapter(ArrayList<Word> wordArrayList, int layout

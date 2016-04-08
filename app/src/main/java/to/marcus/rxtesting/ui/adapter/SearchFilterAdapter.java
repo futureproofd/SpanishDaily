@@ -11,8 +11,11 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
+
 import to.marcus.rxtesting.R;
 import to.marcus.rxtesting.model.Word;
 
@@ -21,9 +24,11 @@ import to.marcus.rxtesting.model.Word;
  */
 public class SearchFilterAdapter extends ArrayAdapter<Word> implements Filterable {
     private static final String TAG = SearchFilterAdapter.class.getSimpleName();
-    private ArrayList<Word> mWordArrayList, mSearchResults;
-    Context context;
-    int resource, textViewResourceId;
+    private final ArrayList<Word> mWordArrayList;
+    private ArrayList<Word> mSearchResults;
+    private final Context context;
+    private final int resource;
+    private final int textViewResourceId;
     private final SearchAdapterClickListener clickListener;
 
     public SearchFilterAdapter(Context context, int resource, int textViewResourceId

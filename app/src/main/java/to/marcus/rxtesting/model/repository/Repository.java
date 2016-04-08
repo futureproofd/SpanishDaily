@@ -1,15 +1,11 @@
 package to.marcus.rxtesting.model.repository;
 
 import java.util.ArrayList;
-import java.util.Map;
 
-import rx.Observable;
 import to.marcus.rxtesting.model.Word;
-import to.marcus.rxtesting.model.Words;
 
 /**
  * Created by marcus on 9/8/2015
- *
  */
 public interface Repository {
 
@@ -17,14 +13,14 @@ public interface Repository {
     void addFavorite(String itemId);
     void toggleFavorite(Word word);
     void saveWords();
-    void setHidden(int position);
+    void toggleHidden(String itemId);
     Word getWord(String position);
     String getLatestWordDate();
     ArrayList<Word> getWordsDataset();
     int getDatasetSize();
-    void removeWord(String itemId);
     void deleteWord(String itemId);
     void deleteWords();
+    void removeFavorite(String itemId);
     void deleteFavorites();
     void deleteRecycled();
     void setSearched(String itemId);

@@ -4,6 +4,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,7 +13,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import javax.inject.Inject;
+
 import rx.Observable;
 import rx.Subscriber;
 
@@ -22,10 +25,7 @@ import rx.Subscriber;
  */
 
 public class WebParser {
-    private final String TAG = WebParser.class.getSimpleName();
     //EndPoints
-    private static final String WEBROOT ="http://www.spanishcentral.com";
-    private static final String IMGROOT = "http://assets.merriam-webster.com/sc/word_of_the_day";
     private static final String ENDPOINT = "http://www.spanishcentral.com/word-of-the-day";
     private static final String SOUNDBYTE_ENDPOINT = "http://media.merriam-webster.com/audio/prons/es/me/mp3/";
     //Elements
@@ -39,9 +39,8 @@ public class WebParser {
     //SoundByte Params
     private static final String FILE_EXTENSION = "sp.mp3";
     //Static objects
-    private static HttpURLConnection connection;
     private static String elementHolder;
-    private static ArrayList<String> elementArray = new ArrayList<>();
+    private static final ArrayList<String> elementArray = new ArrayList<>();
 
     @Inject public WebParser(){}
 
@@ -122,12 +121,12 @@ public class WebParser {
      */
     private static byte[] getUrlBytes(String urlStr) throws IOException{
         URL url = new URL(urlStr);
-        connection = (HttpURLConnection)url.openConnection();
+        HttpURLConnection connection = (HttpURLConnection)url.openConnection();
         connection.setRequestProperty("User-Agent", USERAGENT);
         try{
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             InputStream in = connection.getInputStream();
-            int bytesRead = 0;
+            int bytesRead;
             byte[] buffer = new byte[1024];
             //fill up the bytes read
             while((bytesRead = in.read(buffer)) > 0){
@@ -139,89 +138,6 @@ public class WebParser {
             connection.disconnect();
         }
     }
-
-    /*
-    * Additional Helpers
-    * Not currently required
-    */
-    public static Observable<String> parseWord(){
-        return Observable.create(new Observable.OnSubscribe<String>(){
-             @Override
-             public void call(Subscriber<? super String> subscriber){
-                 try {
-                     Elements wordDiv = Jsoup.connect(ENDPOINT).userAgent(USERAGENT).get()
-                             .select(WORD_ELEMENT);
-                     for (Element table : wordDiv.select("Table")) {
-                         for (Element row : table.select("tr")) {
-                             String word = row.select("td").get(0).text();
-                             subscriber.onNext(word);
-                         }
-                     }
-                 } catch (IOException e) {
-                     subscriber.onError(e);
-                 }
-                 subscriber.onCompleted();
-             }
-        });
-    }
-
-    public static Observable<String> parseImage(){
-        return Observable.create(new Observable.OnSubscribe<String>(){
-            @Override
-            public void call(Subscriber<? super String> subscriber){
-                try{
-                    Elements imgDiv = Jsoup.connect(ENDPOINT).userAgent(USERAGENT).get()
-                            .select(PHOTO_ELEMENT);
-                    String imgsrc = WEBROOT + imgDiv.select("img").first().attr("src");
-                    subscriber.onNext(imgsrc);
-                }catch (IOException e){
-                    subscriber.onError(e);
-                }
-                subscriber.onCompleted();
-            }
-        });
-    }
-
-    public static Observable<String> parseTranslation(){
-        return Observable.create(new Observable.OnSubscribe<String>(){
-            @Override
-            public void call(Subscriber<? super String> subscriber){
-                try {
-                    Elements translationDiv = Jsoup.connect(ENDPOINT).userAgent(USERAGENT).get()
-                            .select(TRANSLATION_ELEMENT);
-                    String translation = translationDiv.select("p").first().text();
-                    subscriber.onNext(translation);
-                }catch(IOException e) {
-                    subscriber.onError(e);
-                }
-                subscriber.onCompleted();
-            }
-        });
-    }
-
-    public static Observable<ArrayList<String>> parseExamples(){
-        return Observable.create(new Observable.OnSubscribe<ArrayList<String>>() {
-            @Override
-            public void call(Subscriber<? super ArrayList<String>> subscriber) {
-                try {
-                    ArrayList<String> transList = new ArrayList<String>();
-                    //get example ESPANOL
-                    String examplesDivEsp = Jsoup.connect(ENDPOINT).userAgent(USERAGENT).get()
-                            .select(EXAMPLEESP_ELEMENT).text();
-                    //get example INGLES
-                    String examplesDivEn = Jsoup.connect(ENDPOINT).userAgent(USERAGENT).get()
-                            .select(EXAMPLEEN_ELEMENT).text();
-                    transList.add(examplesDivEn);
-                    transList.add(examplesDivEsp);
-                    subscriber.onNext(transList);
-                } catch (IOException e) {
-                    subscriber.onError(e);
-                }
-                subscriber.onCompleted();
-            }
-        });
-    }
-
 }
 
 

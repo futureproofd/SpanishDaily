@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+
 import java.util.Calendar;
 import java.util.Random;
 
@@ -15,11 +16,10 @@ import java.util.Random;
  */
 public class ServiceController {
     private static final String TAG = ServiceController.class.getSimpleName();
-    private static Long ALARM_START;
+    private static final Long ALARM_START;
     private static Random rand = new Random();
     private static final int REQ_CODE = 1337;
     private static final int ONE_DAY = 86400000;
-    private static String ALARM_ACTION = "ALARM_ACTION";
 
     static{
         Calendar calendar = Calendar.getInstance();
@@ -33,7 +33,7 @@ public class ServiceController {
         AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         PendingIntent pendingIntent = PendingIntent.getService(context
                 ,REQ_CODE
-                ,new Intent(context, WordNotificationService.class).setAction(ALARM_ACTION)
+                ,new Intent(context, WordNotificationService.class).setAction("ALARM_ACTION")
                 ,PendingIntent.FLAG_UPDATE_CURRENT
             );
         Long offset = ALARM_START;
@@ -52,7 +52,7 @@ public class ServiceController {
     }
 
     //Random between two values
-    public static int timeInterval(int min, int max){
+    private static int timeInterval(int min, int max){
         return rand.nextInt(max - min) + min;
     }
 

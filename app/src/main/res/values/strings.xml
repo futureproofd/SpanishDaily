@@ -1,19 +1,31 @@
 <resources>
     <string name="app_name">Spanish WOTD</string>
-    <string name="title_home">Spanish WOTD</string>
+    <string name="title_home">Home</string>
     <string name="title_search">Buscar</string>
     <string name="title_history">Historia</string>
     <string name="title_favorites">Favoritos</string>
+    <string name="title_basura">Basura</string>
+    <string name="title_options">Opciones</string>
+    <string name="title_creditos">Créditos</string>
+    <string name="title_about">About</string>
     <string name="action_search">Search</string>
+    <string name="search_hint">Español o Inglés</string>
     <string name="DETAIL_WORD">word detail</string>
     <string name="transition_word">word transition</string>
     <string name="transition_img">image transition</string>
     <string name="drawer_open">Navigation drawer opened</string>
     <string name="drawer_close">Navigation drawer closed</string>
     <string name="navigation_title">Navegación</string>
-    <string-array name="dialog_options">
-        <item>Add to favorites</item>
-        <item>Dismiss Card</item>
+    <string-array name="dialog_main_options">
+        <item>Add to Favorites</item>
+        <item>Dismiss Word</item>
+    </string-array>
+    <string-array name="dialog_fav_options">
+        <item>Remove from Favorites</item>
+    </string-array>
+    <string-array name="dialog_dismissed_options">
+        <item>Restore Word</item>
+        <item>Permanently delete Word</item>
     </string-array>
     <!--Selection filters-->
     <string name="dataset_favorite">favorites</string>
@@ -48,7 +60,9 @@
     <string name="playback_toast">play sound</string>
     <string name="notify_new_word">New Word added</string>
     <string name="notify_favorite_added">Favorite added</string>
+    <string name="notify_favorite_removed">Favorite removed</string>
     <string name="notify_word_deleted">Word permanently deleted</string>
+    <string name="notify_word_restored">Word restored</string>
     <string name="notify_word_dismissed">Word dismissed</string>
     <string name="notify_network_error">Error fetching Word from network</string>
     <!--filename params -->

@@ -2,6 +2,7 @@ package to.marcus.rxtesting.model;
 
 import android.content.Context;
 import android.util.Log;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,12 +14,12 @@ public class AppPreferences{
     private static final String KEY_WIRELESS = "key_wireless";
     private static final String KEY_PULL = "key_pull";
     private static final String KEY_NOTIFY = "key_notify";
-    //Hold number of grid columns selected for each navigation area (true = 2 columsn, false = 1)
+    //Hold number of grid columns selected for each navigation area (true = 2 columns, false = 1)
     private static final String KEY_GRIDCOLUMNCNT_FAV = "key_gridcolumn_cnt_fav";
     private static final String KEY_GRIDCOLUMNCNT_HOME = "key_gridcolumn_cnt_home";
     private static final String KEY_GRIDCOLUMNCNT_RECYCLE = "key_gridcolumn_cnt_recycle";
     private Map<String, Boolean> mPreferences;
-    private ObjectSerializer mSerializer;
+    private final ObjectSerializer mSerializer;
     private static final String APP_PREFERENCES = "app_prefs.json";
 
     public AppPreferences(Context appContext){
@@ -30,7 +31,7 @@ public class AppPreferences{
         }
     }
 
-    public boolean savePrefsToJSON(){
+    private boolean savePrefsToJSON(){
         try{
             Log.i(TAG, "saving Prefs to JSON");
             mSerializer.savePreferences(mPreferences);

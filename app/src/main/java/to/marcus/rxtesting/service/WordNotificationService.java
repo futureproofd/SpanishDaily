@@ -10,11 +10,15 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
+
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
+
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+
 import javax.inject.Inject;
+
 import rx.functions.Action1;
 import to.marcus.rxtesting.BaseApplication;
 import to.marcus.rxtesting.R;

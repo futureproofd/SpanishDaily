@@ -1,7 +1,6 @@
 package to.marcus.rxtesting.ui.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,22 +12,17 @@ import android.widget.TextView;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import to.marcus.rxtesting.ui.activity.HomeActivity;
-
 /**
  * @author Gabriele Mariotti (gabri.mariotti@gmail.com)
  * marcus - Using this custom adapter to provide sections for Word objects
  */
 public class SectionedGridRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
     private static final String TAG = SectionedGridRecyclerViewAdapter.class.getSimpleName();
     private final Context mContext;
     private static final int SECTION_TYPE = 0;
-
     private boolean mValid = true;
     private int mSectionResourceId;
     private int mTextResourceId;
-    private LayoutInflater mLayoutInflater;
     private RecyclerView.Adapter mWordRecyclerAdapter;
     private SparseArray<Section> mSections = new SparseArray<>();
     private RecyclerView mRecyclerView;
@@ -36,8 +30,6 @@ public class SectionedGridRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
 
     public SectionedGridRecyclerViewAdapter(Context context, int sectionResourceId, int textResourceId,RecyclerView recyclerView,
                                             RecyclerView.Adapter baseAdapter) {
-
-        mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mSectionResourceId = sectionResourceId;
         mTextResourceId = textResourceId;
         mWordRecyclerAdapter = baseAdapter;

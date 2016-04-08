@@ -10,8 +10,8 @@
         android:scaleType="centerCrop"
         android:id="@+id/imgDetailWord"
         android:transitionName="@string/transition_img"
-        tools:targetApi="lollipop"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription"
+        tools:targetApi="lollipop" />
         <TextView
             android:id="@+id/txtDetailWord"
             android:layout_width="match_parent"
@@ -21,8 +21,8 @@
             android:gravity="start"
             android:background="@color/primary_dark"
             android:paddingTop="11dp"
-            android:paddingStart="15dp"
-            android:paddingEnd="0dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="0dp"
             android:textSize="25sp"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:fontFamily="sans-serif-condensed-light"
@@ -30,23 +30,20 @@
             android:elevation="4dp"
             android:textColor="@android:color/white"
             android:transitionName="@string/transition_word"
-            tools:targetApi="lollipop"
-            tools:ignore="RtlCompat" />
+            tools:ignore="RtlHardcoded,UnusedAttribute" />
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/btn_narration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/imgDetailWord"
-        android:layout_alignEnd="@id/imgDetailWord"
+        android:layout_alignRight="@id/imgDetailWord"
         android:layout_marginBottom="-32dp"
-        android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp"
         android:clickable="true"
         android:alpha="0"
         app:borderWidth="0dp"
         android:src="@drawable/ic_play_white_24dp"
-        android:elevation="@dimen/floating_button_size"
-        tools:targetApi="lollipop"
-        tools:ignore="RtlCompat">
+        tools:ignore="RtlHardcoded">
     </android.support.design.widget.FloatingActionButton>
 <ScrollView
     android:layout_below="@id/txtDetailWord"
@@ -80,8 +77,9 @@
             android:textSize="22sp"
             android:textStyle="bold"
             android:layout_marginTop="2dp"
+            android:layout_marginLeft="5dp"
             android:layout_marginStart="5dp"
-            tools:ignore="RtlCompat"/>
+            />
     </TableRow>
         <TextView
             android:id="@+id/txtTranslation"
@@ -90,8 +88,8 @@
             android:textSize="14sp"
             android:textStyle="italic"
             android:layout_marginBottom="8dp"
-            android:layout_marginStart="42dp"
-            tools:ignore="RtlCompat" />
+            android:layout_marginLeft="42dp"
+            android:layout_marginStart="42dp"/>
     <TableRow
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -112,9 +110,9 @@
             android:textStyle="bold"
             android:textSize="22sp"
             android:layout_marginTop="6dp"
+            android:layout_marginLeft="5dp"
             android:layout_marginStart="5dp"
-            android:layout_marginBottom="8dp"
-            tools:ignore="RtlCompat"/>
+            android:layout_marginBottom="8dp"/>
 
     </TableRow>
 
@@ -125,8 +123,8 @@
             android:textSize="14sp"
             android:textStyle="bold"
             android:layout_marginBottom="6dp"
-            android:layout_marginStart="42dp"
-            tools:ignore="RtlCompat"/>
+            android:layout_marginLeft="42dp"
+            android:layout_marginStart="42dp"/>
     <View
         android:layout_width="fill_parent"
         android:layout_height="1px"
@@ -138,8 +136,8 @@
             android:textSize="14sp"
             android:textStyle="italic"
             android:layout_marginTop="6dp"
-            android:layout_marginStart="42dp"
-            tools:ignore="RtlCompat"/>
+            android:layout_marginLeft="42dp"
+            android:layout_marginStart="42dp"/>
 </LinearLayout>
 </ScrollView>
     <android.support.v7.widget.Toolbar

@@ -1,8 +1,8 @@
 package to.marcus.rxtesting.model;
 
 import android.content.Context;
+
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * Created by marcus on 9/8/2015
@@ -10,8 +10,8 @@ import java.util.Collections;
  */
 public class WordStorage{
     private ArrayList<Word> mWords;
-    private ObjectSerializer mSerializer;
-    private final String WORDS_DATASET = "words.json";
+    private final ObjectSerializer mSerializer;
+    protected final String WORDS_DATASET = "words.json";
 
     public WordStorage(Context appContext){
         mSerializer = new ObjectSerializer(appContext, WORDS_DATASET);
@@ -45,8 +45,14 @@ public class WordStorage{
         saveWordsToJSON();
     }
 
-    public void hideWord(String itemId){
-        getWord(itemId).setVisibility(0);
+    public void toggleHidden(String itemId){
+        switch(getWord(itemId).getVisibility()){
+            case 1:
+                getWord(itemId).setVisibility(0);
+                break;
+            case 0:
+                getWord(itemId).setVisibility(1);
+        }
         saveWordsToJSON();
     }
 
@@ -70,6 +76,11 @@ public class WordStorage{
         saveWordsToJSON();
     }
 
+    public void removeFavorite(String itemId){
+        getWord(itemId).setFavorite(0);
+        saveWordsToJSON();
+    }
+
     public void toggleFavorite(Word word){
         for(Word dataSetWord : mWords){
             if(word.getImgUrl().equals(dataSetWord.getImgUrl())){
@@ -81,11 +92,6 @@ public class WordStorage{
                 saveWordsToJSON();
             }
         }
-    }
-
-    public void setHidden(int position){
-        mWords.get(position).setVisibility(0);
-        saveWordsToJSON();
     }
 
     public void setSearched(String itemId){

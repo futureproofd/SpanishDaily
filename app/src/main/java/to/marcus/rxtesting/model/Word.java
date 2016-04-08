@@ -2,9 +2,12 @@ package to.marcus.rxtesting.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.Date;
+
 import to.marcus.rxtesting.util.DateUtility;
 
 /**
@@ -41,8 +44,8 @@ public class Word implements Parcelable, Comparable {
     public Word(){}
 
     //Parcel constructor
-    public Word(String date, String imgUrl, String word, String soundRef, String translation
-            ,String exampleEN, String exampleESP, int favorite, int visibility, int searched){
+    private Word(String date, String imgUrl, String word, String soundRef, String translation
+            , String exampleEN, String exampleESP, int favorite, int visibility, int searched){
         this.date = date;
         this.imgUrl = imgUrl;
         this.word = word;

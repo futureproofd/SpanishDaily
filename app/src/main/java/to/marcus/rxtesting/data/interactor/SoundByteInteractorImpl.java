@@ -1,6 +1,7 @@
 package to.marcus.rxtesting.data.interactor;
 
 import javax.inject.Inject;
+
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;

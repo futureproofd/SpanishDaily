@@ -14,20 +14,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
+import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.squareup.leakcanary.RefWatcher;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
 import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import to.marcus.rxtesting.BaseApplication;
@@ -47,23 +49,22 @@ import to.marcus.rxtesting.util.UIUtility;
  */
 public class DetailActivity extends AppCompatActivity implements DetailView,
         Palette.PaletteAsyncListener{
-    private static final String TAG = DetailActivity.class.getSimpleName();
     private static final String WORD_OBJECT = "WORD_OBJECT";
     @Inject DetailPresenterImpl mDetailPresenterImpl;
-    @Bind(R.id.detail_toolbar)  Toolbar mToolbar;
-    @Bind(R.id.imgDetailWord)   ImageView imgWord;
-    @Bind(R.id.nav_back_arrow)  ImageView btnNavBk;
-    @Bind(R.id.txtDetailWord)   TextView strWord;
-    @Bind(R.id.body_container)  LinearLayout bodyContainer;
-    @Bind(R.id.txtTranslation)  TextView strTranslation;
-    @Bind(R.id.txtExampleEn)    TextView strExampleEN;
-    @Bind(R.id.txtExampleESP)   TextView strExampleESP;
-    @Bind(R.id.btn_narration)   FloatingActionButton btnNarration;
-    @Bind(R.id.trans_img)       ImageView imgTrans;
-    @Bind(R.id.example_img)     ImageView imgExample;
+    @Bind(R.id.detail_toolbar) Toolbar mToolbar;
+    @Bind(R.id.imgDetailWord)  ImageView imgWord;
+    @Bind(R.id.nav_back_arrow) ImageView btnNavBk;
+    @Bind(R.id.txtDetailWord)  TextView strWord;
+    @Bind(R.id.body_container) LinearLayout bodyContainer;
+    @Bind(R.id.txtTranslation) TextView strTranslation;
+    @Bind(R.id.txtExampleEn)   TextView strExampleEN;
+    @Bind(R.id.txtExampleESP)  TextView strExampleESP;
+    @Bind(R.id.btn_narration)  FloatingActionButton btnNarration;
+    @Bind(R.id.trans_img)      ImageView imgTrans;
+    @Bind(R.id.example_img)    ImageView imgExample;
     private String txtSoundRef;
     private Word mWord;
-    MenuItem actionFavorite;
+    private MenuItem actionFavorite;
     private int mActionFavoriteColor;
 
     @Override
@@ -76,7 +77,6 @@ public class DetailActivity extends AppCompatActivity implements DetailView,
         initWindowTransition();
         showWordDetails();
         initToolbar();
-
 
         btnNarration.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +96,19 @@ public class DetailActivity extends AppCompatActivity implements DetailView,
         refWatcher.watch(imgWord);
         refWatcher.watch(this);
         */
+    }
+
+    //Resize detail image based on device DPI. Values are in px (converted form dp)
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus){
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        ViewGroup.LayoutParams params = imgWord.getLayoutParams();
+        if(displayMetrics.densityDpi < 380){
+            params.height = (int) ((260 * displayMetrics.density)+ 0.5);
+        }else{
+            params.height = (int) ((300 * displayMetrics.density)+ 0.5);
+        }
+        imgWord.setLayoutParams(params);
     }
 
     private void initInjector(){
@@ -152,12 +165,6 @@ public class DetailActivity extends AppCompatActivity implements DetailView,
     }
 
     @Override
-    public void showLoading(){}
-
-    @Override
-    public void hideLoading(){}
-
-    @Override
     public void showNotification(String notification){
         Toast.makeText(this, notification, Toast.LENGTH_SHORT).show();
     }
@@ -169,6 +176,7 @@ public class DetailActivity extends AppCompatActivity implements DetailView,
         byte[] byteArray = getIntent().getByteArrayExtra("IMAGE");
         Bitmap detailBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
         Palette.generateAsync(detailBitmap, this);
+        imgWord.getMeasuredHeight();
         imgWord.setImageBitmap(detailBitmap);
         strWord.setText(mWord.getWord());
         strTranslation.setText(mWord.getTranslation());
@@ -176,7 +184,7 @@ public class DetailActivity extends AppCompatActivity implements DetailView,
         strExampleESP.setText(UIUtility.formatStringByExample(mWord.getExampleESP()));
     }
 
-    //todo cache mp3?
+    //todo cache mp3
     @Override
     public void onClickPlayback(byte[] soundByte) {
         try{
@@ -256,6 +264,9 @@ public class DetailActivity extends AppCompatActivity implements DetailView,
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void initEnterTransition() {
+        if(!getIntent().getBooleanExtra("TRANSITION", false)){
+             btnNarration.animate().alpha(1.0f);
+        }
         getWindow().setEnterTransition(TransitionUtility.makeEnterTransition());
         getWindow().getEnterTransition().addListener(new TransitionAdapter() {
             @Override

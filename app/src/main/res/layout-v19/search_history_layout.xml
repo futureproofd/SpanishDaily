@@ -19,8 +19,7 @@
         android:id="@+id/search_history_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingStart="5dp"
-        android:paddingEnd="0dp"
+        android:paddingLeft="5dp"
         android:layout_gravity="center_vertical"
         android:src="@drawable/ic_history_grey600_24dp"
         tools:ignore="ContentDescription" />

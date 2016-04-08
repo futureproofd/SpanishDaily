@@ -1,5 +1,6 @@
 package to.marcus.rxtesting;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -48,9 +49,10 @@ public class BaseApplication extends Application{
     }
 
     //Run once on initial install
+    @SuppressLint("CommitPrefEdits")
     private void initInstallDefaults(){
         SharedPreferences sharedPrefs = getSharedPreferences("version", 0);
-        int currentVersion = 2; //sharedPrefs.getInt("VersionCode", 0);
+        int currentVersion = 2;
         int appVersion = 0;
 
         //attempt to get versionCode

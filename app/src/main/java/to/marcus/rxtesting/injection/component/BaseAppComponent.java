@@ -1,6 +1,7 @@
 package to.marcus.rxtesting.injection.component;
 
 import javax.inject.Singleton;
+
 import dagger.Component;
 import to.marcus.rxtesting.BaseApplication;
 import to.marcus.rxtesting.injection.module.BaseAppModule;

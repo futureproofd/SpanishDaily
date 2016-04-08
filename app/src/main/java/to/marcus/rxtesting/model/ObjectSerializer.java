@@ -23,8 +23,8 @@ import java.util.Map;
  * Serialize/De-serialization JSON of Words Array and App Preferences
  */
 public class ObjectSerializer{
-    private Context mAppContext;
-    private String mFilename;
+    private final Context mAppContext;
+    private final String mFilename;
     private static final String JSON_WORD = "word";
     private static final String JSON_DATE = "date";
     private static final String JSON_URL = "url";
@@ -50,15 +50,12 @@ public class ObjectSerializer{
 
     public ArrayList<Word> loadWords() throws IOException, JSONException{
         ArrayList<Word> words = new ArrayList<>();
-        BufferedReader reader = null;
         //parse JSON using JSONTokener
         JSONArray array = (JSONArray) new JSONTokener(getJSONString(mFilename).toString()).nextValue();
         //Build the array of words from JSONObjects (call the custom Word constructor)
         for (int i = 0; i < array.length(); i++){
             words.add(new Word(array.getJSONObject(i)));
         }
-        if (reader != null)
-            reader.close();
         return words;
     }
 
@@ -74,7 +71,6 @@ public class ObjectSerializer{
 
     public HashMap<String,Boolean> loadPreferences() throws JSONException, IOException{
         HashMap<String, Boolean> prefs = new HashMap<>();
-        BufferedReader reader = null;
         JSONObject jObject = new JSONObject(getJSONString(mFilename).toString());
         Iterator<?> keys = jObject.keys();
         while( keys.hasNext() ){
@@ -82,15 +78,13 @@ public class ObjectSerializer{
             Boolean value = jObject.getBoolean(key);
             prefs.put(key, value);
         }
-        if (reader != null)
-            reader.close();
         return prefs;
     }
 
     /*
     JSON Read/Write Methods
     */
-    public JSONObject convertToJSON(Object obj) throws JSONException{
+    private JSONObject convertToJSON(Object obj) throws JSONException{
         JSONObject json = new JSONObject();
         if(obj instanceof Word){
             json.put(JSON_WORD, ((Word)obj).getWord());

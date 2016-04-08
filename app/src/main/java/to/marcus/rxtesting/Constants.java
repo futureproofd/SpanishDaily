@@ -1,7 +1,7 @@
 package to.marcus.rxtesting;
 
 /**
- * Created by marcuson 11/12/2015
+ * Created by marcus on 11/12/2015
  */
 public class Constants {
 

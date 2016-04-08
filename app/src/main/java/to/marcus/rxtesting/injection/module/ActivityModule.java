@@ -1,6 +1,7 @@
 package to.marcus.rxtesting.injection.module;
 
 import android.content.Context;
+
 import dagger.Module;
 import dagger.Provides;
 import to.marcus.rxtesting.injection.Activity;

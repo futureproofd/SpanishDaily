@@ -34,7 +34,7 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private ArrayList<Word> mWordArrayList;
     private final RecyclerViewItemClickListener clickListener;
     private final RecyclerViewMenuClickListener menuClickListener;
-    private Context mContext;
+    private final Context mContext;
     private String mDataSetMode;
     private Filter mFilter;
     private final int CARDVIEW = 0;
@@ -48,6 +48,7 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this.clickListener = listener;
         this.menuClickListener = menuListener;
         this.mContext = context;
+        this.mDataSetMode = "unfiltered";
     }
 
     @Override
@@ -81,7 +82,7 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 cardViewHolder.cardMenu.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        menuClickListener.onObjectMenuClick(view, (String) cardViewHolder.imageView.getTag());
+                        menuClickListener.onObjectMenuClick(view, (String) cardViewHolder.imageView.getTag(), mDataSetMode);
                     }
                 });
                 break;
@@ -110,7 +111,7 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemViewType(int position){
-        if(mDataSetMode == mContext.getString(R.string.dataset_search)){
+        if(mDataSetMode.equals(mContext.getString(R.string.dataset_search))){
             return SEARCHVIEW;
         }else{
             return CARDVIEW;
@@ -180,7 +181,6 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     //Using iterator to avoid ConcurrentModificationException while using a for loop
     public void removeItem(String itemId){
-       // List<Word> toBeRemoved = new ArrayList<Word>();
         for(Iterator<Word> wordIterator = mWordArrayList.iterator(); wordIterator.hasNext();){
             Word word = wordIterator.next();
             if(word.getImgUrl().equals(itemId)){
@@ -192,11 +192,9 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     //To always (re)filter on the full dataSet
     public void resetFilterParams(ArrayList<Word> words){
-        if(mWordArrayList.size() != 0){
-            mWordArrayList.clear();
-            notifyDataSetChanged();
-            mWordArrayList = words;
-        }
+        mWordArrayList.clear();
+        notifyDataSetChanged();
+        mWordArrayList = words;
     }
 
     public void setDataSetMode(String mode){
@@ -279,9 +277,9 @@ public class WordRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 if(filteredArray.size() == 0){
                     Word w = new Word();
                     w.setDate("March 21, 2016");
-                    w.setWord(option + " go here");
-                    w.setExampleEN("blah");
-                    w.setImgUrl("test");
+                    w.setWord("no " + option + " here");
+                    w.setExampleEN("placeholder value");
+                    w.setImgUrl("testurl.com");
                     filteredArray = new ArrayList<>();
                     filteredArray.add(w);
                 }

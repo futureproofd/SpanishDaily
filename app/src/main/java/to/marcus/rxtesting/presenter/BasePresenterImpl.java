@@ -3,6 +3,7 @@ package to.marcus.rxtesting.presenter;
 import java.util.ArrayList;
 
 import javax.inject.Inject;
+
 import to.marcus.rxtesting.data.interactor.WordInteractorImpl;
 import to.marcus.rxtesting.model.Word;
 import to.marcus.rxtesting.model.repository.RepositoryImpl;

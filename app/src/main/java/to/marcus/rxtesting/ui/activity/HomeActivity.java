@@ -15,10 +15,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import to.marcus.rxtesting.BaseApplication;
@@ -46,12 +49,12 @@ public class HomeActivity extends BaseActivity implements HomeView
         ,RecyclerViewItemClickListener
         ,RecyclerViewMenuClickListener
         ,CardDialogFragment.CardDialogListener {
-    public final String TAG = HomeActivity.class.getSimpleName();
+    private final String TAG = HomeActivity.class.getSimpleName();
     private final String UNFILTERED_MODE = Constants.MAIN_MODE;
     private final String DISMISSED_MODE = Constants.DISMISSED_MODE;
     private final String FAVORITES_MODE = Constants.FAVORITES_MODE;
     private final String SEARCH_MODE = Constants.SEARCH_MODE;
-    public String dataSetMode = UNFILTERED_MODE; //default dataset
+    private String dataSetMode = UNFILTERED_MODE; //default dataset
     private ArrayList<Word> mUnfilteredDataSet;
     public static HomeActivity instance = null;
     private static final String WORD_OBJECT = "WORD_OBJECT";
@@ -120,14 +123,14 @@ public class HomeActivity extends BaseActivity implements HomeView
                 .build().injectHome(this);
     }
 
-    public void initRecyclerView(){
+    private void initRecyclerView(){
         mGridLayoutManager = new GridLayoutManager(this, UIUtility.convertBoolean(mHomePresenterImpl.getGridCount(UNFILTERED_MODE)));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(mGridLayoutManager);
     }
 
-    public void initSwipeRefreshView(){
+    private void initSwipeRefreshView(){
         mSwipeRefresher.setColorSchemeColors(R.color.primary);
         mSwipeRefresher.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -167,19 +170,11 @@ public class HomeActivity extends BaseActivity implements HomeView
     }
 
     //View Implementations
-    @Override
-    public void showLoading(){Log.i(TAG, "loading initiated");}
-
-    @Override
-    public void hideLoading(){Log.i(TAG, "loading stopped");}
 
     @Override
     public void showNotification(String notification){
         Toast.makeText(this, notification, Toast.LENGTH_SHORT).show();
     }
-
-    @Override
-    public void showSwipeRefreshWidget(){mSwipeRefresher.setRefreshing(true);}
 
     @Override
     public void hideSwipeRefreshWidget(){
@@ -223,8 +218,10 @@ public class HomeActivity extends BaseActivity implements HomeView
     @Override
     public void refreshWordList(){
         mWordRecyclerAdapter.notifyDataSetChanged();
-        DateUtility.removeSectionReferences();
-        initSectionAdapter();
+        if(dataSetMode.equals(getString(R.string.dataset_unfiltered))) {
+            DateUtility.removeSectionReferences();
+            initSectionAdapter();
+        }
     }
 
     //RecyclerView click listeners
@@ -235,9 +232,11 @@ public class HomeActivity extends BaseActivity implements HomeView
         String layoutType = (String)v.getTag();
         if(layoutType.equals(getString(R.string.layoutType_search))){
             intent.putExtra("IMAGE", ImageUtility.getImage((ImageView) v.findViewById(R.id.search_history_image)).toByteArray());
+            intent.putExtra("TRANSITION", false);
             this.startActivity(intent);
         }else if (layoutType.equals(getString(R.string.layoutType_card))){
             intent.putExtra("IMAGE", ImageUtility.getImage((ImageView) v.findViewById(R.id.imgWord)).toByteArray());
+            intent.putExtra("TRANSITION", true);
             ImageView wordImage = (ImageView)v.findViewById(R.id.imgWord);
             LinearLayout wordString = (LinearLayout)v.findViewById(R.id.wordNameHolder);
 
@@ -252,33 +251,35 @@ public class HomeActivity extends BaseActivity implements HomeView
         }else{
             //Obtained from SearchFilterAdapter click
             intent.putExtra("IMAGE", ImageUtility.getImage((ImageView) v.findViewById(R.id.search_row_image)).toByteArray());
+            intent.putExtra("TRANSITION", false);
             this.startActivity(intent);
         }
     }
 
-    //todo determine dialog type (fav or mainview) to present different options - also remove from favs if in favs (within presenter)
     @Override
-    public void onObjectMenuClick(View v, String itemId){
+    public void onObjectMenuClick(View v, String itemId, String dataSetMode){
         //launch dialog fragment
         CardDialogFragment dialogFragment = new CardDialogFragment();
         Bundle args = new Bundle();
         args.putString("itemId", itemId);
+        args.putString("dataSetMode", dataSetMode);
         dialogFragment.setArguments(args);
         dialogFragment.show(getFragmentManager(), TAG);
     }
 
     //CardView dialog listeners
     @Override
-    public void onDialogClickDismiss(CardDialogFragment dialogFragment, String itemId){
+    public void onDialogClickDismiss(CardDialogFragment dialogFragment, String itemId, String dataSet){
         mWordRecyclerAdapter.removeItem(itemId);
-        mHomePresenterImpl.onDismissOptionSelected(itemId);
-        //todo: Sections need redefining after deletion of word
-        //initSectionAdapter();
+        mHomePresenterImpl.onDismissOptionSelected(itemId, dataSet);
     }
 
     @Override
-    public void onDialogClickFavorite(CardDialogFragment dialogFragment, String itemId){
-        mHomePresenterImpl.onFavOptionSelected(itemId);
+    public void onDialogClickModifyProperty(CardDialogFragment dialogFragment, String itemId, String dataSet){
+        if(dataSet.equals(getString(R.string.dataset_dismissed))){
+            mWordRecyclerAdapter.removeItem(itemId);
+        }
+        mHomePresenterImpl.onModifyPropertySelected(itemId, dataSet);
     }
 
     public void setGridColumnCount(){

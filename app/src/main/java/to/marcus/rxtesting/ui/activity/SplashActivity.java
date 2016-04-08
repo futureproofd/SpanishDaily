@@ -4,11 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import to.marcus.rxtesting.BaseApplication;
-import to.marcus.rxtesting.injection.component.DaggerWordInteractorComponent;
-import to.marcus.rxtesting.injection.module.ActivityModule;
-import to.marcus.rxtesting.injection.module.WordInteractorModule;
-
 /**
  * Created by marcus on 3/4/2016
  * Launch only upon new install

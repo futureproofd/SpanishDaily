@@ -32,8 +32,8 @@
                 android:id="@+id/search_box"
                 android:singleLine="true"
                 android:paddingTop="4dp"
-                android:paddingStart="8dp"
-                android:paddingEnd="0dp"
+                android:paddingRight="8dp"
+                android:paddingLeft="0dp"
                 android:layout_width="250dp"
                 android:popupBackground="#ffff"
                 android:layout_height="wrap_content"
@@ -51,8 +51,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:paddingStart="16dp"
-                android:paddingEnd="4dp"
+                android:paddingRight="16dp"
+                android:paddingLeft="4dp"
                 android:src="@drawable/ic_magnify_grey600_24dp"
                 tools:ignore="ContentDescription" />
             <ImageView
@@ -60,8 +60,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:paddingStart="16dp"
-                android:paddingEnd="4dp"
+                android:paddingRight="16dp"
+                android:paddingLeft="4dp"
                 android:src="@drawable/ic_view_grid_grey600_24dp"
                 tools:ignore="ContentDescription" />
             <ImageView

@@ -1,7 +1,9 @@
 package to.marcus.rxtesting.model.repository;
 
 import java.util.ArrayList;
+
 import javax.inject.Inject;
+
 import to.marcus.rxtesting.model.AppPreferences;
 import to.marcus.rxtesting.model.Word;
 import to.marcus.rxtesting.model.WordStorage;
@@ -63,11 +65,6 @@ public class RepositoryImpl implements Repository{
     }
 
     @Override
-    public void removeWord(String itemId) {
-        mWordStorage.hideWord(itemId);
-    }
-
-    @Override
     public void deleteWord(String itemId){
         mWordStorage.deleteWord(itemId);
     }
@@ -93,13 +90,18 @@ public class RepositoryImpl implements Repository{
     }
 
     @Override
+    public void removeFavorite(String itemId){
+        mWordStorage.removeFavorite(itemId);
+    }
+
+    @Override
     public void toggleFavorite(Word word){
         mWordStorage.toggleFavorite(word);
     }
 
     @Override
-    public void setHidden(int position){
-        mWordStorage.setHidden(position);
+    public void toggleHidden(String itemId){
+        mWordStorage.toggleHidden(itemId);
     }
 
     @Override
@@ -167,6 +169,13 @@ public class RepositoryImpl implements Repository{
     @Override
     public boolean getGridCntRecyclePref(){
         return mAppPreferences.getGridCntRecycle();
+    }
+
+    /*
+    Sound Cache access
+     */
+    public void doSomething(){
+
     }
 
 }

@@ -12,6 +12,6 @@ public interface HomePresenter<V>{
     void initPresenter(V view);
     void initWordDataSet();
     Word onElementSelected(String itemId);
-    void onDismissOptionSelected(String itemId);
-    void onFavOptionSelected(String itemId);
+    void onDismissOptionSelected(String itemId, String dataSetMode);
+    void onModifyPropertySelected(String itemId, String dataSetMode);
 }

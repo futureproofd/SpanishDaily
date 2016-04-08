@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+import android.widget.TextView;
 import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -41,15 +42,18 @@ import to.marcus.rxtesting.ui.fragment.OptionsFragment;
  * Created by marcus on 10/19/2015.
  * BaseActivity to setup navigation framework
  */
+
 public class BaseActivity extends AppCompatActivity implements BaseView, TextWatcher
         ,SearchAdapterClickListener{
     private final static int REQ_CODE = 1337;
+    private String mPreviousActivityTitle = "Home";
     private boolean mKeyboardStatus;
     private final static String ALARM_ACTION = "ALARM_ACTION";
     private SharedPreferences.OnSharedPreferenceChangeListener mListener;
     private static SharedPreferences sharedPrefs;
     private SearchFilterAdapter mSearchFilterAdapter;
     @Bind(R.id.toolbar)         Toolbar mToolbar;
+    @Bind(R.id.toolbar_title)   TextView mToolbarTitle;
     @Bind(R.id.search_query_btn)ImageView mSearchBtn;
     @Bind(R.id.search_clear_btn)ImageView mSearchClrBtn;
     @Bind(R.id.grid_toggle_btn) ImageView mGridToggle;
@@ -99,9 +103,11 @@ public class BaseActivity extends AppCompatActivity implements BaseView, TextWat
     @Override
     public void onBackPressed() {
         if (getFragmentManager().getBackStackEntryCount() == 0) {
+            super.onBackPressed();
             this.finish();
         } else {
             getFragmentManager().popBackStack();
+            mToolbarTitle.setText(mPreviousActivityTitle);
         }
         if (isKeyboardActive())
             dismissKeyboard();
@@ -117,7 +123,8 @@ public class BaseActivity extends AppCompatActivity implements BaseView, TextWat
         setSupportActionBar(mToolbar);
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle(R.string.title_home);
+            actionBar.setTitle("");
+            mToolbarTitle.setText(R.string.app_name);
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeButtonEnabled(true);
         }
@@ -226,6 +233,7 @@ public class BaseActivity extends AppCompatActivity implements BaseView, TextWat
                         .replace(R.id.fragment_container, fragment)
                         .addToBackStack(null)
                         .commit();
+                toggleNavComponents(getString(R.string.title_options));
                 break;
             case R.id.nav_favorites:
                 getFragmentManager().popBackStackImmediate();
@@ -251,7 +259,6 @@ public class BaseActivity extends AppCompatActivity implements BaseView, TextWat
         // Highlight the selected item, update the title, and close the drawer
         menuItem.setChecked(true);
         mDrawerLayout.closeDrawers();
-        getSupportActionBar().setTitle(menuItem.getTitle());
     }
 
     @Override
@@ -304,7 +311,6 @@ public class BaseActivity extends AppCompatActivity implements BaseView, TextWat
                 .cancel();
     }
 
-    //todo maybe put these in a utility class
     public void dismissKeyboard(){
         InputMethodManager imm =(InputMethodManager)this.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mSearchBox.getWindowToken(), 0);
@@ -317,7 +323,7 @@ public class BaseActivity extends AppCompatActivity implements BaseView, TextWat
     }
 
     private void toggleSearchComponents(){
-        getSupportActionBar().setTitle("");
+        mToolbarTitle.setText("");
         mSearchBtn.setVisibility(View.GONE);
         mGridToggle.setVisibility(View.GONE);
         mSearchClrBtn.setVisibility(View.VISIBLE);
@@ -327,13 +333,18 @@ public class BaseActivity extends AppCompatActivity implements BaseView, TextWat
     }
 
     private void toggleNavComponents(String navArea){
-        getSupportActionBar().setTitle((navArea));
+        if(isKeyboardActive()){
+            dismissKeyboard();
+        }
+        if(!navArea.equals(getString(R.string.title_options))){
+            mPreviousActivityTitle = navArea;
+        }
+        mToolbarTitle.setText(navArea);
         mSearchBtn.setVisibility(View.VISIBLE);
         mGridToggle.setVisibility(View.VISIBLE);
         mSearchClrBtn.setVisibility(View.GONE);
         mSearchBox.setVisibility(View.GONE);
         mSearchBox.clearFocus();
-        dismissKeyboard();
     }
 
     private boolean isKeyboardActive(){
