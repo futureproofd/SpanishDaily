@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <to.marcus.rxtesting.ui.widgets.DeleteWordsPref
+        <to.marcus.SpanishDaily.ui.widgets.DeleteWordsPref
             android:key="@string/pref_key_del_words"
             android:title="@string/pref_title_words"
             android:defaultValue="false"
@@ -17,14 +17,14 @@
             android:summary="Delete all words"
             />
 
-        <to.marcus.rxtesting.ui.widgets.DeleteFavsPref
+        <to.marcus.SpanishDaily.ui.widgets.DeleteFavsPref
             android:key="@string/pref_key_del_favs"
             android:title="@string/pref_title_del_favs"
             android:dialogTitle="dialog title"
             android:defaultValue="false"
             android:summary="Delete all favorites"
              />
-        <to.marcus.rxtesting.ui.widgets.DeleteRecyclePref
+        <to.marcus.SpanishDaily.ui.widgets.DeleteRecyclePref
             android:key="@string/pref_key_del_bin"
             android:title="@string/pref_title_del_bin"
             android:dialogTitle="dialog title"

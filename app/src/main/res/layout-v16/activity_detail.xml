@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/imgDetailWord"
         android:layout_alignRight="@id/imgDetailWord"
-        android:layout_marginBottom="-32dp"
+        android:layout_marginBottom="-46dp"
         android:layout_marginRight="12dp"
         android:clickable="true"
         android:alpha="0"

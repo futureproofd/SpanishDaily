@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="to.marcus.rxtesting" >
+    package="to.marcus.SpanishDaily" >
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/app_icon"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
-        android:name=".BaseApplication">
-        <activity android:name=".ui.activity.SplashActivity"
+        android:name="to.marcus.SpanishDaily.BaseApplication">
+        <activity android:name="to.marcus.SpanishDaily.ui.activity.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme"
             >
@@ -21,23 +21,23 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activity.BaseActivity"
+            android:name="to.marcus.SpanishDaily.ui.activity.BaseActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".ui.activity.HomeActivity"
+            android:name="to.marcus.SpanishDaily.ui.activity.HomeActivity"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".ui.activity.DetailActivity"
+        <activity android:name="to.marcus.SpanishDaily.ui.activity.DetailActivity"
             android:launchMode="singleTask"
-            android:parentActivityName=".ui.activity.HomeActivity"
+            android:parentActivityName="to.marcus.SpanishDaily.ui.activity.HomeActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="to.marcus.rxtesting.ui.activity.HomeActivity"/>
+                android:value="to.marcus.SpanishDaily.ui.activity.HomeActivity"/>
         </activity>
         <service
-            android:name=".service.WordNotificationService">
+            android:name="to.marcus.SpanishDaily.service.WordNotificationService">
         </service>
     </application>
 

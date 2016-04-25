@@ -1,5 +1,9 @@
 <resources>
-    <string name="app_name">Spanish WOTD</string>
+    <string name="app_name">Spanish Daily</string>
+    <string name="built_by">Built By:</string>
+    <string name="app_author">Marcus Plienegger</string>
+    <string name="view_source_code">View Source Code</string>
+    <string name="send_feedback">Send Feedback</string>
     <string name="title_home">Home</string>
     <string name="title_search">Buscar</string>
     <string name="title_history">Historia</string>
@@ -32,6 +36,7 @@
     <string name="dataset_unfiltered">unfiltered</string>
     <string name="dataset_dismissed">dismissed</string>
     <string name="dataset_search">search</string>
+    <string name="dataset_empty">empty</string>
     <string name="layoutType_search">Search_Layout</string>
     <string name="layoutType_card">Card_Layout</string>
     <!--Preferences for OptionsFragment-->
@@ -54,7 +59,7 @@
     <string name="pref_title_del_favs">Remove Favorites</string>
     <string name="pref_title_del_bin">Empty Recycle Bin</string>
     <!--Notification Identifiers -->
-    <string name="notification_title">Word of the day</string>
+    <string name="notification_title">Word of the day: </string>
     <string name="notification_removed">Removed from Favorites</string>
     <string name="notification_added">Added to Favorites</string>
     <string name="playback_toast">play sound</string>
@@ -65,6 +70,7 @@
     <string name="notify_word_restored">Word restored</string>
     <string name="notify_word_dismissed">Word dismissed</string>
     <string name="notify_network_error">Error fetching Word from network</string>
+    <string name="notify_empty_text_msg">Nada por aquí</string>
     <!--filename params -->
     <string name="temp_filename">temp</string>
     <string name="filetype_mp3">mp3</string>
