@@ -140,7 +140,6 @@ public class WebParser {
             connection.disconnect();
         }
     }
-
 }
 
 

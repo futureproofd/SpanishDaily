@@ -60,6 +60,46 @@ public class Constants {
                     "\"searched\":0," +
                     "\"exampleESP\":\"Ubicó su escritorio junto a la ventana para poder trabajar con luz natural. No puedo ubicar a Pepe por ningún lado. La fuente estaba ubicada en el centro mismo de la plaza.\"," +
                     "\"url\":\"http:\\/\\/assets.merriam-webster.com\\/sc\\/word_of_the_day\\/images\\/1071\\/large.jpg\"," +
-                    "\"soundRef\":\"ubica02\"}]"
+                    "\"soundRef\":\"ubica02\"}," +
+                    "{\"exampleEN\":\"He has no modesty at all when it comes to talking about his achievements.\"," +
+                    "\"translation\":\"modesty, reserve\"," +
+                    "\"visibility\":1," +
+                    "\"word\":\"pudor\"," +
+                    "\"favorite\":0," +
+                    "\"date\":\"April 18, 2016\"," +
+                    "\"searched\":0," +
+                    "\"exampleESP\":\"No tiene el más mínimo pudor a la hora de hablar de sus logros.\"," +
+                    "\"url\":\"http:\\/\\/assets.merriam-webster.com\\/sc\\/word_of_the_day\\/images\\/1077\\/large.jpg\"," +
+                    "\"soundRef\":\"pudor01\"}," +
+                    "{\"exampleEN\":\"We'll bring chocolate cookies for the children.\"," +
+                    "\"translation\":\"cookie\"," +
+                    "\"visibility\":1," +
+                    "\"word\":\"galleta\"," +
+                    "\"favorite\":0," +
+                    "\"date\":\"May 03, 2016\"," +
+                    "\"searched\":0," +
+                    "\"exampleESP\":\"Nosotros llevaremos galletas de chocolate para los niños.\"," +
+                    "\"url\":\"http:\\/\\/assets.merriam-webster.com\\/sc\\/word_of_the_day\\/images\\/1092\\/large.jpg\"," +
+                    "\"soundRef\":\"galle02\"}," +
+                    "{\"exampleEN\":\"The detective has ascertained that the criminal was lame. The police are investigating whether the suspect has a criminal record.\"," +
+                    "\"translation\":\"to find out, to ascertain\"," +
+                    "\"visibility\":1," +
+                    "\"word\":\"averiguar\"," +
+                    "\"favorite\":0," +
+                    "\"date\":\"May 04, 2016\"," +
+                    "\"searched\":0," +
+                    "\"exampleESP\":\"El detective ha averiguado que el delincuente era cojo. La policía está averiguando si el sospechoso tiene antecedentes penales.\"," +
+                    "\"url\":\"http:\\/\\/assets.merriam-webster.com\\/sc\\/word_of_the_day\\/images\\/1093\\/large.jpg\"," +
+                    "\"soundRef\":\"averi02\"}," +
+                    "{\"exampleEN\":\"He was scared of the dog. Juanita is frightened of speaking in public.\"," +
+                    "\"translation\":\"TEMOR : fear\"," +
+                    "\"visibility\":1," +
+                    "\"word\":\"miedo\"," +
+                    "\"favorite\":0," +
+                    "\"date\":\"May 05, 2016\"," +
+                    "\"searched\":0," +
+                    "\"exampleESP\":\"Le tenía miedo al perro. A Juanita le da miedo hablar en público.\"," +
+                    "\"url\":\"http:\\/\\/assets.merriam-webster.com\\/sc\\/word_of_the_day\\/images\\/1094\\/large.jpg\"," +
+                    "\"soundRef\":\"miedo01\"}]"
             ;
 }
